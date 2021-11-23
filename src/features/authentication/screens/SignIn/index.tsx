@@ -164,7 +164,7 @@ export default function SignInForm() {
 const styles = StyleSheet.create({
   container: {
     height: hp('100%'),
-    backgroundColor: colors.primaryColors.primary300,
+    backgroundColor: colors.primaryColors.syan,
   },
   wrapper: {
     marginHorizontal: wp('7%'),
@@ -177,6 +177,7 @@ const styles = StyleSheet.create({
   appName: {
     fontSize: hp('3%'),
     fontWeight: 'bold',
+    lineHeight: 28
   },
   formTitle: {
     marginLeft: 5,

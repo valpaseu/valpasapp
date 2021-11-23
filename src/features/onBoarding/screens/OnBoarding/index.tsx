@@ -2,42 +2,41 @@ import React, { useEffect, useState } from 'react'
 import { StyleSheet, SectionList, View, Button, SafeAreaView, Text } from 'react-native'
 import _isEmpty from 'lodash/isEmpty'
 import { DataStore } from '@aws-amplify/datastore';
-import { Test } from 'models';
+import { Form } from 'models';
 import 'react-native-get-random-values';
 
-import OnBoardingAdd from '../OnBoardingAdd';
-import { padding } from 'styled-system';
-import { border } from 'native-base/lib/typescript/theme/styled-system';
+import { useNavigation } from '@react-navigation/core';
 
-const OnBoarding = ({ navigation }) => {
+const OnBoarding = ({ }) => {
   const [data, updateList] = useState([])
-  const [addText, onChangeText] = React.useState("Add text")
 
-  const FormTextList = async () => { 
-    updateList(await DataStore.query(Test))
+  const navigation = useNavigation()
+
+  const FormTextList = async () => {
+    updateList(await DataStore.query(Form))
   }
 
   FormTextList()
 
+  const Item = ({ title }) => (
+    <View style={styles.item}>
+      <Text> - </Text>
+      <Text style={styles.itemText}>{title}</Text>
+    </View>
+  );
+
   return (
     <SafeAreaView style={styles.list}>
       <SectionList
-          sections={data}
-          renderItem={({item}) => <Text style={styles.item}>{item}</Text>}
-          renderSectionHeader={({section}) => <Text style={styles.sectionHeader}>{section.title}</Text>}
+        sections={data}
+        renderItem={({ item }) => <Item title={item} />}
+        renderSectionHeader={({ section }) => <Text style={styles.sectionHeader}>{section.title}</Text>}
+        keyExtractor={(item, index) => item + index}
       />
       <View>
         <Button
           onPress={() => navigation.navigate("Add")}
           title='Add'
-        />
-        <Button
-          onPress={() => FormTextList()}
-          title='log'
-        />
-        <Button
-          onPress={() => console.log(data)}
-          title='log2'
         />
       </View>
     </SafeAreaView>
@@ -45,22 +44,29 @@ const OnBoarding = ({ navigation }) => {
 }
 
 const styles = StyleSheet.create({
-  list: {
-    paddingHorizontal: '5%',
-    marginTop: '5%',
+  itemText: {
+    fontSize: 16,
+    fontWeight: '200',
   },
   item: {
-    padding: 10,
-    fontSize: 12,
-    height: 44,
+    flexDirection: 'row',
+    marginVertical: 8,
+    width: 300,
+    margin: 20
   },
+  /*item: {
+    width: 400,
+    fontWeight: '200',
+    marginLeft: 10,
+    marginTop: 10,
+    fontSize: 16,
+    lineHeight: 22,
+    height: 32,
+  },*/
   sectionHeader: {
-    paddingTop: 2,
-    paddingLeft: 10,
-    paddingRight: 10,
-    paddingBottom: 2,
-    fontSize: 14,
-    fontWeight: 'bold',
+    padding:15,
+    fontSize: 16,
+    fontWeight: '400',
     backgroundColor: 'rgba(247,247,247,1.0)',
   },
 })

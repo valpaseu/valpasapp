@@ -1,7 +1,7 @@
 export const schema = {
     "models": {
-        "Test": {
-            "name": "Test",
+        "Form": {
+            "name": "Form",
             "fields": {
                 "id": {
                     "name": "id",
@@ -43,7 +43,7 @@ export const schema = {
                 }
             },
             "syncable": true,
-            "pluralName": "Tests",
+            "pluralName": "Forms",
             "attributes": [
                 {
                     "type": "model",
@@ -67,8 +67,8 @@ export const schema = {
                 }
             ]
         },
-        "UserReadCheker": {
-            "name": "UserReadCheker",
+        "UserDatabase": {
+            "name": "UserDatabase",
             "fields": {
                 "id": {
                     "name": "id",
@@ -77,26 +77,27 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "UserEmail": {
-                    "name": "UserEmail",
+                "email": {
+                    "name": "email",
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
                     "attributes": []
                 },
-                "FormTitle": {
-                    "name": "FormTitle",
+                "name": {
+                    "name": "name",
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
                     "attributes": []
                 },
-                "FormText": {
-                    "name": "FormText",
-                    "isArray": false,
-                    "type": "String",
+                "times": {
+                    "name": "times",
+                    "isArray": true,
+                    "type": "AWSJSON",
                     "isRequired": false,
-                    "attributes": []
+                    "attributes": [],
+                    "isArrayNullable": true
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -116,7 +117,7 @@ export const schema = {
                 }
             },
             "syncable": true,
-            "pluralName": "UserReadChekers",
+            "pluralName": "UserDatabases",
             "attributes": [
                 {
                     "type": "model",
@@ -150,22 +151,15 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "FormTitle": {
-                    "name": "FormTitle",
+                "data": {
+                    "name": "data",
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
                     "attributes": []
                 },
-                "FormText": {
-                    "name": "FormText",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "FormTextInside": {
-                    "name": "FormTextInside",
+                "datatext": {
+                    "name": "datatext",
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
@@ -212,134 +206,9 @@ export const schema = {
                     }
                 }
             ]
-        },
-        "FormText": {
-            "name": "FormText",
-            "fields": {
-                "id": {
-                    "name": "id",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "FormTitle": {
-                    "name": "FormTitle",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "FormText": {
-                    "name": "FormText",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "createdAt": {
-                    "name": "createdAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                },
-                "updatedAt": {
-                    "name": "updatedAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                }
-            },
-            "syncable": true,
-            "pluralName": "FormTexts",
-            "attributes": [
-                {
-                    "type": "model",
-                    "properties": {}
-                },
-                {
-                    "type": "auth",
-                    "properties": {
-                        "rules": [
-                            {
-                                "allow": "public",
-                                "operations": [
-                                    "create",
-                                    "update",
-                                    "delete",
-                                    "read"
-                                ]
-                            }
-                        ]
-                    }
-                }
-            ]
-        },
-        "FormTitle": {
-            "name": "FormTitle",
-            "fields": {
-                "id": {
-                    "name": "id",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "FormTitle": {
-                    "name": "FormTitle",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "createdAt": {
-                    "name": "createdAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                },
-                "updatedAt": {
-                    "name": "updatedAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                }
-            },
-            "syncable": true,
-            "pluralName": "FormTitles",
-            "attributes": [
-                {
-                    "type": "model",
-                    "properties": {}
-                },
-                {
-                    "type": "auth",
-                    "properties": {
-                        "rules": [
-                            {
-                                "allow": "public",
-                                "operations": [
-                                    "create",
-                                    "update",
-                                    "delete",
-                                    "read"
-                                ]
-                            }
-                        ]
-                    }
-                }
-            ]
         }
     },
     "enums": {},
     "nonModels": {},
-    "version": "ee0a9100ac63ef133e93f1bab06151d4"
+    "version": "54d3aec805dfdfc65b4c42165e11434f"
 };

@@ -4,12 +4,10 @@ import { schema } from './schema';
 
 
 
-const { Test, UserReadCheker, FormInsideText, FormText, FormTitle } = initSchema(schema);
+const { Form, UserDatabase, FormInsideText } = initSchema(schema);
 
 export {
-  Test,
-  UserReadCheker,
-  FormInsideText,
-  FormText,
-  FormTitle
+  Form,
+  UserDatabase,
+  FormInsideText
 };

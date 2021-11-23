@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { StyleSheet, Text, SafeAreaView, TextInput, Button, View } from "react-native"
 import { DataStore } from '@aws-amplify/datastore';
-import { Test } from 'models';
+import { Form } from 'models';
 
 const OnBoardingAdd = () => {
 
@@ -19,12 +19,12 @@ const OnBoardingAdd = () => {
 
         if (addTitle !== "") {
 
-            const fTitle = await DataStore.query(Test)
+            const fTitle = await DataStore.query(Form)
 
             if (!fTitle.map(q => q.title).includes(addTitle)) {
 
                 await DataStore.save(
-                    new Test({
+                    new Form({
                         "title": addTitle,
                         "data": []
                     })
@@ -44,7 +44,7 @@ const OnBoardingAdd = () => {
 
     const addTextFunc = async () => {
 
-        const onBoarding = await DataStore.query(Test)
+        const onBoarding = await DataStore.query(Form)
 
         if (addText !== "" && addTextTitle !== "") {
 
@@ -53,7 +53,7 @@ const OnBoardingAdd = () => {
                 if (!onBoarding.find(ttt => ttt.title === addTextTitle).data.includes(addText)) {
                     
                     await DataStore.save(
-                        Test.copyOf(onBoarding.find(tt => tt.title === addTextTitle), updated => {
+                        Form.copyOf(onBoarding.find(tt => tt.title === addTextTitle), updated => {
                             updated.data.push(`${addText}`)
                         })
                     );
@@ -70,7 +70,7 @@ const OnBoardingAdd = () => {
 
     const rmAllTitle = async () => {
 
-        const modelToDelete = await DataStore.query(Test);
+        const modelToDelete = await DataStore.query(Form);
 
         if (modelToDelete.length !== 0) {
 
@@ -87,8 +87,8 @@ const OnBoardingAdd = () => {
     }
 
 
-    const showTest = async () => {
-        const models = await DataStore.query(Test);
+    const showForm = async () => {
+        const models = await DataStore.query(Form);
         console.log(models);
     }
 
@@ -159,7 +159,7 @@ const OnBoardingAdd = () => {
             <View style={styles.button}>
                 <Button
                     color="#Ffffff"
-                    title="Delete Test"
+                    title="Delete Form"
                     onPress={rmAllTitle} />
             </View>
 
@@ -173,8 +173,8 @@ const OnBoardingAdd = () => {
             <View style={styles.button}>
                 <Button
                     color="#ffffff"
-                    title="Show test"
-                    onPress={showTest} />
+                    title="Show Form"
+                    onPress={showForm} />
             </View>
 
         </SafeAreaView>

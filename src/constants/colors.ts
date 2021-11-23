@@ -17,6 +17,7 @@ export default {
     primary200: '#4a4b53',
     primary100: '#1B1D1F',
     blue: '#1FC3F3',
+    syan: '#00adef'
   },
   searchInputColors: {
     grey: '#dcdcdc',
