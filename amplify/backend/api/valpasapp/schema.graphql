@@ -1,0 +1,31 @@
+type Test @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  title: String
+  data: [String]
+}
+
+type UserReadCheker @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  UserEmail: String
+  FormTitle: String
+  FormText: String
+}
+
+type FormInsideText @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  FormTitle: String
+  FormText: String
+  FormTextInside: String
+}
+
+type FormText @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  FormTitle: String
+  FormText: String
+}
+
+type FormTitle @model @auth(rules: [{allow: public}]) {
+  id: ID!
+  FormTitle: String
+}
+ 
