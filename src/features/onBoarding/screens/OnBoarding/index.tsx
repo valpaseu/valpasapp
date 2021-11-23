@@ -20,33 +20,37 @@ const OnBoarding = ({ }) => {
 
   const Item = ({ title }) => (
     <View style={styles.item}>
-      <Text> - </Text>
+      <Text style={styles.itemText}> - </Text>
       <Text style={styles.itemText}>{title}</Text>
+      <SVGImg width={200} height={200} />
     </View>
   );
 
   return (
-    <SafeAreaView style={styles.list}>
+    <View style={styles.list}>
+      <View style={styles.buttons}>
+        <Button
+          onPress={() => navigation.navigate("Add")}
+          title='Add'
+        />
+      </View>
       <SectionList
         sections={data}
         renderItem={({ item }) => <Item title={item} />}
         renderSectionHeader={({ section }) => <Text style={styles.sectionHeader}>{section.title}</Text>}
         keyExtractor={(item, index) => item + index}
       />
-      <View>
-        <Button
-          onPress={() => navigation.navigate("Add")}
-          title='Add'
-        />
-      </View>
-    </SafeAreaView>
+    </View>
   )
 }
 
 const styles = StyleSheet.create({
+  buttons: {
+    width: 100
+  },
   itemText: {
-    fontSize: 16,
-    fontWeight: '200',
+    fontSize: 18,
+    fontWeight: '100',
   },
   item: {
     flexDirection: 'row',
@@ -64,7 +68,7 @@ const styles = StyleSheet.create({
     height: 32,
   },*/
   sectionHeader: {
-    padding:15,
+    padding: 15,
     fontSize: 16,
     fontWeight: '400',
     backgroundColor: 'rgba(247,247,247,1.0)',
