@@ -89,12 +89,12 @@ const OnBoardingAdd = () => {
     } else console.log("Array empty");
   };
 
-  const syncForm = async () => {
+  const dataStoreClearCache = async () => {
     await AsyncStorage.getAllKeys((err, result) => {
-        if (err) {
-            console.log(err);
-        } else console.log(result);
-    })
+      if (!err) {
+        console.log(result);
+      } else console.log(err);
+    });
   };
 
   const showForm = async () => {
@@ -181,7 +181,7 @@ const OnBoardingAdd = () => {
             */}
 
       <View style={styles.button}>
-        <Button color="#ffffff" title="Sync" onPress={syncForm} />
+        <Button color="#ffffff" title="Sync" onPress={dataStoreClearCache} />
       </View>
     </SafeAreaView>
   );

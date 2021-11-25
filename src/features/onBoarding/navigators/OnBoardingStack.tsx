@@ -1,11 +1,12 @@
-import { createStackNavigator, TransitionPresets } from '@react-navigation/stack'
+import { createStackNavigator } from '@react-navigation/stack'
 import React from 'react'
-import { StyleSheet, View, Dimensions } from 'react-native'
+import { StyleSheet, Dimensions } from 'react-native'
 
 import colors from 'constants/colors'
 import OnBoardingScreen from 'features/onBoarding/screens/OnBoarding'
 import OnBoardingDetailScreen from 'features/onBoarding/screens/OnBoardingDetail'
-import OnBoardingAdd from '../screens/OnBoardingAdd'
+
+
 
 const OnBoardingStack = () => {
   const Stack = createStackNavigator()
@@ -14,7 +15,6 @@ const OnBoardingStack = () => {
     <Stack.Navigator>
       <Stack.Screen name="Screen" component={OnBoardingScreen}/>
       <Stack.Screen name="Details" component={OnBoardingDetailScreen}/>
-      <Stack.Screen name="Add" component={OnBoardingAdd}/>
     </Stack.Navigator>
   )
 }

@@ -1,31 +1,20 @@
-import React, { useEffect, useState } from "react";
-import {
-  StyleSheet,
-  SectionList,
-  View,
-  Button,
-  SafeAreaView,
-  Text,
-} from "react-native";
+import React, { useState } from "react";
+import { StyleSheet, SectionList, View, Text, ScrollView } from "react-native";
 import _isEmpty from "lodash/isEmpty";
 import { DataStore } from "@aws-amplify/datastore";
 import { Form, UserDatabase } from "models";
 import "react-native-get-random-values";
 
 import { useNavigation } from "@react-navigation/core";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-const OnBoarding = ({}) => {
+const OnBoarding = () => {
   const [data, updateList] = useState([]);
 
   const navigation = useNavigation();
 
   const FormTextList = async () => {
     updateList(await DataStore.query(Form));
-  };
-
-  const test = async () => {
-    const formList = await DataStore.query(Form)
-    console.log(formList);
   };
 
   if (data.length === 0) {
@@ -40,31 +29,20 @@ const OnBoarding = ({}) => {
   );
 
   return (
-    <View style={styles.list}>
-      <View style={styles.buttons}>
-        <View>
-          <Button onPress={() => navigation.navigate("Add")} title="Add" />
-        </View>
-        <View>
-          <Button onPress={() => test()} title="log" />
-        </View>
-      </View>
+    <SafeAreaView>
       <SectionList
-        sections={data}
-        renderItem={({ item }) => <Item title={item} />}
-        renderSectionHeader={({ section }) => (
-          <Text style={styles.sectionHeader}>{section.title}</Text>
-        )}
-        keyExtractor={(item, index) => item + index}
-      />
-    </View>
+          sections={data}
+          renderItem={({ item }) => <Item title={item} />}
+          renderSectionHeader={({ section }) => (
+            <Text style={styles.sectionHeader}>{section.title}</Text>
+          )}
+          keyExtractor={(item, index) => item + index}
+        />
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  buttons: {
-    width: 100,
-  },
   itemText: {
     fontSize: 18,
     fontWeight: "100",

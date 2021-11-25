@@ -1,74 +1,76 @@
 export default {
   mainScreens: {
-    stack: 'mainScreens',
+    stack: "mainScreens",
     home: {
-      screen: 'home',
+      screen: "home",
     },
     positions: {
-      stack: 'positions',
+      stack: "positions",
       positionMain: {
-        screen: 'positionMain',
+        screen: "positionMain",
       },
       positionDetail: {
-        screen: 'positionDetail',
+        screen: "positionDetail",
       },
       applyNow: {
-        screen: 'applyNow',
+        screen: "applyNow",
       },
     },
     messages: {
-      stack: 'messages',
+      stack: "messages",
       messageMain: {
-        screen: 'messageMain',
+        screen: "messageMain",
       },
       messageDetail: {
-        screen: 'messageDetail',
+        screen: "messageDetail",
       },
     },
     onBoarding: {
-      stack: 'onBoarding',
+      stack: "onBoarding",
       onBoardingMain: {
-        screen: 'onBoardingMain',
+        screen: "onBoardingMain",
       },
       onBoardingDetail: {
-        screen: 'onBoardingDetail',
+        screen: "onBoardingDetail",
       },
     },
     profile: {
-      screen: 'profile',
+      stack: "profile",
+      profile: { screen: "profile" },
+      addOnBoarding: { screen: "addOnBoarding" },
     },
     work: {
-      screen: 'work',
+      screen: "work",
       workMain: {
-        screen: 'workMain',
+        screen: "workMain",
       },
     },
     city: {
-      screen: 'city',
+      screen: "city",
     },
   },
   gettingStarted: {
-    screen: 'gettingStarted',
+    screen: "gettingStarted",
   },
   authentication: {
-    stack: 'authentication',
+    stack: "authentication",
     signIn: {
-      screen: 'signIn',
+      screen: "signIn",
     },
     completeNewPassword: {
-      screen: 'completeNewPassword',
+      screen: "completeNewPassword",
     },
     applicantSignIn: {
-      screen: 'applicantSignIn',
+      screen: "applicantSignIn",
     },
     signUp: {
-      screen: 'signUp',
+      screen: "signUp",
     },
     forgotPassword: {
-      screen: 'forgotPassword',
+      screen: "forgotPassword",
     },
     resetPassword: {
-      screen: 'resetPassword',
+      screen: "resetPassword",
     },
   },
-}
+};

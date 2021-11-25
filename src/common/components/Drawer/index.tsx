@@ -15,7 +15,7 @@ import AuthenticationStack from 'features/authentication/navigator/Authenticatio
 import SideBar from 'common/components/SideBar'
 import MessageStack from 'features/messages/navigators/MessageStack'
 import WorkStack from 'features/work/navigators/WorkStack'
-import Profile from 'features/profile/screens/Profile'
+import ProfileStack from 'features/profile/navigators/ProfileStack'
 
 const Drawer = () => {
   const { mainScreens, gettingStarted, authentication } = routes
@@ -28,7 +28,7 @@ const Drawer = () => {
     { route: city.screen, component: City },
     { route: messages.stack, component: MessageStack },
     { route: onBoarding.stack, component: OnBoardingStack },
-    { route: profile.screen, component: Profile },
+    { route: profile.stack, component: ProfileStack },
   ]
 
   const DrawerNav = createDrawerNavigator()

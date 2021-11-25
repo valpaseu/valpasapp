@@ -92,12 +92,12 @@ export default function SignUpForm({
       });
       await DataStore.save(
         new UserDatabase({
-          email: email,
-          formChecked: [],
-          times: [],
-          name: name,
-        })
-      );
+        "email": email,
+        "formChecked": [],
+        "times": [],
+        "name": name
+      })
+    );
       AlertPopup({
         title: "Confirm your email",
         message: `We have sent an email to ${email} with a confirmation code. If you didn't receive a code, you can request a new one on the next screen.`,

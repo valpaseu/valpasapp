@@ -1,6 +1,14 @@
 import { MaterialIcons, AntDesign } from "@expo/vector-icons";
 import { Formik, FormikHelpers } from "formik";
-import { VStack, Input, Button, FormControl, Text, View } from "native-base";
+import {
+  VStack,
+  Input,
+  Button,
+  FormControl,
+  Text,
+  View,
+  Checkbox,
+} from "native-base";
 import React, { useState } from "react";
 import {
   StyleSheet,
@@ -17,17 +25,18 @@ import {
 } from "react-native-responsive-screen";
 import { Auth } from "aws-amplify";
 import * as Sentry from "sentry-expo";
-import CheckBox from "@react-native-community/checkbox";
 
 import colors from "constants/colors";
 import routes from "constants/routes";
 import { AlertPopup } from "common/components/Alert";
 import { ValueSignInForm, AuthResponse } from "features/types";
-import { disableGettingStartedScreen } from "features/gettingStarted/services";
+import {
+  disableGettingStartedScreen,
+  enableGettingStartedScreen,
+} from "features/gettingStarted/services";
 
 export default function SignInForm() {
   const navigation = useNavigation();
-  const [toggleCheckBox, setToggleCheckBox] = useState(false);
 
   //For usage during the development
   // const initialValues = { name: 'unverifiedEmail@integrify.io', password: 'Test123456' }
@@ -154,10 +163,16 @@ export default function SignInForm() {
                   <Text style={styles.errorText}>{errors.password}</Text>
                 )}
                 <View style={styles.wrapperRemember}>
-                  <CheckBox
-                    disabled={false}
-                    value={toggleCheckBox}
-                    onValueChange={(newValue) => setToggleCheckBox(newValue)}
+                  <Checkbox
+                    value="test"
+                    accessibilityLabel="This is a dummy checkbox"
+                    onChange={(value) => {
+                      if (value) {
+                        disableGettingStartedScreen();
+                      } else {
+                        enableGettingStartedScreen();
+                      }
+                    }}
                   />
                   <Text style={styles.checkboxText}>Remember me</Text>
                   <Text
@@ -278,7 +293,7 @@ const styles = StyleSheet.create({
   checkboxText: {
     color: colors.textColors.white,
     paddingRight: 24,
-    paddingLeft: 24,
+    paddingLeft: 5,
     fontSize: hp("1.5%"),
   },
   forgotText: {

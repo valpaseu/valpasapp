@@ -15,18 +15,24 @@ export async function checkFirstLaunch(
 }
 
 export function disableGettingStartedScreen() {
-  AsyncStorage.setItem(gettingStartedKey, "done")
-  syncForm()
+  AsyncStorage.setItem(gettingStartedKey, "done");
 }
-
-const syncForm = async () => {
-  await AsyncStorage.getAllKeys((err, result) => {
-      if (err) {
-          console.log(err);
-      } else console.log(result);
-  })
-};
 
 export async function enableGettingStartedScreen() {
   await AsyncStorage.removeItem(gettingStartedKey);
 }
+/*const syncForm = async () => {
+  await AsyncStorage.getAllKeys(async (err, result) => {
+    if (!err) {
+      const dataStoreCache = result?.filter((res) =>
+        res.startsWith("@AmplifyDatastore:")
+      );
+      for (let i = 0; i < dataStoreCache.length; i++) {
+        await AsyncStorage.removeItem(dataStoreCache[i]),
+          (err) => {
+            console.log(err);
+          };
+      }
+    } else console.log(err);
+  });
+};*/

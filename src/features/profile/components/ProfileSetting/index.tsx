@@ -7,7 +7,7 @@ import {
 import React from "react";
 import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { Auth } from "aws-amplify";
+import { Auth, nav } from "aws-amplify";
 import * as Sentry from "sentry-expo";
 
 import { AlertPopup } from "common/components/Alert";
@@ -30,9 +30,6 @@ const ProfileSetting = () => {
         buttons: [{ text: "Ok" }],
       });
     }
-  };
-  const testAuth = async () => {
-    console.log(await Auth.currentSession());
   };
 
   const handleLogOut = async () => {
@@ -63,9 +60,9 @@ const ProfileSetting = () => {
       icon: <AntDesign name="profile" style={styles.icon} />,
     },
     {
-      label: "clear",
-      icon: <AntDesign name="profile" style={styles.icon} />,
-      handlePress: testAuth,
+      label: "Add obBoarding",
+      icon: <AntDesign name="profile" style={styles.icon}/>,
+      handlePress: () => {navigation.navigate("onBoardingAdd")}
     },
     {
       label: "Log out",
