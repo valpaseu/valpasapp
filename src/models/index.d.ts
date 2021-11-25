@@ -29,8 +29,9 @@ export declare class Form {
 export declare class UserDatabase {
   readonly id: string;
   readonly email?: string;
-  readonly name?: string;
+  readonly formChecked?: (string | null)[];
   readonly times?: (string | null)[];
+  readonly name?: string;
   readonly createdAt?: string;
   readonly updatedAt?: string;
   constructor(init: ModelInit<UserDatabase, UserDatabaseMetaData>);

@@ -7,14 +7,12 @@ import _isEmpty from 'lodash/isEmpty'
 import colors from 'constants/colors'
 import routes from 'constants/routes'
 import FlatListItem from 'features/gettingStarted/components/FlatListItem'
-import { disableGettingStartedScreen } from 'features/gettingStarted/services'
 import useContentful from 'common/hooks/useContentful'
 import { WelcomeContent } from 'features/types'
 
 export default function GettingStarted() {
   const navigation = useNavigation()
   const redirectToLogin = () => {
-    disableGettingStartedScreen()
     navigation.navigate(routes.authentication.stack, { screen: routes.authentication.signIn.screen })
   }
 

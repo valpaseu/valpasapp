@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { StyleSheet, ScrollView, ImageBackground } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import { Text, View } from 'native-base'
+import { Auth } from 'aws-amplify'
 
 import routes from 'constants/routes'
 import colors from 'constants/colors'
@@ -12,9 +13,14 @@ import { AppState } from 'common/redux/types'
 import { formatName } from 'common/helpers'
 
 const Home = () => {
+  const [user, setUserDate] = useState([])
   const navigation = useNavigation()
   const userName = useSelector((state: AppState) => state.authentication.profile?.email)
   
+  const testAuth = async () => {
+    setUserDate(await Auth.currentUserInfo());
+  }
+
   const displayName = userName && formatName(userName)
   const onItemPress = (item: JobPosition) => {
     navigation.navigate(routes.mainScreens.positions.stack, {

@@ -1,31 +1,31 @@
-import { NavigationContainer, DefaultTheme } from '@react-navigation/native'
-import React, { useEffect, useState } from 'react'
-import { NativeBaseProvider } from 'native-base';
-import { Provider, useDispatch } from 'react-redux'
-import Amplify, { Hub, DataStore } from 'aws-amplify'
+import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
+import React, { useEffect, useState } from "react";
+import { NativeBaseProvider } from "native-base";
+import { Provider, useDispatch } from "react-redux";
+import Amplify, { Hub, DataStore } from "aws-amplify";
 import * as Sentry from "@sentry/react";
 
-import makeStore from './src/redux/store'
-import colors from './src/constants/colors'
-import Drawer from './src/common/components/Drawer'
-import GettingStartedStack from './src/features/gettingStarted/navigators/GettingStartedStack'
-import { checkFirstLaunch } from './src/features/gettingStarted/services'
-import { loadAuth } from './src/features/authentication/redux/actions'
-import awsExports from './src/aws-exports'
-import { removeAuth } from './src/features/authentication/redux/actions'
+import makeStore from "./src/redux/store";
+import colors from "./src/constants/colors";
+import Drawer from "./src/common/components/Drawer";
+import GettingStartedStack from "./src/features/gettingStarted/navigators/GettingStartedStack";
+import { checkFirstLaunch } from "./src/features/gettingStarted/services";
+import { loadAuth } from "./src/features/authentication/redux/actions";
+import awsExports from "./src/aws-exports";
+import { removeAuth } from "./src/features/authentication/redux/actions";
 
-if (process.env.LOG_LEVEL) Amplify.Logger.LOG_LEVEL = process.env.LOG_LEVEL
+if (process.env.LOG_LEVEL) Amplify.Logger.LOG_LEVEL = process.env.LOG_LEVEL;
 if (process.env.SENTRY_DSN) {
   Sentry.init({
     dsn: process.env.SENTRY_DSN,
     //enableInExpoDevelopment: true,
     debug: !!__DEV__,
-  })
+  });
 }
 
-Amplify.configure(awsExports)
+Amplify.configure(awsExports);
 
-const store = makeStore()
+const store = makeStore();
 
 const theme = {
   ...DefaultTheme,
@@ -33,46 +33,49 @@ const theme = {
     ...DefaultTheme.colors,
     background: colors.primaryColors.background,
   },
-}
+};
 
 function App() {
-  const [isFirstLaunch, setFirstLaunch] = useState(false)
-  const dispatch = useDispatch()
+  const [isFirstLaunch, setFirstLaunch] = useState(false);
+  const dispatch = useDispatch();
 
   const handleSignIn = (session: any) => {
-    const { accessToken, idToken } = session
-    const { email, phone_number, email_verified, phone_number_verified } = idToken.payload
+    const { accessToken, idToken } = session;
+    const { email, phone_number, email_verified, phone_number_verified } =
+      idToken.payload;
     dispatch(
       loadAuth({
         accessToken: accessToken.jwtToken,
         profile: { email, email_verified, phone_number, phone_number_verified },
       })
-    )
-  }
+    );
+  };
 
-  Hub.listen('auth', (res) => {
+  Hub.listen("auth", (res) => {
     switch (res.payload.event) {
-      case 'signIn':
-        if (!res.payload.data.signInUserSession) break
-        handleSignIn(res.payload.data.signInUserSession)
-        break
-      case 'signOut':
-        dispatch(removeAuth())
-        break
+      case "signIn":
+        if (!res.payload.data.signInUserSession) break;
+        handleSignIn(res.payload.data.signInUserSession);
+        break;
+      case "signOut":
+        dispatch(removeAuth());
+        break;
     }
-  })
+  });
 
   useEffect(() => {
-    checkFirstLaunch(setFirstLaunch)
-  }, [])
+    checkFirstLaunch(setFirstLaunch);
+  }, []);
 
   return (
     <>
       <Sentry.ErrorBoundary>
-        <NavigationContainer theme={theme}>{isFirstLaunch ? <GettingStartedStack /> : <Drawer />}</NavigationContainer>
+        <NavigationContainer theme={theme}>
+          {isFirstLaunch ? <GettingStartedStack /> : <Drawer />}
+        </NavigationContainer>
       </Sentry.ErrorBoundary>
     </>
-  )
+  );
 }
 
 export default function AppWrapper() {
@@ -82,5 +85,5 @@ export default function AppWrapper() {
         <App />
       </Provider>
     </NativeBaseProvider>
-  )
+  );
 }

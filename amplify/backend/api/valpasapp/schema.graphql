@@ -1,17 +1,18 @@
-type Form @model @auth(rules: [{allow: public}]) {
+type Form @model @auth(rules: [{allow: groups, groups: ["Editors"], operations: [read, create, update, delete]}, {allow: private, operations: [read]}]) {
   id: ID!
   title: String
   data: [String]
 }
 
-type UserDatabase @model @auth(rules: [{allow: public}]) {
+type UserDatabase @model @auth(rules: [{allow: groups, groups: ["Editors"], operations: [read, create, update, delete]}, {allow: public, operations: [create]}, {allow: owner}]) {
   id: ID!
   email: String
+  formChecked: [String]
+  times: [String]
   name: String
-  times: [AWSJSON]
 }
 
-type FormInsideText @model @auth(rules: [{allow: public}]) {
+type FormInsideText @model @auth(rules: [{allow: groups, groups: ["Editors"], operations: [read, create, update, delete]}, {allow: private, operations: [read]}]) {
   id: ID!
   data: String
   datatext: String
