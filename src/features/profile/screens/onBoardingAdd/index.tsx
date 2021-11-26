@@ -8,7 +8,7 @@ import {
   View,
 } from "react-native";
 import { DataStore } from "@aws-amplify/datastore";
-import { Form } from "models";
+import { Form, UserDatabase } from "models";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const OnBoardingAdd = () => {
@@ -20,6 +20,22 @@ const OnBoardingAdd = () => {
 
   const [addTextCheck, setTextCheck] = React.useState("");
   const [addTextTitleCheck, setTextTitleCheck] = React.useState("");
+
+  const syncForm = async () => {
+    await AsyncStorage.getAllKeys(async (err, result) => {
+      if (!err) {
+        const dataStoreCache = result?.filter((res) =>
+          res.startsWith("@AmplifyDatastore:")
+        );
+        for (let i = 0; i < dataStoreCache.length; i++) {
+          await AsyncStorage.removeItem(dataStoreCache[i]),
+            (err) => {
+              console.log(err);
+            };
+        }
+      } else console.log(err);
+    });
+  };
 
   const addTitleFunc = async () => {
     if (addTitle !== "") {
@@ -78,7 +94,7 @@ const OnBoardingAdd = () => {
   };
 
   const rmAllTitle = async () => {
-    const modelToDelete = await DataStore.query(Form);
+    const modelToDelete = await DataStore.query(UserDatabase);
 
     if (modelToDelete.length !== 0) {
       for (let i = 0; i < modelToDelete.length; i++) {
@@ -98,7 +114,7 @@ const OnBoardingAdd = () => {
   };
 
   const showForm = async () => {
-    const models = await DataStore.query(Form);
+    const models = await DataStore.query(UserDatabase);
     console.log(models);
   };
 
@@ -176,12 +192,22 @@ const OnBoardingAdd = () => {
 
       {/* 
             
-            Show title 
+            Show sync 
             
             */}
 
       <View style={styles.button}>
         <Button color="#ffffff" title="Sync" onPress={dataStoreClearCache} />
+      </View>
+
+      {/* 
+            
+            Clear sync 
+            
+            */}
+
+<View style={styles.button}>
+        <Button color="#ffffff" title="Clear sync" onPress={syncForm} />
       </View>
     </SafeAreaView>
   );

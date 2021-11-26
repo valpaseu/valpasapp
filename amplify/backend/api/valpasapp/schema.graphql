@@ -4,7 +4,7 @@ type Form @model @auth(rules: [{allow: groups, groups: ["Editors"], operations: 
   data: [String]
 }
 
-type UserDatabase @model @auth(rules: [{allow: groups, groups: ["Editors"], operations: [read, create, update, delete]}, {allow: public, operations: [create, read]}, {allow: owner}]) {
+type UserDatabase @model @auth(rules: [{allow: groups, groups: ["Editors"], operations: [read, create, update, delete]}, {allow: public, operations: [create, read, update]}, {allow: owner}, {allow: private, operations: [create, read, update]}]) {
   id: ID!
   email: String
   formChecked: [String]

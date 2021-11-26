@@ -5,14 +5,10 @@ import { DataStore } from "@aws-amplify/datastore";
 import { Form, UserDatabase } from "models";
 import "react-native-get-random-values";
 
-import { useNavigation } from "@react-navigation/core";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const OnBoarding = () => {
   const [data, updateList] = useState([]);
-
-  const navigation = useNavigation();
-
   const FormTextList = async () => {
     updateList(await DataStore.query(Form));
   };

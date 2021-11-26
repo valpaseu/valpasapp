@@ -60,7 +60,7 @@ const ProfileSetting = () => {
       icon: <AntDesign name="profile" style={styles.icon} />,
     },
     {
-      label: "Add obBoarding",
+      label: "Add OnBoarding",
       icon: <AntDesign name="profile" style={styles.icon}/>,
       handlePress: () => {navigation.navigate("onBoardingAdd")}
     },
