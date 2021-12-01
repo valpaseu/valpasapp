@@ -6,6 +6,7 @@ import { Form, UserDatabase } from "models";
 import "react-native-get-random-values";
 
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Checkbox } from "native-base";
 
 const OnBoarding = () => {
   const [data, updateList] = useState([]);
@@ -19,26 +20,38 @@ const OnBoarding = () => {
 
   const Item = ({ title }) => (
     <View style={styles.item}>
-      <Text style={styles.itemText}> - </Text>
+      {console.log(title)}
       <Text style={styles.itemText}>{title}</Text>
+      <Checkbox
+        style={styles.Checkbox}
+        value="test"
+        accessibilityLabel="This is a dummy checkbox"
+        onChange={(value) => {
+          console.log(value);
+        }}
+      />
     </View>
   );
 
   return (
     <SafeAreaView>
       <SectionList
-          sections={data}
-          renderItem={({ item }) => <Item title={item} />}
-          renderSectionHeader={({ section }) => (
-            <Text style={styles.sectionHeader}>{section.title}</Text>
-          )}
-          keyExtractor={(item, index) => item + index}
-        />
+        sections={data}
+        renderItem={({ item }) => <Item title={item} />}
+        renderSectionHeader={({ section }) => (
+          <Text style={styles.sectionHeader}>{section.title}</Text>
+        )}
+        keyExtractor={(item, index) => item + index}
+      />
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  Checkbox: {
+    marginLeft: 10,
+    marginRight: 10,
+  },
   itemText: {
     fontSize: 18,
     fontWeight: "100",

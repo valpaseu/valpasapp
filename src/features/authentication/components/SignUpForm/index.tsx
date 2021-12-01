@@ -13,8 +13,6 @@ import { object, string, ref } from "yup";
 import { useNavigation } from "@react-navigation/native";
 
 import { Auth } from "aws-amplify";
-import { DataStore } from "@aws-amplify/datastore";
-import { UserDatabase } from "models";
 
 import {
   widthPercentageToDP as wp,

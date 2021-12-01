@@ -12,7 +12,7 @@ const SideBar: FC<Pick<DrawerContentComponentProps, 'navigation' | 'state'>> = (
   const drawerMap = [
     { labelName: 'Home', route: home.screen },
     { labelName: 'Positions', route: positions.stack },
-    { labelName: 'Work', route: work.screen },
+    //{ labelName: 'Work', route: work.screen },
     { labelName: 'Cities', route: city.screen },
     { labelName: 'Messages', route: messages.stack },
     { labelName: 'Profile', route: profile.stack },

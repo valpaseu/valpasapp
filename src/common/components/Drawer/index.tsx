@@ -10,7 +10,7 @@ import City from 'features/city/screens/City'
 import HomeStack from 'features/home/navigators/HomeStack'
 import OnBoardingStack from 'features/onBoarding/navigators/OnBoardingStack'
 import PositionStack from 'features/positions/navigators/PositionStack'
-import GettingStarted from 'features/gettingStarted/screens/GettingStarted'
+//import GettingStarted from 'features/gettingStarted/screens/GettingStarted'
 import AuthenticationStack from 'features/authentication/navigator/AuthenticationStack'
 import SideBar from 'common/components/SideBar'
 import MessageStack from 'features/messages/navigators/MessageStack'
@@ -76,11 +76,6 @@ const Drawer = () => {
           </Animated.View>
         )}
       </DrawerNav.Screen>
-      <DrawerNav.Screen
-        name={gettingStarted.screen}
-        component={GettingStarted}
-        options={{ swipeEnabled: false, headerShown: false }}
-      />
       <DrawerNav.Screen
         name={authentication.stack}
         component={AuthenticationStack}

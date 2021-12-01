@@ -14,7 +14,7 @@ import { AlertPopup } from "common/components/Alert";
 import colors from "constants/colors";
 import sizes from "constants/size";
 import routes from "constants/routes";
-import { enableGettingStartedScreen } from "features/gettingStarted/services";
+import { enableGettingStartedScreen } from "common/services";
 
 const ProfileSetting = () => {
   const navigation = useNavigation();
@@ -35,7 +35,7 @@ const ProfileSetting = () => {
   const handleLogOut = async () => {
     await signOut();
     await enableGettingStartedScreen();
-    navigation.navigate(routes.gettingStarted.screen);
+    navigation.navigate(routes.authentication.stack);
   };
 
   const settings = [
@@ -58,6 +58,11 @@ const ProfileSetting = () => {
     {
       label: "Edit profile",
       icon: <AntDesign name="profile" style={styles.icon} />,
+    },
+    {
+      label: "Test",
+      icon: <AntDesign name="profile" style={styles.icon} />,
+      handlePress: () => {navigation.navigate("SystemPage")}
     },
     {
       label: "Add OnBoarding",

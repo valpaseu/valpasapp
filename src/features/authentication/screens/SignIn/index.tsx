@@ -33,7 +33,7 @@ import { ValueSignInForm, AuthResponse } from "features/types";
 import {
   disableGettingStartedScreen,
   enableGettingStartedScreen,
-} from "features/gettingStarted/services";
+} from "common/services";
 
 export default function SignInForm() {
   const navigation = useNavigation();
