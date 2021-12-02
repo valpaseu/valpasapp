@@ -1,17 +1,34 @@
-import React, { FC } from 'react'
+import React, { FC, useState } from 'react'
 import { View, Text, StyleSheet, Image } from 'react-native'
 
 import { ProfileHeaderProps } from 'features/types'
 import colors from 'constants/colors'
 import sizes from 'constants/size'
+import { DataStore } from '@aws-amplify/datastore'
+import Auth from '@aws-amplify/auth'
+import { UserDatabase } from 'models'
 
-const ProfileHeader: FC<ProfileHeaderProps> = ({ photoUrl, name, email, futureShifts, earnedIncome }) => {
+const ProfileHeader: FC<ProfileHeaderProps> = ({ photoUrl}) => {
+  const [name, setName] = useState("")
+  const [email, setEmail] = useState("")
+
+  const takeDate = async () => {
+    const userDates = await DataStore.query(UserDatabase);
+      const userPool = await Auth.currentUserInfo()
+      const user = userDates.find(users => users.email === userPool.attributes.email)
+  
+      setName(user.name);
+      setEmail(user.email)
+  }
+
+  if (name || email === "") {takeDate()}
+
   return (
     <View style={styles.container}>
       <Image style={styles.avatar} source={{ uri: photoUrl }} />
       <Text style={styles.name}>{name}</Text>
       <Text style={styles.subtitle}>{email}</Text>
-      <View style={styles.splitContainer}>
+      {/*<View style={styles.splitContainer}>
         <View style={styles.splitViewLeft}>
           <Text style={styles.splitText}>Awaiting Shifts</Text>
           <Text style={styles.splitNumber}>{futureShifts.length}</Text>
@@ -20,7 +37,7 @@ const ProfileHeader: FC<ProfileHeaderProps> = ({ photoUrl, name, email, futureSh
           <Text style={styles.splitText}>Earned Income</Text>
           <Text style={styles.splitNumber}>{earnedIncome} </Text>
         </View>
-      </View>
+      </View>*/}
     </View>
   )
 }
@@ -54,7 +71,7 @@ const styles = StyleSheet.create({
     color: colors.primaryColors.primary200,
     fontSize: sizes.profile.subtitle,
     letterSpacing: 1.5,
-    paddingBottom: '2%',
+    paddingBottom: '10%',
   },
   splitContainer: {
     flexDirection: 'row',

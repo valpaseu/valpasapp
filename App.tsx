@@ -8,8 +8,8 @@ import * as Sentry from "@sentry/react";
 import makeStore from "./src/redux/store";
 import colors from "./src/constants/colors";
 import Drawer from "./src/common/components/Drawer";
-import SignInForm from "./src/features/authentication/screens/SignIn";
-import { checkFirstLaunch } from "./src/common/services";
+import GettingStartedStack from "./src/features/gettingStarted/navigators/GettingStartedStack";
+import { checkFirstLaunch } from "./src/features/gettingStarted/services";
 import { loadAuth } from "./src/features/authentication/redux/actions";
 import awsExports from "./src/aws-exports";
 import { removeAuth } from "./src/features/authentication/redux/actions";
@@ -71,7 +71,7 @@ function App() {
     <>
       <Sentry.ErrorBoundary>
         <NavigationContainer theme={theme}>
-          {isFirstLaunch ? <SignInForm /> : <Drawer />}
+          {isFirstLaunch ? <GettingStartedStack /> : <Drawer />}
         </NavigationContainer>
       </Sentry.ErrorBoundary>
     </>

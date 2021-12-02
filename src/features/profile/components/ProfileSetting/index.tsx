@@ -14,7 +14,7 @@ import { AlertPopup } from "common/components/Alert";
 import colors from "constants/colors";
 import sizes from "constants/size";
 import routes from "constants/routes";
-import { enableGettingStartedScreen } from "common/services";
+import { enableGettingStartedScreen } from "features/gettingStarted/services";
 
 const ProfileSetting = () => {
   const navigation = useNavigation();
@@ -39,7 +39,7 @@ const ProfileSetting = () => {
   };
 
   const settings = [
-    {
+    /*{
       label: "Schedule",
       icon: <MaterialIcons name="schedule" style={styles.icon} />,
     },
@@ -50,7 +50,7 @@ const ProfileSetting = () => {
     {
       label: "Notifications",
       icon: <Ionicons name="ios-notifications" style={styles.icon} />,
-    },
+    },*/
     {
       label: "Messages",
       icon: <MaterialIcons name="message" style={styles.icon} />,
@@ -58,16 +58,17 @@ const ProfileSetting = () => {
     {
       label: "Edit profile",
       icon: <AntDesign name="profile" style={styles.icon} />,
+      handlePress: () => {navigation.navigate("Edit Profile")}
     },
     {
       label: "Test",
       icon: <AntDesign name="profile" style={styles.icon} />,
-      handlePress: () => {navigation.navigate("SystemPage")}
+      handlePress: () => {navigation.navigate("System Page")}
     },
     {
       label: "Add OnBoarding",
       icon: <AntDesign name="profile" style={styles.icon}/>,
-      handlePress: () => {navigation.navigate("onBoardingAdd")}
+      handlePress: () => {navigation.navigate("Add OnBoarding")}
     },
     {
       label: "Log out",

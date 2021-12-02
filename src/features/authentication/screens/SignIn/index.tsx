@@ -33,7 +33,7 @@ import { ValueSignInForm, AuthResponse } from "features/types";
 import {
   disableGettingStartedScreen,
   enableGettingStartedScreen,
-} from "common/services";
+} from "features/gettingStarted/services";
 
 export default function SignInForm() {
   const navigation = useNavigation();
@@ -200,7 +200,7 @@ export default function SignInForm() {
               </VStack>
             )}
           </Formik>
-          <View style={styles.smallTextWrapper}>
+          {/*<View style={styles.smallTextWrapper}>
             <Text> Or log in with</Text>
           </View>
           <View style={styles.wrapperLoginOthers}>
@@ -219,7 +219,7 @@ export default function SignInForm() {
               <MaterialIcons name="person-outline" size={24} color="black" />
               <Text style={styles.applicantText}>Applicant</Text>
             </Button>
-          </View>
+            </View>*/}
         </View>
         <View style={styles.wrapperNoAccount}>
           <Text style={styles.textNoAccount}>Don't have an account?</Text>

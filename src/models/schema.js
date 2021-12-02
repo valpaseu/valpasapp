@@ -88,20 +88,19 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
+                "name": {
+                    "name": "name",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "email": {
                     "name": "email",
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
                     "attributes": []
-                },
-                "formChecked": {
-                    "name": "formChecked",
-                    "isArray": true,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true
                 },
                 "times": {
                     "name": "times",
@@ -111,8 +110,30 @@ export const schema = {
                     "attributes": [],
                     "isArrayNullable": true
                 },
-                "name": {
-                    "name": "name",
+                "formChecked": {
+                    "name": "formChecked",
+                    "isArray": true,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true
+                },
+                "address": {
+                    "name": "address",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "bio": {
+                    "name": "bio",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "location": {
+                    "name": "location",
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
@@ -273,5 +294,5 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "version": "7585a6f83c48f250db26d690b1b89b47"
+    "version": "51a07d4cde58bd4f57c79bd37ff538fd"
 };
