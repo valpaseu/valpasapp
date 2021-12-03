@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import _isEmpty from "lodash/isEmpty";
 import { DataStore } from "@aws-amplify/datastore";
-import { Form, UserDatabase } from "models";
+import { Form, UserDatabase, FormInsideText } from "models";
 import "react-native-get-random-values";
 
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -17,6 +17,7 @@ import { Checkbox } from "native-base";
 import Auth from "@aws-amplify/auth";
 
 const OnBoarding = () => {
+  const [dataText, setDataText] = useState([]);
   const [data, updateList] = useState([]);
   const [groupValue, setGroupValue] = React.useState([]);
 
@@ -53,6 +54,11 @@ const OnBoarding = () => {
     );
   };
 
+  const takeFormInsideText = async () => {
+    const models = await DataStore.query(FormInsideText);
+    console.log(models);
+  };
+
   if (data.length === 0) OnBoardingSubList();
 
   if (groupValue.length === 0) OnBoardingSubUser();
@@ -79,6 +85,12 @@ const OnBoarding = () => {
         title="Save"
         onPress={() => {
           saveFormChecked(groupValue);
+        }}
+      />
+      <Button
+        title="log"
+        onPress={() => {
+          takeFormInsideText();
         }}
       />
       <SectionList

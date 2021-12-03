@@ -37,6 +37,7 @@ import {
 
 export default function SignInForm() {
   const navigation = useNavigation();
+  const [checkboxValue, setCheckboxValue] = useState(false);
 
   //For usage during the development
   // const initialValues = { name: 'unverifiedEmail@integrify.io', password: 'Test123456' }
@@ -59,6 +60,9 @@ export default function SignInForm() {
       const email_verified =
         authUser.signInUserSession &&
         authUser.signInUserSession.idToken.payload.email_verified;
+
+      if (!checkboxValue) enableGettingStartedScreen();
+      else disableGettingStartedScreen();
 
       if (authUser.challengeName === "NEW_PASSWORD_REQUIRED") {
         AlertPopup({
@@ -83,8 +87,6 @@ export default function SignInForm() {
         submitProps.resetForm();
       }
     } catch (error) {
-      console.log(error);
-
       Sentry.Native.captureException(error);
       AlertPopup({
         title: "Oops...",
@@ -166,15 +168,14 @@ export default function SignInForm() {
                   <Checkbox
                     value="test"
                     accessibilityLabel="This is a dummy checkbox"
-                    onChange={(value) => {
-                      if (value) {
-                        disableGettingStartedScreen();
-                      } else {
-                        enableGettingStartedScreen();
-                      }
-                    }}
+                    onChange={setCheckboxValue}
                   />
                   <Text style={styles.checkboxText}>Remember me</Text>
+                  {/*<Text onPress={async () => {
+                    await AsyncStorage.getAllKeys((err, res) => {
+                      console.log(res);
+                    })
+                  }}>test</Text>*/}
                   <Text
                     style={styles.forgotText}
                     onPress={() =>
