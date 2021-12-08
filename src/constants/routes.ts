@@ -31,7 +31,7 @@ export default {
         screen: "onBoardingMain",
       },
       onBoardingDetail: {
-        screen: "onBoardingDetail",
+        screen: "Details",
       },
     },
     profile: {

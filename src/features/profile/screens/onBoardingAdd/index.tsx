@@ -10,6 +10,7 @@ import {
 import { DataStore } from "@aws-amplify/datastore";
 import { Form, UserDatabase } from "models";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Auth from "@aws-amplify/auth";
 
 const OnBoardingAdd = () => {
   const [addTitle, setTitle] = React.useState("");
@@ -20,22 +21,6 @@ const OnBoardingAdd = () => {
 
   const [addTextCheck, setTextCheck] = React.useState("");
   const [addTextTitleCheck, setTextTitleCheck] = React.useState("");
-
-  const syncForm = async () => {
-    await AsyncStorage.getAllKeys(async (err, result) => {
-      if (!err) {
-        const dataStoreCache = result?.filter((res) =>
-          res.startsWith("@AmplifyDatastore:")
-        );
-        for (let i = 0; i < dataStoreCache.length; i++) {
-          await AsyncStorage.removeItem(dataStoreCache[i]),
-            (err) => {
-              console.log(err);
-            };
-        }
-      } else console.log(err);
-    });
-  };
 
   const addTitleFunc = async () => {
     if (addTitle !== "") {
@@ -93,24 +78,9 @@ const OnBoardingAdd = () => {
     }
   };
 
-  const rmAllTitle = async () => {
-    const modelToDelete = await DataStore.query(UserDatabase);
-
-    if (modelToDelete.length !== 0) {
-      for (let i = 0; i < modelToDelete.length; i++) {
-        DataStore.delete(modelToDelete[i]);
-
-        console.log(` Items in array ${modelToDelete.length}`);
-      }
-    } else console.log("Array empty");
-  };
-
-  const dataStoreClearCache = async () => {
-    await AsyncStorage.getAllKeys((err, result) => {
-      if (!err) {
-        console.log(result);
-      } else console.log(err);
-    });
+  const dataStore = async () => {
+    const authUserInfo = await Auth.currentUserInfo()
+    console.log(authUserInfo)
   };
 
   const showForm = async () => {
@@ -170,16 +140,6 @@ const OnBoardingAdd = () => {
         </SafeAreaView>
       </View>
 
-      {/*
-            
-            Delete all title 
-            
-            */}
-
-      <View style={styles.button}>
-        <Button color="#Ffffff" title="Delete Form" onPress={rmAllTitle} />
-      </View>
-
       {/* 
             
             Show title 
@@ -197,17 +157,7 @@ const OnBoardingAdd = () => {
             */}
 
       <View style={styles.button}>
-        <Button color="#ffffff" title="Sync" onPress={dataStoreClearCache} />
-      </View>
-
-      {/* 
-            
-            Clear sync 
-            
-            */}
-
-<View style={styles.button}>
-        <Button color="#ffffff" title="Clear sync" onPress={syncForm} />
+        <Button color="#ffffff" title="Sync" onPress={dataStore} />
       </View>
     </SafeAreaView>
   );

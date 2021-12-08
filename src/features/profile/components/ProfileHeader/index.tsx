@@ -17,7 +17,7 @@ const ProfileHeader: FC<ProfileHeaderProps> = ({ photoUrl}) => {
       const userPool = await Auth.currentUserInfo()
       const user = userDates.find(users => users.email === userPool.attributes.email)
   
-      setName(user.name);
+      setName(user.name)
       setEmail(user.email)
   }
 

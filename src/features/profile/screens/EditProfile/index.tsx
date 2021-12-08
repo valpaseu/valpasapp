@@ -23,17 +23,19 @@ const editProfile = () => {
 
   const userDate = async (values) => {
     const userDates = await DataStore.query(UserDatabase);
-    const userPool = await Auth.currentUserInfo()
-    const user = userDates.find(users => users.email === userPool.attributes.email)
-    
+    const userPool = await Auth.currentUserInfo();
+    const user = userDates.find(
+      (users) => users.email === userPool.attributes.email
+    );
+
     await DataStore.save(
-        UserDatabase.copyOf(user, updated => {
-          updated.name = values.name,
-          updated.address = values.address,
-          updated.bio = values.bio,
-          updated.location = values.location
-        })
-      );
+      UserDatabase.copyOf(user, (updated) => {
+        (updated.name = values.name),
+          (updated.address = values.address),
+          (updated.bio = values.bio),
+          (updated.location = values.location);
+      })
+    );
   };
 
   return (
@@ -84,7 +86,12 @@ const editProfile = () => {
             </View>
           )}
         </Formik>
-        <Button title="test" onPress={userDate} />
+        <Button
+          title="test"
+          onPress={() => {
+            console.log(initialValues);
+          }}
+        />
       </View>
     </SafeAreaView>
   );

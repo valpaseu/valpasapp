@@ -6,17 +6,22 @@ import {
   Text,
   ScrollView,
   Button,
+  TouchableOpacity,
 } from "react-native";
 import _isEmpty from "lodash/isEmpty";
 import { DataStore } from "@aws-amplify/datastore";
 import { Form, UserDatabase, FormInsideText } from "models";
 import "react-native-get-random-values";
 
-import { SafeAreaView } from "react-native-safe-area-context";
+import routes from "constants/routes";
+
 import { Checkbox } from "native-base";
 import Auth from "@aws-amplify/auth";
+import { useNavigation } from "@react-navigation/native";
 
 const OnBoarding = () => {
+  const navigation = useNavigation();
+
   const [dataText, setDataText] = useState([]);
   const [data, updateList] = useState([]);
   const [groupValue, setGroupValue] = React.useState([]);
@@ -34,7 +39,7 @@ const OnBoarding = () => {
     );
 
     const qqq = [];
-    for (let i = 0; i < findedUser.formChecked.length; i++)
+    for (let i = 0; i <= findedUser.formChecked.length; i++)
       qqq.push(findedUser.formChecked[i]);
     setGroupValue(qqq);
   };
@@ -56,52 +61,40 @@ const OnBoarding = () => {
 
   const takeFormInsideText = async () => {
     const models = await DataStore.query(FormInsideText);
-    console.log(models);
+    setDataText(models);
   };
 
   if (data.length === 0) OnBoardingSubList();
 
   if (groupValue.length === 0) OnBoardingSubUser();
 
+  if (dataText.length === 0) takeFormInsideText();
+
   const Item = ({ title }) => (
     <View style={styles.item}>
-      <Checkbox.Group
-        colorScheme="#00adef"
-        defaultValue={groupValue}
-        onChange={(values) => {
-          setGroupValue(values || []);
-        }}
-      >
-        <Checkbox style={styles.Checkbox} value={title}>
-          {title}
-        </Checkbox>
-      </Checkbox.Group>
+      <Text>Title</Text>
+      <Text>Lisää texti</Text>
     </View>
   );
 
   return (
-    <SafeAreaView style={{ marginTop: -50 }}>
+    <ScrollView>
+      <SectionList
+        sections={data}
+        renderItem={({ item }) => (<Text>{() => console.log(item)
+        }</Text>)}
+        renderSectionHeader={({ section }) => (
+          <Text style={styles.sectionHeader}>{section.title}</Text>
+        )}
+        keyExtractor={(item, index) => item + index}
+      />
       <Button
         title="Save"
         onPress={() => {
           saveFormChecked(groupValue);
         }}
       />
-      <Button
-        title="log"
-        onPress={() => {
-          takeFormInsideText();
-        }}
-      />
-      <SectionList
-        sections={data}
-        renderItem={({ item }) => <Item title={item} />}
-        renderSectionHeader={({ section }) => (
-          <Text style={styles.sectionHeader}>{section.title}</Text>
-        )}
-        keyExtractor={(item, index) => item + index}
-      />
-    </SafeAreaView>
+    </ScrollView>
   );
 };
 

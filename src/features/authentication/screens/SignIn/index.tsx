@@ -34,6 +34,7 @@ import {
   disableGettingStartedScreen,
   enableGettingStartedScreen,
 } from "features/gettingStarted/services";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function SignInForm() {
   const navigation = useNavigation();
@@ -171,11 +172,11 @@ export default function SignInForm() {
                     onChange={setCheckboxValue}
                   />
                   <Text style={styles.checkboxText}>Remember me</Text>
-                  {/*<Text onPress={async () => {
+                  <Text onPress={async () => {
                     await AsyncStorage.getAllKeys((err, res) => {
                       console.log(res);
                     })
-                  }}>test</Text>*/}
+                  }}>test</Text>
                   <Text
                     style={styles.forgotText}
                     onPress={() =>

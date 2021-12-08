@@ -12,7 +12,7 @@ import ProfileHeader from "features/profile/components/ProfileHeader";
 import ProfileSetting from "features/profile/components/ProfileSetting";
 
 const mockData = {
-  photoUrl: "https://ca.slack-edge.com/T7XMSNG7P-UDS8YKR0C-3b35c7f1755a-512",
+  photoUrl: "",
   location: "Helsinki, Finland",
   futureShifts: [
     { time: "Thu 03.09 08.00-15.00", location: "Bronda Ravintola" },

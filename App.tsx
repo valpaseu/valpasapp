@@ -51,7 +51,7 @@ function App() {
     );
   };
 
-  Hub.listen("auth", (res) => {
+  Hub.listen("auth", async (res) => {
     switch (res.payload.event) {
       case "signIn":
         if (!res.payload.data.signInUserSession) break;
@@ -59,6 +59,7 @@ function App() {
         break;
       case "signOut":
         dispatch(removeAuth());
+        await DataStore.clear();
         break;
     }
   });

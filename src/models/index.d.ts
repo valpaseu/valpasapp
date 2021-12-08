@@ -19,7 +19,7 @@ type FormInsideTextMetaData = {
 export declare class Form {
   readonly id: string;
   readonly title?: string;
-  readonly data?: (string | null)[];
+  readonly data: (string | null)[];
   readonly createdAt?: string;
   readonly updatedAt?: string;
   constructor(init: ModelInit<Form, FormMetaData>);
@@ -31,7 +31,7 @@ export declare class UserDatabase {
   readonly name?: string;
   readonly email?: string;
   readonly times?: (string | null)[];
-  readonly formChecked?: (string | null)[];
+  readonly formChecked: (string | null)[];
   readonly address?: string;
   readonly bio?: string;
   readonly location?: string;
@@ -43,8 +43,8 @@ export declare class UserDatabase {
 
 export declare class FormInsideText {
   readonly id: string;
+  readonly title?: string;
   readonly data?: string;
-  readonly datatext?: string;
   readonly createdAt?: string;
   readonly updatedAt?: string;
   constructor(init: ModelInit<FormInsideText, FormInsideTextMetaData>);

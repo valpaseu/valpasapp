@@ -1,7 +1,7 @@
 type Form @model @auth(rules: [{allow: groups, groups: ["Editors"], operations: [read, create, update, delete]}, {allow: private, operations: [read]}]) {
   id: ID!
   title: String
-  data: [String]
+  data: [AWSJSON]!
 }
 
 type UserDatabase @model @auth(rules: [{allow: groups, groups: ["Editors"], operations: [read, create, update, delete]}, {allow: public, operations: [create, read, update]}, {allow: owner}, {allow: private, operations: [create, read, update]}]) {
@@ -9,7 +9,7 @@ type UserDatabase @model @auth(rules: [{allow: groups, groups: ["Editors"], oper
   name: String
   email: String
   times: [String]
-  formChecked: [String]
+  formChecked: [String]!
   address: String
   bio: String
   location: String
@@ -17,7 +17,7 @@ type UserDatabase @model @auth(rules: [{allow: groups, groups: ["Editors"], oper
 
 type FormInsideText @model @auth(rules: [{allow: groups, groups: ["Editors"], operations: [read, create, update, delete]}, {allow: private, operations: [read]}]) {
   id: ID!
+  title: String
   data: String
-  datatext: String
 }
  

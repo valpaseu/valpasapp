@@ -20,10 +20,10 @@ export const schema = {
                 "data": {
                     "name": "data",
                     "isArray": true,
-                    "type": "String",
+                    "type": "AWSJSON",
                     "isRequired": false,
                     "attributes": [],
-                    "isArrayNullable": true
+                    "isArrayNullable": false
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -116,7 +116,7 @@ export const schema = {
                     "type": "String",
                     "isRequired": false,
                     "attributes": [],
-                    "isArrayNullable": true
+                    "isArrayNullable": false
                 },
                 "address": {
                     "name": "address",
@@ -224,15 +224,15 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "data": {
-                    "name": "data",
+                "title": {
+                    "name": "title",
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
                     "attributes": []
                 },
-                "datatext": {
-                    "name": "datatext",
+                "data": {
+                    "name": "data",
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
@@ -294,5 +294,5 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "version": "51a07d4cde58bd4f57c79bd37ff538fd"
+    "version": "e9ec9c99558c8daa0eaf419ba7faa014"
 };
