@@ -8,6 +8,7 @@ import CompleteNewPassword from 'features/authentication/screens/ApplicantSignIn
 import SignUp from 'features/authentication/screens/SignUp'
 import ForgotPassword from 'features/authentication/screens/ForgotPassword'
 import ResetPassword from 'features/authentication/screens/ResetPassword'
+import ProfileForm from 'features/authentication/screens/ProfileForm'
 
 function AuthenticationStack() {
   const Stack = createStackNavigator()
@@ -19,6 +20,7 @@ function AuthenticationStack() {
       <Stack.Screen name={completeNewPassword.screen} component={CompleteNewPassword} />
       <Stack.Screen name={applicantSignIn.screen} component={ApplicantSignIn} />
       <Stack.Screen name={signUp.screen} component={SignUp} />
+      <Stack.Screen name={"Profile Form"} component={ProfileForm}/>
       <Stack.Screen name={forgotPassword.screen} component={ForgotPassword} />
       <Stack.Screen name={resetPassword.screen} component={ResetPassword} />
     </Stack.Navigator>

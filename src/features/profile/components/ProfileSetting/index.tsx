@@ -66,11 +66,6 @@ const ProfileSetting = () => {
       handlePress: () => {navigation.navigate("System Page")}
     },
     {
-      label: "Add OnBoarding",
-      icon: <AntDesign name="profile" style={styles.icon}/>,
-      handlePress: () => {navigation.navigate("Add OnBoarding")}
-    },
-    {
       label: "Log out",
       icon: <FontAwesome name="sign-out" style={styles.icon} />,
       handlePress: handleLogOut,

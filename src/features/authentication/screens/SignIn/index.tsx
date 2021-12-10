@@ -172,11 +172,11 @@ export default function SignInForm() {
                     onChange={setCheckboxValue}
                   />
                   <Text style={styles.checkboxText}>Remember me</Text>
-                  <Text onPress={async () => {
+                  {/*<Text onPress={async () => {
                     await AsyncStorage.getAllKeys((err, res) => {
                       console.log(res);
                     })
-                  }}>test</Text>
+                  }}>test</Text>*/}
                   <Text
                     style={styles.forgotText}
                     onPress={() =>

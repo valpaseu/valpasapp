@@ -1,7 +1,12 @@
-type Form @model @auth(rules: [{allow: groups, groups: ["Editors"], operations: [read, create, update, delete]}, {allow: private, operations: [read]}]) {
+type FormItem {
+  name: String
+  text: String
+}
+
+type OnBoardingForm @model @auth(rules: [{allow: groups, groups: ["Editors"], operations: [read, create, update, delete]}, {allow: private, operations: [read]}]) {
   id: ID!
   title: String
-  data: [AWSJSON]!
+  data: [FormItem]
 }
 
 type UserDatabase @model @auth(rules: [{allow: groups, groups: ["Editors"], operations: [read, create, update, delete]}, {allow: public, operations: [create, read, update]}, {allow: owner}, {allow: private, operations: [create, read, update]}]) {
@@ -13,11 +18,5 @@ type UserDatabase @model @auth(rules: [{allow: groups, groups: ["Editors"], oper
   address: String
   bio: String
   location: String
-}
-
-type FormInsideText @model @auth(rules: [{allow: groups, groups: ["Editors"], operations: [read, create, update, delete]}, {allow: private, operations: [read]}]) {
-  id: ID!
-  title: String
-  data: String
 }
  

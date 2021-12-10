@@ -9,161 +9,132 @@ import {
 } from "react-native";
 import { DataStore } from "@aws-amplify/datastore";
 import { Form, UserDatabase } from "models";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import Auth from "@aws-amplify/auth";
+import { Formik } from "formik";
+import { object, string } from "yup";
 
 const OnBoardingAdd = () => {
-  const [addTitle, setTitle] = React.useState("");
-  const [addText, setText] = React.useState("");
-  const [addTextTitle, setTextTitle] = React.useState("");
-
   const [addTitleCheck, setTitleCheck] = React.useState("");
 
   const [addTextCheck, setTextCheck] = React.useState("");
   const [addTextTitleCheck, setTextTitleCheck] = React.useState("");
 
-  const addTitleFunc = async () => {
-    if (addTitle !== "") {
-      const fTitle = await DataStore.query(Form);
-
-      if (!fTitle.map((q) => q.title).includes(addTitle)) {
-        await DataStore.save(
-          new Form({
-            title: addTitle,
-            data: [],
-          })
-        );
-
-        setTitleCheck(`New item named "${addTitle}" added`);
-      } else {
-        setTitleCheck("Try another name");
-      }
-    } else {
-      setTitleCheck("Empty");
-    }
+  const log = async () => {
+    const formd = await DataStore.query(Form);
+    console.log(formd);
   };
 
-  const addTextFunc = async () => {
-    const onBoarding = await DataStore.query(Form);
-
-    if (addText !== "" && addTextTitle !== "") {
-      if (onBoarding.map((t) => t.title).includes(addTextTitle)) {
-        if (
-          !onBoarding
-            .find((ttt) => ttt.title === addTextTitle)
-            .data.includes(addText)
-        ) {
-          await DataStore.save(
-            Form.copyOf(
-              onBoarding.find((tt) => tt.title === addTextTitle),
-              (updated) => {
-                updated.data.push(`${addText}`);
-              }
-            )
-          );
-
-          setTextCheck("Added");
-          setTextTitleCheck("");
-        } else {
-          setTextCheck("Text already in");
-          setTextTitleCheck("");
+  const addTitle = async (val, fin) => {
+    if (fin.data.find((n) => n.name === val.dataName) === undefined) {
+      await DataStore.save(
+        Form.copyOf(fin, (updated) => {
+          updated.data.push({
+            name: val.dataName,
+            text: val.dataText,
+          });
+        })
+      );
+    } else if (fin.data.find((n) => n.name === val.dataName)) {
+      for (let i = 0; i < fin.data.length; i++) {
+        if (fin.data[i].name === val.dataName) {
+          try {
+            await DataStore.save(
+              Form.copyOf(fin, (updated) => {
+                updated.data.splice(i, 1);
+              })
+            );
+          } catch (error) {
+            console.log(error);
+          }
+          
         }
-      } else {
-        setTextTitleCheck("Title not found");
-        setTextCheck("");
       }
-    } else {
-      setTextCheck("Fill text form");
-      setTextTitleCheck("Fill title form");
     }
-  };
-
-  const dataStore = async () => {
-    const authUserInfo = await Auth.currentUserInfo()
-    console.log(authUserInfo)
-  };
-
-  const showForm = async () => {
-    const models = await DataStore.query(UserDatabase);
-    console.log(models);
   };
 
   return (
     <SafeAreaView style={{ margin: 10 }}>
-      {/* 
-            
-            Add title form 
-            
-            */}
-
-      <View style={{ borderWidth: 3, padding: 10, borderRadius: 10 }}>
-        <Text style={{ fontSize: 28, textAlign: "center" }}>Add title</Text>
-        <TextInput
-          style={styles.input}
-          onChangeText={(t) => setTitle(t)}
-          value={addTitle}
-        />
-        <Text>{addTitleCheck}</Text>
-        <SafeAreaView style={{ justifyContent: "flex-end", width: 100 }}>
-          <Button
-            color="#00adef"
-            title="Add"
-            onPress={() => addTitleFunc(addTitle)}
-          />
-        </SafeAreaView>
-      </View>
-
-      {/* 
-            
-            Add text form 
-            
-            */}
-
-      <View
-        style={{ borderWidth: 3, padding: 10, borderRadius: 10, marginTop: 40 }}
+      <Formik
+        initialValues={{ title: "", dataName: "", dataText: "" }}
+        onSubmit={async (values) => {
+          const forms = await DataStore.query(Form);
+          const finder = forms.find(
+            (findedForm) => findedForm.title === values.title
+          );
+          if (
+            finder === undefined &&
+            values.title !== "" &&
+            values.dataName !== "" &&
+            values.dataText !== ""
+          ) {
+            await DataStore.save(
+              new Form({
+                title: values.title,
+                data: [
+                  {
+                    name: values.dataName,
+                    text: values.dataText,
+                  },
+                ],
+              })
+            );
+          } else if (finder !== undefined) {
+            addTitle(values, finder);
+          } else console.log("Something empty");
+        }}
       >
-        <Text style={{ fontSize: 28, textAlign: "center" }}>Add text</Text>
-        <TextInput
-          style={styles.input}
-          onChangeText={(t) => setTextTitle(t)}
-          value={addTextTitle}
-        />
-        <Text>{addTextTitleCheck}</Text>
-        <TextInput
-          style={styles.input}
-          onChangeText={(t) => setText(t)}
-          value={addText}
-        />
-        <Text>{addTextCheck}</Text>
-        <SafeAreaView style={{ justifyContent: "flex-end", width: 100 }}>
-          <Button color="#00adef" title="Add" onPress={() => addTextFunc()} />
-        </SafeAreaView>
-      </View>
-
-      {/* 
-            
-            Show title 
-            
-            */}
-
-      <View style={styles.button}>
-        <Button color="#ffffff" title="Show Form" onPress={showForm} />
-      </View>
-
-      {/* 
-            
-            Show sync 
-            
-            */}
-
-      <View style={styles.button}>
-        <Button color="#ffffff" title="Sync" onPress={dataStore} />
-      </View>
+        {({ handleChange, handleBlur, handleSubmit, values }) => (
+          <View>
+            <View style={styles.block}>
+              <Text style={styles.title}>Chapter</Text>
+              <TextInput
+                style={styles.input}
+                onChangeText={handleChange("title")}
+                onBlur={handleBlur("title")}
+                value={values.title}
+                placeholder="Chapter"
+              />
+            </View>
+            <View style={styles.block}>
+              <Text style={styles.title}>Title</Text>
+              <TextInput
+                style={styles.input}
+                onChangeText={handleChange("dataName")}
+                onBlur={handleBlur("dataName")}
+                value={values.dataName}
+                placeholder="Title"
+              />
+            </View>
+            <View style={styles.block}>
+              <Text style={styles.title}>"Read more" text</Text>
+              <TextInput
+                style={styles.input}
+                onChangeText={handleChange("dataText")}
+                onBlur={handleBlur("dataText")}
+                value={values.dataText}
+                placeholder="Read more text"
+              />
+            </View>
+            <Button onPress={handleSubmit} title="Submit" />
+            <Button onPress={log} title="logs" />
+          </View>
+        )}
+      </Formik>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  block: {
+    borderWidth: 3,
+    padding: 10,
+    borderRadius: 10,
+    marginTop: 5,
+  },
+  title: {
+    fontSize: 28,
+    textAlign: "center",
+  },
   input: {
     padding: 5,
     marginBottom: 10,

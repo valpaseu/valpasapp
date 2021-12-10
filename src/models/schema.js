@@ -1,7 +1,7 @@
 export const schema = {
     "models": {
-        "Form": {
-            "name": "Form",
+        "OnBoardingForm": {
+            "name": "OnBoardingForm",
             "fields": {
                 "id": {
                     "name": "id",
@@ -20,10 +20,12 @@ export const schema = {
                 "data": {
                     "name": "data",
                     "isArray": true,
-                    "type": "AWSJSON",
+                    "type": {
+                        "nonModel": "FormItem"
+                    },
                     "isRequired": false,
                     "attributes": [],
-                    "isArrayNullable": false
+                    "isArrayNullable": true
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -43,7 +45,7 @@ export const schema = {
                 }
             },
             "syncable": true,
-            "pluralName": "Forms",
+            "pluralName": "OnBoardingForms",
             "attributes": [
                 {
                     "type": "model",
@@ -213,86 +215,29 @@ export const schema = {
                     }
                 }
             ]
-        },
-        "FormInsideText": {
-            "name": "FormInsideText",
-            "fields": {
-                "id": {
-                    "name": "id",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": true,
-                    "attributes": []
-                },
-                "title": {
-                    "name": "title",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "data": {
-                    "name": "data",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "createdAt": {
-                    "name": "createdAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                },
-                "updatedAt": {
-                    "name": "updatedAt",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": [],
-                    "isReadOnly": true
-                }
-            },
-            "syncable": true,
-            "pluralName": "FormInsideTexts",
-            "attributes": [
-                {
-                    "type": "model",
-                    "properties": {}
-                },
-                {
-                    "type": "auth",
-                    "properties": {
-                        "rules": [
-                            {
-                                "groupClaim": "cognito:groups",
-                                "provider": "userPools",
-                                "allow": "groups",
-                                "groups": [
-                                    "Editors"
-                                ],
-                                "operations": [
-                                    "read",
-                                    "create",
-                                    "update",
-                                    "delete"
-                                ]
-                            },
-                            {
-                                "allow": "private",
-                                "operations": [
-                                    "read"
-                                ]
-                            }
-                        ]
-                    }
-                }
-            ]
         }
     },
     "enums": {},
-    "nonModels": {},
-    "version": "e9ec9c99558c8daa0eaf419ba7faa014"
+    "nonModels": {
+        "FormItem": {
+            "name": "FormItem",
+            "fields": {
+                "name": {
+                    "name": "name",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "text": {
+                    "name": "text",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                }
+            }
+        }
+    },
+    "version": "95d2f0d5e616b32563f9151ec7d0aa55"
 };

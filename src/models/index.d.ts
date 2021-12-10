@@ -2,9 +2,13 @@ import { ModelInit, MutableModel, PersistentModelConstructor } from "@aws-amplif
 
 
 
+export declare class FormItem {
+  readonly name?: string;
+  readonly text?: string;
+  constructor(init: ModelInit<FormItem>);
+}
 
-
-type FormMetaData = {
+type OnBoardingFormMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
 
@@ -12,18 +16,14 @@ type UserDatabaseMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
 
-type FormInsideTextMetaData = {
-  readOnlyFields: 'createdAt' | 'updatedAt';
-}
-
-export declare class Form {
+export declare class OnBoardingForm {
   readonly id: string;
   readonly title?: string;
-  readonly data: (string | null)[];
+  readonly data?: (FormItem | null)[];
   readonly createdAt?: string;
   readonly updatedAt?: string;
-  constructor(init: ModelInit<Form, FormMetaData>);
-  static copyOf(source: Form, mutator: (draft: MutableModel<Form, FormMetaData>) => MutableModel<Form, FormMetaData> | void): Form;
+  constructor(init: ModelInit<OnBoardingForm, OnBoardingFormMetaData>);
+  static copyOf(source: OnBoardingForm, mutator: (draft: MutableModel<OnBoardingForm, OnBoardingFormMetaData>) => MutableModel<OnBoardingForm, OnBoardingFormMetaData> | void): OnBoardingForm;
 }
 
 export declare class UserDatabase {
@@ -39,14 +39,4 @@ export declare class UserDatabase {
   readonly updatedAt?: string;
   constructor(init: ModelInit<UserDatabase, UserDatabaseMetaData>);
   static copyOf(source: UserDatabase, mutator: (draft: MutableModel<UserDatabase, UserDatabaseMetaData>) => MutableModel<UserDatabase, UserDatabaseMetaData> | void): UserDatabase;
-}
-
-export declare class FormInsideText {
-  readonly id: string;
-  readonly title?: string;
-  readonly data?: string;
-  readonly createdAt?: string;
-  readonly updatedAt?: string;
-  constructor(init: ModelInit<FormInsideText, FormInsideTextMetaData>);
-  static copyOf(source: FormInsideText, mutator: (draft: MutableModel<FormInsideText, FormInsideTextMetaData>) => MutableModel<FormInsideText, FormInsideTextMetaData> | void): FormInsideText;
 }
