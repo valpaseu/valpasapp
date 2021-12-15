@@ -23,7 +23,7 @@ import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
 } from "react-native-responsive-screen";
-import { Auth } from "aws-amplify";
+import { Auth, DataStore } from "aws-amplify";
 import * as Sentry from "sentry-expo";
 
 import colors from "constants/colors";
@@ -35,6 +35,7 @@ import {
   enableGettingStartedScreen,
 } from "features/gettingStarted/services";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { UserDatabase } from "models";
 
 export default function SignInForm() {
   const navigation = useNavigation();
@@ -82,6 +83,30 @@ export default function SignInForm() {
         });
         //TODO: navigate to  confirm email screen using Daniel's confirm form
       } else {
+        const currentUser = await Auth.currentUserInfo();
+        const userDate = await DataStore.query(UserDatabase);
+        if (
+          userDate.find((u) => u.username === currentUser.username) ===
+          undefined
+        ) {
+          try {
+            await DataStore.save(
+              new UserDatabase({
+                username: currentUser.username,
+                email: currentUser.attributes.email,
+                times: [],
+                formChecked: [],
+                address: "",
+                bio: "New user",
+                location: "",
+                name: currentUser.attributes.name,
+              })
+            );
+          } catch (error) {
+            console.log(error);
+          }
+        }
+        
         navigation.navigate(routes.mainScreens.stack, {
           screen: routes.mainScreens.home.screen,
         });
@@ -89,6 +114,8 @@ export default function SignInForm() {
       }
     } catch (error) {
       Sentry.Native.captureException(error);
+      console.log(error);
+
       AlertPopup({
         title: "Oops...",
         message: "Incorrect Username/Email or Password",

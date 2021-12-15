@@ -90,8 +90,8 @@ export const schema = {
                     "isRequired": true,
                     "attributes": []
                 },
-                "name": {
-                    "name": "name",
+                "username": {
+                    "name": "username",
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
@@ -141,6 +141,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "name": {
+                    "name": "name",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -184,26 +191,6 @@ export const schema = {
                                 ]
                             },
                             {
-                                "allow": "public",
-                                "operations": [
-                                    "create",
-                                    "read",
-                                    "update"
-                                ]
-                            },
-                            {
-                                "provider": "userPools",
-                                "ownerField": "owner",
-                                "allow": "owner",
-                                "identityClaim": "cognito:username",
-                                "operations": [
-                                    "create",
-                                    "update",
-                                    "delete",
-                                    "read"
-                                ]
-                            },
-                            {
                                 "allow": "private",
                                 "operations": [
                                     "create",
@@ -239,5 +226,5 @@ export const schema = {
             }
         }
     },
-    "version": "95d2f0d5e616b32563f9151ec7d0aa55"
+    "version": "146900aa8e9d2277eed089a4ecc55ac1"
 };

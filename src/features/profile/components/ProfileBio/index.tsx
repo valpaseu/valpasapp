@@ -6,7 +6,7 @@ import { UserDatabase } from "models";
 import { ProfileBioProps } from "features/types";
 import colors from "constants/colors";
 import sizes from "constants/size";
-import Auth from "@aws-amplify/auth";
+import { Auth } from "aws-amplify";
 
 const ProfileBio: FC<ProfileBioProps> = () => {
   const [bio, setBio] = useState("");
@@ -14,9 +14,9 @@ const ProfileBio: FC<ProfileBioProps> = () => {
   const takeBio = async () => {
     const userDates = await DataStore.query(UserDatabase);
     const userPool = await Auth.currentUserInfo()
-    const user = userDates.find(users => users.email === userPool.attributes.email)
+    const user = userDates.find(u => u.username === userPool.username)
 
-    setBio(user.bio);
+    setBio(user.bio)
   }
 
   if (bio === "") takeBio()

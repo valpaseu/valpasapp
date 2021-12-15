@@ -29,8 +29,7 @@ const Home = () => {
     setUserDate(currentUser)
   };
 
-  if (user.length === 0) {console.log(user);
-  }
+  if (user.length === 0) {console.log(user)}
 
   const displayName = userName && formatName(userName);
   const onItemPress = (item: JobPosition) => {

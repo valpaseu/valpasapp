@@ -28,13 +28,14 @@ export declare class OnBoardingForm {
 
 export declare class UserDatabase {
   readonly id: string;
-  readonly name?: string;
+  readonly username?: string;
   readonly email?: string;
   readonly times?: (string | null)[];
   readonly formChecked: (string | null)[];
   readonly address?: string;
   readonly bio?: string;
   readonly location?: string;
+  readonly name?: string;
   readonly createdAt?: string;
   readonly updatedAt?: string;
   constructor(init: ModelInit<UserDatabase, UserDatabaseMetaData>);

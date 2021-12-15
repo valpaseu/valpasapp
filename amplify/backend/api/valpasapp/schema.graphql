@@ -9,14 +9,15 @@ type OnBoardingForm @model @auth(rules: [{allow: groups, groups: ["Editors"], op
   data: [FormItem]
 }
 
-type UserDatabase @model @auth(rules: [{allow: groups, groups: ["Editors"], operations: [read, create, update, delete]}, {allow: public, operations: [create, read, update]}, {allow: owner}, {allow: private, operations: [create, read, update]}]) {
+type UserDatabase @model @auth(rules: [{allow: groups, groups: ["Editors"], operations: [read, create, update, delete]}, {allow: private, operations: [create, read, update]}]) {
   id: ID!
-  name: String
+  username: String
   email: String
   times: [String]
   formChecked: [String]!
   address: String
   bio: String
   location: String
+  name: String
 }
  
