@@ -9,19 +9,19 @@ import sizes from "constants/size";
 import { Auth } from "aws-amplify";
 
 const ProfileBio: FC<ProfileBioProps> = () => {
-  const [bio, setBio] = useState("");
 
-  const takeBio = async () => {
-    const userPool = await Auth.currentUserInfo()    
-    setBio(userPool.attributes["custom:bio"])
-  }
-
-  if (bio === "") takeBio()
+  const [user, setUser] = useState([]); 
+  setTimeout(async () => {
+    if (user.length === 0) {
+      const userAuth = await Auth.currentUserInfo()
+      setUser(userAuth.attributes)
+    }
+  }, 100);
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>BIO</Text>
-      <Text style={styles.description}>{bio}</Text>
+      <Text style={styles.description}>{user["custom:bio"]}</Text>
     </View>
   );
 };

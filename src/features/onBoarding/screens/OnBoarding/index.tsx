@@ -1,7 +1,7 @@
 import Auth from "@aws-amplify/auth";
 import { DataStore } from "@aws-amplify/datastore";
 import { useNavigation } from "@react-navigation/native";
-import { OnBoardingForm, UserDatabase } from "models";
+import { OnBoardingForm, User } from "models";
 import React, { useEffect, useState } from "react";
 import {
   Animated,
@@ -21,10 +21,50 @@ import { Checkbox } from "native-base";
 const OnBoarding = () => {
   const [loading, setLoading] = useState(true);
   const [data, updateData] = useState([]);
-  const [user, setUser] = useState([]);
+  const [userr, setUserr] = useState([]);
   const [groupValue, setGroupValue] = React.useState([]);
   const [states, setStates] = useState([]);
-  const [buttonState, setButtonState] = useState(false);
+  const [timer, setTimer] = useState(100);
+
+  setTimeout(async () => {
+    const userAuth = await Auth.currentAuthenticatedUser();
+    const userAll = await DataStore.query(User);
+    const user = await DataStore.query(
+      User,
+      userAuth.attributes["custom:formID"]
+    );
+    const userFind = userAll.find((u) => u.username === userAuth.username);
+    const updateFormId = async (id) => {
+      try {
+        await Auth.updateUserAttributes(userAuth, {
+          "custom:formID": id,
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    if (userFind === undefined) {
+      if (user === undefined) {
+        try {
+          await DataStore.save(
+            new User({
+              username: userAuth.username,
+              times: [],
+              formChecked: [],
+            })
+          );
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    } else {
+      if (userFind.id !== userAuth.attributes["custom:formID"]) {
+        updateFormId(userFind.id);
+      }
+    }
+    setTimer(30000);
+  }, timer);
 
   if (data.length === 0) {
     const dataSet = async () => {
@@ -37,9 +77,21 @@ const OnBoarding = () => {
     };
     dataSet();
   }
-  if (user.length === 0) {
+
+  setTimeout(async () => {
+    if (userr.length === 0) {
+      const currentUser = await Auth.currentAuthenticatedUser();
+      const userrr = await DataStore.query(
+        User,
+        currentUser.attributes["custom:formID"]
+      );
+      setUserr(userrr)
+    }
+  }, 500);
+
+  if (false) {
     const userSet = async () => {
-      const users = await DataStore.query(UserDatabase);
+      const users = await DataStore.query(User);
       const currentUser = await Auth.currentUserInfo();
       const userq = users.find((e) => e.email === currentUser.attributes.email);
       setUser(userq);
@@ -66,15 +118,10 @@ const OnBoarding = () => {
             } else if (
               groupValue.find((g) => g.title === section.title).value === true
             ) {
-              const users = await DataStore.query(UserDatabase);
-              const currentUser = await Auth.currentUserInfo();
-              const userq = users.find(
-                (e) => e.email === currentUser.attributes.email
-              );
-              if (!userq.formChecked.includes(section.title)) {
+              if (!userr.formChecked.includes(section.title)) {
                 try {
                   await DataStore.save(
-                    UserDatabase.copyOf(user, (updated) => {
+                    User.copyOf(userr, (updated) => {
                       updated.formChecked.push(section.title);
                     })
                   );
@@ -139,13 +186,6 @@ const OnBoarding = () => {
             renderHeader={renderHeader}
             renderContent={renderContent}
             onChange={updateSections}
-          />
-          <Button
-            title="dd"
-            onPress={async () => {
-              const models = await DataStore.query(UserDatabase);
-              console.log(models);
-            }}
           />
         </ScrollView>
       </View>

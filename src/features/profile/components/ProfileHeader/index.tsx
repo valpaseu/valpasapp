@@ -9,24 +9,19 @@ import Auth from "@aws-amplify/auth";
 import { UserDatabase } from "models";
 
 const ProfileHeader: FC<ProfileHeaderProps> = ({ photoUrl }) => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-
-  const takeDate = async () => {
-    const userPool = await Auth.currentUserInfo();
-    setName(userPool.attributes.name);
-    setEmail(userPool.attributes.email);
-  };
-
-  if (name || email === "") {
-    takeDate();
-  }
+  const [user, setUser] = useState([]);
+  setTimeout(async () => {
+    if (user.length === 0) {
+      const userAuth = await Auth.currentUserInfo();
+      setUser(userAuth.attributes);
+    }
+  }, 100);
 
   return (
     <View style={styles.container}>
-      <Image style={styles.avatar} source={{ uri: photoUrl }} />
-      <Text style={styles.name}>{name}</Text>
-      <Text style={styles.subtitle}>{email}</Text>
+      <Image style={styles.avatar} source={{}} />
+      <Text style={styles.name}>{user.name}</Text>
+      <Text style={styles.subtitle}>{user.email}</Text>
       {/*<View style={styles.splitContainer}>
         <View style={styles.splitViewLeft}>
           <Text style={styles.splitText}>Awaiting Shifts</Text>

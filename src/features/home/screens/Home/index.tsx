@@ -16,8 +16,15 @@ import { AppState } from "common/redux/types";
 import { formatName } from "common/helpers";
 
 const Home = () => {
-  const [user, setUser] = useState([]);
   const navigation = useNavigation();
+  
+  const [user, setUser] = useState([]); 
+  setTimeout(async () => {
+    if (user.length === 0) {
+      const userAuth = await Auth.currentUserInfo()
+      setUser(userAuth.attributes)
+    }
+  }, 100);
 
   const initData = async () => {
     const dataBase = await DataStore.query(User);
@@ -40,7 +47,6 @@ const Home = () => {
         <Text style={styles.welcomeText}>Welcome,</Text>
         <Text style={styles.welcomeText}>{user.name}</Text>
       </ImageBackground>
-      <Button title="Log" onPress={() => initData()} />
       <ScrollView style={styles.containerJobs}>
         <Text style={styles.positionsTitle}>Vacant Positions</Text>
         <JobList

@@ -42,9 +42,7 @@ function App() {
   const [isFirstLaunch, setFirstLaunch] = useState(false);
   const dispatch = useDispatch();
 
-  setTimeout(async () => {
-    await DataStore.start();
-  }, 1000);
+  
 
   const handleSignIn = (session: any) => {
     const { accessToken, idToken } = session;
