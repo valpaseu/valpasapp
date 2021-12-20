@@ -12,11 +12,8 @@ const ProfileBio: FC<ProfileBioProps> = () => {
   const [bio, setBio] = useState("");
 
   const takeBio = async () => {
-    const userDates = await DataStore.query(UserDatabase);
-    const userPool = await Auth.currentUserInfo()
-    const user = userDates.find(u => u.username === userPool.username)
-
-    setBio(user.bio)
+    const userPool = await Auth.currentUserInfo()    
+    setBio(userPool.attributes["custom:bio"])
   }
 
   if (bio === "") takeBio()

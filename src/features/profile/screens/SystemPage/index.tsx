@@ -1,7 +1,7 @@
 import { Button, View } from "react-native";
 import React from "react";
-import { Auth, DataStore } from "aws-amplify";
-import { UserDatabase } from "models";
+import { DataStore, Cache, Hub } from "aws-amplify";
+import { User } from "models";
 
 const SystemPage = () => {
   return (
@@ -9,22 +9,11 @@ const SystemPage = () => {
       <Button
         title="ddd"
         onPress={async () => {
-          const authUser = await Auth.currentUserInfo();
-          await DataStore.save(
-            new UserDatabase({
-              username: "Lorem ipsum dolor sit amet",
-              email: "Lorem ipsum dolor sit amet",
-              times: [],
-              formChecked: [],
-              address: "Lorem ipsum dolor sit amet",
-              bio: "Lorem ipsum dolor sit amet",
-              location: "Lorem ipsum dolor sit amet",
-              name: "Lorem ipsum dolor sit amet",
-              owner: authUser.username,
-            })
-          );
+          /*const authUser = await Auth.currentAuthenticatedUser();
+          await Auth.updateUserAttributes(authUser, {name: "Oleksii", email: "alexey.kovbel@gmail.com"})*/
         }}
       />
+      <Button title="log" onPress={async () => {}} />
     </View>
   );
 };

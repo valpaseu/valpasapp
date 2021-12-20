@@ -2,8 +2,11 @@ import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import { NativeBaseProvider } from "native-base";
 import { Provider, useDispatch } from "react-redux";
-import Amplify, { Hub, DataStore } from "aws-amplify";
+import Amplify, { Hub } from "aws-amplify";
 import * as Sentry from "@sentry/react";
+
+import { DataStore } from "@aws-amplify/datastore";
+import { User } from "./src/models";
 
 import makeStore from "./src/redux/store";
 import colors from "./src/constants/colors";
@@ -17,7 +20,7 @@ import { removeAuth } from "./src/features/authentication/redux/actions";
 if (process.env.LOG_LEVEL) Amplify.Logger.LOG_LEVEL = process.env.LOG_LEVEL;
 if (process.env.SENTRY_DSN) {
   Sentry.init({
-    dsn: process.env.SENTRY_DSN,
+    dsn: "https://17119c4ba468435eb367bfbaacb06eb3@o612632.ingest.sentry.io/5748470",
     //enableInExpoDevelopment: true,
     debug: !!__DEV__,
   });
@@ -39,6 +42,10 @@ function App() {
   const [isFirstLaunch, setFirstLaunch] = useState(false);
   const dispatch = useDispatch();
 
+  setTimeout(async () => {
+    await DataStore.start();
+  }, 1000);
+
   const handleSignIn = (session: any) => {
     const { accessToken, idToken } = session;
     const { email, phone_number, email_verified, phone_number_verified } =
@@ -56,6 +63,7 @@ function App() {
       case "signIn":
         if (!res.payload.data.signInUserSession) break;
         handleSignIn(res.payload.data.signInUserSession);
+        await DataStore.start();
         break;
       case "signOut":
         dispatch(removeAuth());

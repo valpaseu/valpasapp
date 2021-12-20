@@ -4,10 +4,10 @@ import { schema } from './schema';
 
 
 
-const { OnBoardingForm, UserDatabase, FormItem } = initSchema(schema);
+const { User, OnBoardingForm, FormItem } = initSchema(schema);
 
 export {
+  User,
   OnBoardingForm,
-  UserDatabase,
   FormItem
 };

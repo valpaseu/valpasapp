@@ -1,27 +1,26 @@
-import React, { FC, useState } from 'react'
-import { View, Text, StyleSheet, Image } from 'react-native'
+import React, { FC, useState } from "react";
+import { View, Text, StyleSheet, Image } from "react-native";
 
-import { ProfileHeaderProps } from 'features/types'
-import colors from 'constants/colors'
-import sizes from 'constants/size'
-import { DataStore } from '@aws-amplify/datastore'
-import Auth from '@aws-amplify/auth'
-import { UserDatabase } from 'models'
+import { ProfileHeaderProps } from "features/types";
+import colors from "constants/colors";
+import sizes from "constants/size";
+import { DataStore } from "@aws-amplify/datastore";
+import Auth from "@aws-amplify/auth";
+import { UserDatabase } from "models";
 
-const ProfileHeader: FC<ProfileHeaderProps> = ({ photoUrl}) => {
-  const [name, setName] = useState("")
-  const [email, setEmail] = useState("")
+const ProfileHeader: FC<ProfileHeaderProps> = ({ photoUrl }) => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
 
   const takeDate = async () => {
-    const userDates = await DataStore.query(UserDatabase);
-      const userPool = await Auth.currentUserInfo()
-      const user = userDates.find(users => users.email === userPool.attributes.email)
-  
-      setName(user.name)
-      setEmail(user.email)
-  }
+    const userPool = await Auth.currentUserInfo();
+    setName(userPool.attributes.name);
+    setEmail(userPool.attributes.email);
+  };
 
-  if (name || email === "") {takeDate()}
+  if (name || email === "") {
+    takeDate();
+  }
 
   return (
     <View style={styles.container}>
@@ -39,13 +38,13 @@ const ProfileHeader: FC<ProfileHeaderProps> = ({ photoUrl}) => {
         </View>
       </View>*/}
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
-    width: '90%',
-    alignItems: 'center',
+    width: "90%",
+    alignItems: "center",
     marginTop: 20,
     backgroundColor: colors.primaryColors.white,
     borderRadius: 15,
@@ -56,50 +55,50 @@ const styles = StyleSheet.create({
     borderRadius: 1000,
     borderWidth: 1.5,
     borderColor: colors.primaryColors.primary300,
-    position: 'absolute',
-    top: '-12%',
+    position: "absolute",
+    top: "-12%",
   },
   name: {
-    marginTop: '25%',
-    paddingVertical: '2%',
+    marginTop: "25%",
+    paddingVertical: "2%",
     color: colors.primaryColors.primary200,
     fontSize: sizes.profile.nameText,
-    fontWeight: '500',
+    fontWeight: "500",
     letterSpacing: 2,
   },
   subtitle: {
     color: colors.primaryColors.primary200,
     fontSize: sizes.profile.subtitle,
     letterSpacing: 1.5,
-    paddingBottom: '10%',
+    paddingBottom: "10%",
   },
   splitContainer: {
-    flexDirection: 'row',
-    paddingVertical: '7%',
+    flexDirection: "row",
+    paddingVertical: "7%",
   },
   splitViewLeft: {
     flex: 1,
-    alignItems: 'center',
+    alignItems: "center",
     borderRightWidth: 1.5,
     borderColor: colors.primaryColors.primary400,
     fontSize: sizes.profile.splitText,
   },
   splitViewRight: {
     flex: 1,
-    alignItems: 'center',
+    alignItems: "center",
     fontSize: sizes.profile.splitText,
   },
   splitText: {
     color: colors.primaryColors.primary300,
-    fontWeight: '500',
+    fontWeight: "500",
     letterSpacing: 1.1,
   },
   splitNumber: {
     color: colors.primaryColors.primary300,
     fontSize: sizes.profile.splitNumber,
-    fontWeight: '500',
+    fontWeight: "500",
     paddingTop: 5,
   },
-})
+});
 
-export default ProfileHeader
+export default ProfileHeader;

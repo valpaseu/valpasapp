@@ -86,6 +86,9 @@ export default function SignUpForm({
         password,
         attributes: {
           name,
+          "custom:bio": "Iam new user",
+          "custom:formID": "1",
+          "custom:timeID": "2"
         },
       });
       AlertPopup({

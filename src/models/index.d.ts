@@ -8,12 +8,23 @@ export declare class FormItem {
   constructor(init: ModelInit<FormItem>);
 }
 
+type UserMetaData = {
+  readOnlyFields: 'createdAt' | 'updatedAt';
+}
+
 type OnBoardingFormMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
 
-type UserDatabaseMetaData = {
-  readOnlyFields: 'createdAt' | 'updatedAt';
+export declare class User {
+  readonly id: string;
+  readonly username?: string;
+  readonly times: (string | null)[];
+  readonly formChecked: (string | null)[];
+  readonly createdAt?: string;
+  readonly updatedAt?: string;
+  constructor(init: ModelInit<User, UserMetaData>);
+  static copyOf(source: User, mutator: (draft: MutableModel<User, UserMetaData>) => MutableModel<User, UserMetaData> | void): User;
 }
 
 export declare class OnBoardingForm {
@@ -24,20 +35,4 @@ export declare class OnBoardingForm {
   readonly updatedAt?: string;
   constructor(init: ModelInit<OnBoardingForm, OnBoardingFormMetaData>);
   static copyOf(source: OnBoardingForm, mutator: (draft: MutableModel<OnBoardingForm, OnBoardingFormMetaData>) => MutableModel<OnBoardingForm, OnBoardingFormMetaData> | void): OnBoardingForm;
-}
-
-export declare class UserDatabase {
-  readonly id: string;
-  readonly username?: string;
-  readonly email?: string;
-  readonly times?: (string | null)[];
-  readonly formChecked: (string | null)[];
-  readonly address?: string;
-  readonly bio?: string;
-  readonly location?: string;
-  readonly name?: string;
-  readonly createdAt?: string;
-  readonly updatedAt?: string;
-  constructor(init: ModelInit<UserDatabase, UserDatabaseMetaData>);
-  static copyOf(source: UserDatabase, mutator: (draft: MutableModel<UserDatabase, UserDatabaseMetaData>) => MutableModel<UserDatabase, UserDatabaseMetaData> | void): UserDatabase;
 }

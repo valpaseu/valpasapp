@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { StyleSheet, ScrollView, ImageBackground, Button } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Text, View } from "native-base";
-import { Auth } from "aws-amplify";
+import { Auth, Hub } from "aws-amplify";
 
 import { DataStore } from "@aws-amplify/datastore";
-import { UserDatabase } from "models";
+import { User } from "models";
 
 import routes from "constants/routes";
 import colors from "constants/colors";
@@ -16,22 +16,14 @@ import { AppState } from "common/redux/types";
 import { formatName } from "common/helpers";
 
 const Home = () => {
-  const [user, setUserDate] = useState({});
+  const [user, setUser] = useState([]);
   const navigation = useNavigation();
-  const userName = useSelector(
-    (state: AppState) => state.authentication.profile?.email
-  );
 
-  const testAuth = async () => {
-    const loginedUser = await Auth.currentUserInfo()
-    const usersInDatastore = await DataStore.query(UserDatabase)
-    const currentUser = usersInDatastore.find(users => users.email === loginedUser.attributes.email)
-    setUserDate(currentUser)
+  const initData = async () => {
+    const dataBase = await DataStore.query(User);
+    console.log(dataBase);
   };
 
-  if (user.length === 0) {console.log(user)}
-
-  const displayName = userName && formatName(userName);
   const onItemPress = (item: JobPosition) => {
     navigation.navigate(routes.mainScreens.positions.stack, {
       screen: routes.mainScreens.positions.positionDetail.screen,
@@ -46,10 +38,10 @@ const Home = () => {
         style={styles.welcomeContainer}
       >
         <Text style={styles.welcomeText}>Welcome,</Text>
-        <Text style={styles.welcomeText}>{displayName}</Text>
+        <Text style={styles.welcomeText}>{user.name}</Text>
       </ImageBackground>
+      <Button title="Log" onPress={() => initData()} />
       <ScrollView style={styles.containerJobs}>
-        <Button title="test" onPress={testAuth} />
         <Text style={styles.positionsTitle}>Vacant Positions</Text>
         <JobList
           jobs={[]}

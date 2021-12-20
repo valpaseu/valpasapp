@@ -1,14 +1,16 @@
 {
+  "version": "1",
+  "cognitoConfig": {
     "identityPoolName": "valpasappca37c128_identitypool_ca37c128",
     "allowUnauthenticatedIdentities": false,
     "resourceNameTruncated": "valpasca37c128",
     "userPoolName": "valpasappca37c128_userpool_ca37c128",
     "autoVerifiedAttributes": [
-        "email"
+      "email"
     ],
     "mfaConfiguration": "OFF",
     "mfaTypes": [
-        "SMS Text Message"
+      "SMS Text Message"
     ],
     "smsAuthenticationMessage": "Your authentication code is {####}",
     "smsVerificationMessage": "Your verification code is {####}",
@@ -18,40 +20,43 @@
     "passwordPolicyMinLength": 8,
     "passwordPolicyCharacters": [],
     "requiredAttributes": [
-        "email"
+      "email"
     ],
     "aliasAttributes": [],
     "userpoolClientGenerateSecret": false,
     "userpoolClientRefreshTokenValidity": 30,
-    "userpoolClientWriteAttributes": [
-        "email"
-    ],
-    "userpoolClientReadAttributes": [
-        "email"
-    ],
+    "userpoolClientWriteAttributes": [],
+    "userpoolClientReadAttributes": [],
     "userpoolClientLambdaRole": "valpasca37c128_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "ca37c128",
-    "resourceName": "valpasappca37c128",
     "authSelections": "identityPoolAndUserPool",
+    "resourceName": "valpasappca37c128",
+    "serviceName": "Cognito",
+    "useDefault": "default",
+    "sharedId": "ca37c128",
+    "userPoolGroupList": [],
+    "usernameAttributes": [
+      "email"
+    ],
+    "usernameCaseSensitive": false,
     "authRoleArn": {
-        "Fn::GetAtt": [
-            "AuthRole",
-            "Arn"
-        ]
+      "Fn::GetAtt": [
+        "AuthRole",
+        "Arn"
+      ]
     },
     "unauthRoleArn": {
-        "Fn::GetAtt": [
-            "UnauthRole",
-            "Arn"
-        ]
+      "Fn::GetAtt": [
+        "UnauthRole",
+        "Arn"
+      ]
     },
-    "useDefault": "default",
-    "usernameAttributes": [
-        "email"
-    ],
-    "userPoolGroupList": [],
-    "serviceName": "Cognito",
-    "usernameCaseSensitive": false,
-    "dependsOn": []
+    "breakCircularDependency": true,
+    "dependsOn": [],
+    "userPoolGroups": false,
+    "adminQueries": false,
+    "hostedUI": false,
+    "useEnabledMfas": false,
+    "authProviders": []
+  }
 }
