@@ -20,7 +20,16 @@ const Home = () => {
     const { event, data } = hubData.payload;
     if (event === "ready") {
       const userAuth = await Auth.currentUserInfo();
-      console.log(userAuth);
+      if(user.name === "") {
+        setUser(userAuth.attributes)
+      }
+    }
+  });
+  Hub.listen("auth", async (res) => {
+    switch (res.payload.event) {
+      case "signOut":
+        setUser({ name: "" });
+        break;
     }
   });
 
