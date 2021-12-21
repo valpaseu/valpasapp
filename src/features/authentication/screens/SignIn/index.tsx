@@ -138,7 +138,7 @@ export default function SignInForm() {
             }) => (
               <VStack>
                 <FormControl style={styles.wrapperInput}>
-                  <FormControl.Label>Username/Email</FormControl.Label>
+                  <Text style={styles.wrapperInputText}>Username/Email</Text>
                   <Input
                     accessibilityLabel="User Name/Email"
                     value={values.name}
@@ -153,7 +153,7 @@ export default function SignInForm() {
                   <Text style={styles.errorText}>{errors.name}</Text>
                 )}
                 <FormControl style={styles.wrapperInput}>
-                  <FormControl.Label>Password</FormControl.Label>
+                  <Text style={styles.wrapperInputText}>Password</Text>
                   <Input
                     accessibilityLabel="Password"
                     value={values.password}
@@ -174,11 +174,6 @@ export default function SignInForm() {
                     onChange={setCheckboxValue}
                   />
                   <Text style={styles.checkboxText}>Remember me</Text>
-                  {/*<Text onPress={async () => {
-                    await AsyncStorage.getAllKeys((err, res) => {
-                      console.log(res);
-                    })
-                  }}>test</Text>*/}
                   <Text
                     style={styles.forgotText}
                     onPress={() =>
@@ -204,26 +199,6 @@ export default function SignInForm() {
               </VStack>
             )}
           </Formik>
-          {/*<View style={styles.smallTextWrapper}>
-            <Text> Or log in with</Text>
-          </View>
-          <View style={styles.wrapperLoginOthers}>
-            <Button style={styles.signInBtnGmail}>
-              <AntDesign name="google" size={24} color="grey" />
-              <Text style={styles.gmailText}>Gmail</Text>
-            </Button>
-            <Button
-              style={styles.signInApplicant}
-              onPress={() =>
-                navigation.navigate(
-                  routes.authentication.applicantSignIn.screen
-                )
-              }
-            >
-              <MaterialIcons name="person-outline" size={24} color="black" />
-              <Text style={styles.applicantText}>Applicant</Text>
-            </Button>
-            </View>*/}
         </View>
         <View style={styles.wrapperNoAccount}>
           <Text style={styles.textNoAccount}>Don't have an account?</Text>
@@ -242,6 +217,11 @@ export default function SignInForm() {
 }
 
 const styles = StyleSheet.create({
+  wrapperInputText: {
+    fontFamily: "SourceSansPro-regular",
+    marginBottom: 4,
+    marginTop: 5,
+  },
   container: {
     height: hp("100%"),
     backgroundColor: colors.primaryColors.syan,
@@ -258,13 +238,13 @@ const styles = StyleSheet.create({
     fontSize: hp("3%"),
     fontWeight: "bold",
     lineHeight: 28,
+    fontFamily: "SourceSansPro-semiBold",
   },
   formTitle: {
-    marginLeft: 5,
     marginTop: hp("6%"),
     fontSize: hp("2.5%"),
     color: colors.textColors.white,
-    fontWeight: "bold",
+    fontFamily: "SourceSansPro-semiBold",
   },
   inputGroup: {
     marginTop: hp("4%"),
@@ -273,10 +253,6 @@ const styles = StyleSheet.create({
   },
   wrapperInput: {
     marginVertical: 3,
-  },
-  inputLabel: {
-    fontSize: hp("1.5%"),
-    color: colors.primaryColors.primary500,
   },
   inputStyle: {
     color: colors.textColors.white,
@@ -295,15 +271,17 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   checkboxText: {
+    fontFamily: "SourceSansPro-regular",
     color: colors.textColors.white,
     paddingRight: 24,
     paddingLeft: 5,
-    fontSize: hp("1.5%"),
+    fontSize: hp("1.6%"),
   },
   forgotText: {
+    fontFamily: "SourceSansPro-regular",
     marginLeft: "auto",
     color: colors.textColors.white,
-    fontSize: hp("1.5%"),
+    fontSize: hp("1.6%"),
   },
   smallTextWrapper: {
     marginVertical: hp("3%"),
@@ -311,6 +289,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   textSignupSignin: {
+    fontFamily: "SourceSansPro-regular",
     color: colors?.textColors.white,
   },
   signInBtn: {
@@ -332,14 +311,6 @@ const styles = StyleSheet.create({
     width: "100%",
     justifyContent: "space-between",
   },
-  signInBtnGmail: {
-    flexDirection: "row",
-    width: "45%",
-    borderRadius: 4,
-    height: hp("5%"),
-    justifyContent: "center",
-    backgroundColor: colors?.primaryColors.primary200,
-  },
   signInApplicant: {
     flexDirection: "row",
     width: "45%",
@@ -347,9 +318,6 @@ const styles = StyleSheet.create({
     height: hp("5%"),
     justifyContent: "center",
     backgroundColor: colors?.primaryColors.primary400,
-  },
-  gmailText: {
-    fontSize: hp("1.7%"),
   },
   applicantText: {
     fontSize: hp("1.7%"),
@@ -364,11 +332,13 @@ const styles = StyleSheet.create({
   textNoAccount: {
     color: colors.textColors.white,
     fontSize: 12,
+    fontFamily: "SourceSansPro-regular",
   },
   refSignup: {
     paddingLeft: 12,
   },
   textNoAccountSignup: {
+    fontFamily: "SourceSansPro-regular",
     color: colors.textColors.white,
     fontSize: 12,
     textDecorationLine: "underline",

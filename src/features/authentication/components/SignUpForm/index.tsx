@@ -88,7 +88,7 @@ export default function SignUpForm({
           name,
           "custom:bio": "Iam new user",
           "custom:formID": "1",
-          "custom:timeID": "2"
+          "custom:timeID": "2",
         },
       });
       AlertPopup({
@@ -147,7 +147,7 @@ export default function SignUpForm({
             }) => (
               <VStack>
                 <FormControl style={styles.wrapperInput}>
-                  <FormControl.Label>Your Name</FormControl.Label>
+                  <Text style={styles.wrapperInputText}>Your Name</Text>
                   <Input
                     accessibilityLabel="Your Name"
                     value={values.name}
@@ -161,7 +161,7 @@ export default function SignUpForm({
                   <Text style={styles.errorText}>{errors.name}</Text>
                 )}
                 <FormControl style={styles.wrapperInput}>
-                  <FormControl.Label>Email</FormControl.Label>
+                  <Text style={styles.wrapperInputText}>Email</Text>
                   <Input
                     accessibilityLabel="Email"
                     value={values.email}
@@ -178,7 +178,7 @@ export default function SignUpForm({
                   <Text style={styles.errorText}>{errors.email}</Text>
                 )}
                 <FormControl style={styles.wrapperInput}>
-                  <FormControl.Label>Password</FormControl.Label>
+                  <Text style={styles.wrapperInputText}>Password</Text>
                   <Input
                     accessibilityLabel="Password"
                     value={values.password}
@@ -194,7 +194,7 @@ export default function SignUpForm({
                   <Text style={styles.errorText}>{errors.password}</Text>
                 )}
                 <FormControl style={styles.wrapperInput}>
-                  <FormControl.Label>Confirm Password</FormControl.Label>
+                  <Text style={styles.wrapperInputText}>Confirm Password</Text>
                   <Input
                     accessibilityLabel="Confirm Password"
                     value={values.confirmPassword}
@@ -209,10 +209,6 @@ export default function SignUpForm({
                 {touched.confirmPassword && errors.confirmPassword && (
                   <Text style={styles.errorText}>{errors.confirmPassword}</Text>
                 )}
-                <TouchableOpacity style={styles.termsPolicy}>
-                  <Text style={styles.smallText}>Terms of Use </Text>
-                  <Text style={styles.smallText}>Privacy Policy</Text>
-                </TouchableOpacity>
                 <TouchableOpacity
                   style={isValid ? styles.signUpBtn : styles.signUpBtnDisabled}
                   disabled={!isValid}
@@ -227,7 +223,7 @@ export default function SignUpForm({
               </VStack>
             )}
           </Formik>
-          <View style={styles.smallTextWrapper}>
+          {/*<View style={styles.smallTextWrapper}>
             <Text> Or sign up using other ways</Text>
           </View>
           <View style={styles.wrapperLSignupOthers}>
@@ -246,7 +242,7 @@ export default function SignUpForm({
               <MaterialIcons name="person-outline" size={24} color="black" />
               <Text style={styles.applicantText}>Applicant</Text>
             </Button>
-          </View>
+          </View>*/}
         </View>
       </View>
     </KeyboardAwareScrollView>
@@ -254,9 +250,14 @@ export default function SignUpForm({
 }
 
 const styles = StyleSheet.create({
+  wrapperInputText: {
+    fontFamily: "SourceSansPro-regular",
+    fontSize: 14,
+    marginBottom: 4,
+  },
   container: {
     height: hp("100%"),
-    backgroundColor: colors.primaryColors.primary300,
+    backgroundColor: colors.primaryColors.syan,
   },
   wrapper: {
     marginHorizontal: wp("7%"),
@@ -268,14 +269,15 @@ const styles = StyleSheet.create({
   },
   appName: {
     fontSize: hp("3%"),
-    fontWeight: "bold",
+    lineHeight: 32,
+    fontFamily: "SourceSansPro-semiBold",
   },
   formTitle: {
     marginLeft: 5,
     marginTop: hp("6%"),
     fontSize: hp("2.5%"),
     color: colors.textColors.white,
-    fontWeight: "bold",
+    fontFamily: "SourceSansPro-semiBold",
   },
   errorText: {
     fontSize: 12,
@@ -315,6 +317,7 @@ const styles = StyleSheet.create({
   },
   textSignup: {
     color: colors?.textColors.white,
+    fontFamily: "SourceSansPro-regular"
   },
   signUpBtn: {
     alignItems: "center",
@@ -322,6 +325,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     justifyContent: "center",
     height: 40,
+    marginTop: 16
   },
   signUpBtnDisabled: {
     alignItems: "center",
@@ -329,6 +333,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     justifyContent: "center",
     height: 40,
+    marginTop: 16
   },
   wrapperLSignupOthers: {
     flexDirection: "row",

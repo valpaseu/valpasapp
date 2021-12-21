@@ -11,25 +11,18 @@ import routes from "constants/routes";
 import colors from "constants/colors";
 import JobList from "features/positions/components/JobList";
 import { JobPosition } from "features/types";
-import { useSelector } from "react-redux";
-import { AppState } from "common/redux/types";
-import { formatName } from "common/helpers";
 
 const Home = () => {
   const navigation = useNavigation();
-  
-  const [user, setUser] = useState([]); 
-  setTimeout(async () => {
-    if (user.length === 0) {
-      const userAuth = await Auth.currentUserInfo()
-      setUser(userAuth.attributes)
-    }
-  }, 100);
+  const [user, setUser] = useState({ name: "" });
 
-  const initData = async () => {
-    const dataBase = await DataStore.query(User);
-    console.log(dataBase);
-  };
+  Hub.listen("datastore", async (hubData) => {
+    const { event, data } = hubData.payload;
+    if (event === "ready") {
+      const userAuth = await Auth.currentUserInfo();
+      console.log(userAuth);
+    }
+  });
 
   const onItemPress = (item: JobPosition) => {
     navigation.navigate(routes.mainScreens.positions.stack, {
@@ -93,7 +86,7 @@ const styles = StyleSheet.create({
     fontSize: 40,
     color: colors.primaryColors.white,
     lineHeight: 54,
-    fontFamily: "SourceSansPro-regular"
+    fontFamily: "SourceSansPro-regular",
   },
   containerJobs: {
     paddingHorizontal: 24,
@@ -102,8 +95,7 @@ const styles = StyleSheet.create({
   positionsTitle: {
     fontSize: 20,
     color: colors.primaryColors.primary200,
-    fontFamily: "SourceSansPro-regular"
-
+    fontFamily: "SourceSansPro-regular",
   },
 });
 

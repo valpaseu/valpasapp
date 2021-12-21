@@ -14,28 +14,24 @@ import Auth from "@aws-amplify/auth";
 
 const editProfile = () => {
   const initialValues = {
-    email: "",
     name: "",
-    address: "",
     bio: "",
     location: "",
   };
 
   const userDate = async (values) => {
-    const userDates = await DataStore.query(UserDatabase);
-    const userPool = await Auth.currentUserInfo();
-    const user = userDates.find(
-      (users) => users.email === userPool.attributes.email
-    );
+    const userPool = await Auth.currentAuthenticatedUser();
 
-    await DataStore.save(
-      UserDatabase.copyOf(user, (updated) => {
-        (updated.name = values.name),
-          (updated.address = values.address),
-          (updated.bio = values.bio),
-          (updated.location = values.location);
+    try {
+      await Auth.updateUserAttributes(userPool, {
+        name: values.name,
+        "custom:bio": values.bio,
+        "custom:location": values.location
       })
-    );
+      
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -47,26 +43,12 @@ const editProfile = () => {
         >
           {({ handleChange, handleBlur, handleSubmit, values }) => (
             <View>
-              <Text style={styles.text}>Email</Text>
-              <TextInput
-                style={styles.input}
-                value={values.email}
-                onChangeText={handleChange("email")}
-                onBlur={handleBlur("email")}
-              />
               <Text style={styles.text}>Name</Text>
               <TextInput
                 style={styles.input}
                 value={values.name}
                 onChangeText={handleChange("name")}
                 onBlur={handleBlur("name")}
-              />
-              <Text style={styles.text}>Address</Text>
-              <TextInput
-                style={styles.input}
-                value={values.address}
-                onChangeText={handleChange("address")}
-                onBlur={handleBlur("address")}
               />
               <Text style={styles.text}>Bio</Text>
               <TextInput
@@ -86,12 +68,6 @@ const editProfile = () => {
             </View>
           )}
         </Formik>
-        <Button
-          title="test"
-          onPress={() => {
-            console.log(initialValues);
-          }}
-        />
       </View>
     </SafeAreaView>
   );

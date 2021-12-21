@@ -82,7 +82,6 @@ function App() {
   if (!fontsLoaded) {
     return (
       <AppLoading
-        onFinish={() => this.setState({ isReady: true })}
         onError={console.warn}
       />
     );
