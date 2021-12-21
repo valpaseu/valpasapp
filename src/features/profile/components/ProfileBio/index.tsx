@@ -35,6 +35,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
   },
   title: {
+    fontFamily: "SourceSansPro-semiBold",
     color: colors.primaryColors.primary300,
     fontSize: sizes.profile.bioTitle,
     fontWeight: "500",
@@ -42,6 +43,7 @@ const styles = StyleSheet.create({
     letterSpacing: 1.5,
   },
   description: {
+    fontFamily: "SourceSansPro-regular",
     color: colors.primaryColors.primary300,
     textAlign: "justify",
     fontSize: sizes.profile.bioDesc,

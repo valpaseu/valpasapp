@@ -139,6 +139,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
   },
   label: {
+    fontFamily: "SourceSansPro-semiBold",
     color: colors.primaryColors.primary300,
     fontSize: sizes.profile.settingLabel,
     fontWeight: "600",

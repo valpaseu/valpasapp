@@ -93,6 +93,7 @@ const styles = StyleSheet.create({
     fontSize: 40,
     color: colors.primaryColors.white,
     lineHeight: 54,
+    fontFamily: "SourceSansPro-regular"
   },
   containerJobs: {
     paddingHorizontal: 24,
@@ -101,6 +102,8 @@ const styles = StyleSheet.create({
   positionsTitle: {
     fontSize: 20,
     color: colors.primaryColors.primary200,
+    fontFamily: "SourceSansPro-regular"
+
   },
 });
 

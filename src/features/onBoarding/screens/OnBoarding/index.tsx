@@ -4,12 +4,8 @@ import { useNavigation } from "@react-navigation/native";
 import { OnBoardingForm, User } from "models";
 import React, { useEffect, useState } from "react";
 import {
-  Animated,
-  Button,
   ScrollView,
-  SectionList,
   StyleSheet,
-  Switch,
   Text,
   TouchableOpacity,
   View,
@@ -17,6 +13,7 @@ import {
 import "react-native-get-random-values";
 import Accordion from "react-native-collapsible/Accordion";
 import { Checkbox } from "native-base";
+import AppLoading from "expo-app-loading";
 
 const OnBoarding = () => {
   const [loading, setLoading] = useState(true);
@@ -25,6 +22,25 @@ const OnBoarding = () => {
   const [groupValue, setGroupValue] = React.useState([]);
   const [states, setStates] = useState([]);
   const [timer, setTimer] = useState(100);
+
+  
+  const saveButton = async (title) => {
+    if (groupValue.find((g) => g.title === title) === undefined) {
+      console.log("ss");
+    } else if (groupValue.find((g) => g.title === title).value === true) {
+      if (!userr.formChecked.includes(title)) {
+        try {
+          await DataStore.save(
+            User.copyOf(userr, (updated) => {
+              updated.formChecked.push(title);
+            })
+          );
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    }
+  };
 
   setTimeout(async () => {
     const userAuth = await Auth.currentAuthenticatedUser();
@@ -85,21 +101,11 @@ const OnBoarding = () => {
         User,
         currentUser.attributes["custom:formID"]
       );
-      setUserr(userrr)
+      setUserr(userrr);
     }
   }, 500);
 
-  if (false) {
-    const userSet = async () => {
-      const users = await DataStore.query(User);
-      const currentUser = await Auth.currentUserInfo();
-      const userq = users.find((e) => e.email === currentUser.attributes.email);
-      setUser(userq);
-    };
-    userSet();
-  }
-
-  setTimeout(() => setLoading(false), 1000);
+  setTimeout(() => setLoading(false), 500);
 
   const renderSectionTitle = () => {
     return <View></View>;
@@ -109,31 +115,6 @@ const OnBoarding = () => {
     return (
       <View style={styles.sectionHeader}>
         <Text style={styles.sectionHeaderText}>{section.title}</Text>
-        <TouchableOpacity
-          onPress={async () => {
-            if (
-              groupValue.find((g) => g.title === section.title) === undefined
-            ) {
-              console.log("ss");
-            } else if (
-              groupValue.find((g) => g.title === section.title).value === true
-            ) {
-              if (!userr.formChecked.includes(section.title)) {
-                try {
-                  await DataStore.save(
-                    User.copyOf(userr, (updated) => {
-                      updated.formChecked.push(section.title);
-                    })
-                  );
-                } catch (error) {
-                  console.log(error);
-                }
-              }
-            }
-          }}
-        >
-          <Text>Save</Text>
-        </TouchableOpacity>
       </View>
     );
   };
@@ -150,6 +131,7 @@ const OnBoarding = () => {
           );
         })}
         <View style={styles.checkbox}>
+          <Text style={styles.checkboxText}>Olen lukenut ja ymmärän</Text>
           <Checkbox
             value={section.title}
             accessibilityLabel={section.title}
@@ -165,7 +147,12 @@ const OnBoarding = () => {
               }
             }}
           />
-          <Text style={styles.checkboxText}>Accept</Text>
+        </View>
+
+        <View style={styles.save}>
+          <TouchableOpacity onPress={() => saveButton(section.title)}>
+            <Text style={styles.saveText}>Save</Text>
+          </TouchableOpacity>
         </View>
       </View>
     );
@@ -175,7 +162,7 @@ const OnBoarding = () => {
     setStates(activeSections);
   };
 
-  if (true) {
+  if (!loading) {
     return (
       <View>
         <ScrollView style={{ alignSelf: "stretch" }}>
@@ -192,36 +179,52 @@ const OnBoarding = () => {
     );
   } else {
     return (
-      <View style={{ justifyContent: "center", alignItems: "center" }}>
-        <Text>Loading</Text>
-      </View>
+      <AppLoading />
     );
   }
 };
 
 const styles = StyleSheet.create({
+  saveText: {
+    textAlign: "center",
+    color: "#fff",
+    fontFamily: "SourceSansPro-regular",
+  },
+  save: {
+    backgroundColor: "#00adef",
+    padding: 10,
+    margin: 15,
+    borderRadius: 10,
+    width: 100,
+  },
   checkbox: {
+    marginRight: 16,
+    justifyContent: "space-between",
     flexDirection: "row",
-    marginLeft: 15,
+    marginLeft: 16,
   },
   checkboxText: {
     marginTop: 1,
-    marginLeft: 10,
-    fontSize: 14,
+    fontSize: 15,
+    fontFamily: "SourceSansPro-regular",
   },
   itemTitle: {
+    fontSize: 17,
     marginVertical: 8,
     width: 300,
     margin: 15,
+    fontFamily: "SourceSansPro-regular",
   },
   itemText: {
-    fontSize: 12,
+    fontSize: 13,
     marginLeft: 15,
     marginRight: 15,
+    fontFamily: "SourceSansPro-regular",
   },
   sectionHeaderText: {
-    fontSize: 16,
+    fontSize: 18,
     color: "#000",
+    fontFamily: "SourceSansPro-regular",
   },
   sectionHeader: {
     flexDirection: "row",

@@ -4,9 +4,9 @@ import { NativeBaseProvider } from "native-base";
 import { Provider, useDispatch } from "react-redux";
 import Amplify, { Hub } from "aws-amplify";
 import * as Sentry from "@sentry/react";
+import AppLoading from "expo-app-loading";
 
 import { DataStore } from "@aws-amplify/datastore";
-import { User } from "./src/models";
 
 import makeStore from "./src/redux/store";
 import colors from "./src/constants/colors";
@@ -16,6 +16,7 @@ import { checkFirstLaunch } from "./src/features/gettingStarted/services";
 import { loadAuth } from "./src/features/authentication/redux/actions";
 import awsExports from "./src/aws-exports";
 import { removeAuth } from "./src/features/authentication/redux/actions";
+import { useFonts } from "expo-font";
 
 if (process.env.LOG_LEVEL) Amplify.Logger.LOG_LEVEL = process.env.LOG_LEVEL;
 if (process.env.SENTRY_DSN) {
@@ -42,7 +43,11 @@ function App() {
   const [isFirstLaunch, setFirstLaunch] = useState(false);
   const dispatch = useDispatch();
 
-  
+  let [fontsLoaded] = useFonts({
+    "SourceSansPro-regular": require("./assets/fonts/SourceSansPro/SourceSansPro-Regular.ttf"),
+    "SourceSansPro-semiBold": require("./assets/fonts/SourceSansPro/SourceSansPro-SemiBold.ttf"),
+    "SourceSansPro-light": require("./assets/fonts/SourceSansPro/SourceSansPro-Light.ttf"),
+  });
 
   const handleSignIn = (session: any) => {
     const { accessToken, idToken } = session;
@@ -74,15 +79,24 @@ function App() {
     checkFirstLaunch(setFirstLaunch);
   }, []);
 
-  return (
-    <>
-      <Sentry.ErrorBoundary>
-        <NavigationContainer theme={theme}>
-          {isFirstLaunch ? <GettingStartedStack /> : <Drawer />}
-        </NavigationContainer>
-      </Sentry.ErrorBoundary>
-    </>
-  );
+  if (!fontsLoaded) {
+    return (
+      <AppLoading
+        onFinish={() => this.setState({ isReady: true })}
+        onError={console.warn}
+      />
+    );
+  } else {
+    return (
+      <>
+        <Sentry.ErrorBoundary>
+          <NavigationContainer theme={theme}>
+            {isFirstLaunch ? <GettingStartedStack /> : <Drawer />}
+          </NavigationContainer>
+        </Sentry.ErrorBoundary>
+      </>
+    );
+  }
 }
 
 export default function AppWrapper() {

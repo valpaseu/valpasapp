@@ -51,6 +51,7 @@ const Drawer = () => {
   return (
     <DrawerNav.Navigator
       screenOptions={{
+        title: "",
         drawerType: "slide",
         overlayColor: "transparent",
         drawerStyle: styles.drawer,

@@ -22,16 +22,6 @@ const ProfileHeader: FC<ProfileHeaderProps> = ({ photoUrl }) => {
       <Image style={styles.avatar} source={{}} />
       <Text style={styles.name}>{user.name}</Text>
       <Text style={styles.subtitle}>{user.email}</Text>
-      {/*<View style={styles.splitContainer}>
-        <View style={styles.splitViewLeft}>
-          <Text style={styles.splitText}>Awaiting Shifts</Text>
-          <Text style={styles.splitNumber}>{futureShifts.length}</Text>
-        </View>
-        <View style={styles.splitViewRight}>
-          <Text style={styles.splitText}>Earned Income</Text>
-          <Text style={styles.splitNumber}>{earnedIncome} </Text>
-        </View>
-      </View>*/}
     </View>
   );
 };
@@ -54,6 +44,7 @@ const styles = StyleSheet.create({
     top: "-12%",
   },
   name: {
+    fontFamily: "SourceSansPro-semiBold",
     marginTop: "25%",
     paddingVertical: "2%",
     color: colors.primaryColors.primary200,
@@ -62,37 +53,11 @@ const styles = StyleSheet.create({
     letterSpacing: 2,
   },
   subtitle: {
+    fontFamily: "SourceSansPro-regular",
     color: colors.primaryColors.primary200,
     fontSize: sizes.profile.subtitle,
     letterSpacing: 1.5,
     paddingBottom: "10%",
-  },
-  splitContainer: {
-    flexDirection: "row",
-    paddingVertical: "7%",
-  },
-  splitViewLeft: {
-    flex: 1,
-    alignItems: "center",
-    borderRightWidth: 1.5,
-    borderColor: colors.primaryColors.primary400,
-    fontSize: sizes.profile.splitText,
-  },
-  splitViewRight: {
-    flex: 1,
-    alignItems: "center",
-    fontSize: sizes.profile.splitText,
-  },
-  splitText: {
-    color: colors.primaryColors.primary300,
-    fontWeight: "500",
-    letterSpacing: 1.1,
-  },
-  splitNumber: {
-    color: colors.primaryColors.primary300,
-    fontSize: sizes.profile.splitNumber,
-    fontWeight: "500",
-    paddingTop: 5,
   },
 });
 
