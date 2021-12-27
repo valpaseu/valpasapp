@@ -2,6 +2,21 @@ import { ModelInit, MutableModel, PersistentModelConstructor } from "@aws-amplif
 
 
 
+export declare class CustomValue {
+  readonly customID?: string;
+  readonly value?: string;
+  readonly name?: string;
+  readonly type?: string;
+  constructor(init: ModelInit<CustomValue>);
+}
+
+export declare class TimeInterval {
+  readonly duration?: string;
+  readonly end?: string;
+  readonly start?: string;
+  constructor(init: ModelInit<TimeInterval>);
+}
+
 export declare class FormItem {
   readonly name?: string;
   readonly text?: string;
@@ -12,6 +27,10 @@ type UserMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
 
+type TimeEntriesMetaData = {
+  readOnlyFields: 'createdAt' | 'updatedAt';
+}
+
 type OnBoardingFormMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
@@ -19,12 +38,25 @@ type OnBoardingFormMetaData = {
 export declare class User {
   readonly id: string;
   readonly username?: string;
-  readonly times: (string | null)[];
   readonly formChecked: (string | null)[];
   readonly createdAt?: string;
   readonly updatedAt?: string;
   constructor(init: ModelInit<User, UserMetaData>);
   static copyOf(source: User, mutator: (draft: MutableModel<User, UserMetaData>) => MutableModel<User, UserMetaData> | void): User;
+}
+
+export declare class TimeEntries {
+  readonly id: string;
+  readonly billable?: boolean;
+  readonly projectID?: string;
+  readonly timeInterval?: TimeInterval;
+  readonly userID?: string;
+  readonly workID?: string;
+  readonly customValues?: (CustomValue | null)[];
+  readonly createdAt?: string;
+  readonly updatedAt?: string;
+  constructor(init: ModelInit<TimeEntries, TimeEntriesMetaData>);
+  static copyOf(source: TimeEntries, mutator: (draft: MutableModel<TimeEntries, TimeEntriesMetaData>) => MutableModel<TimeEntries, TimeEntriesMetaData> | void): TimeEntries;
 }
 
 export declare class OnBoardingForm {

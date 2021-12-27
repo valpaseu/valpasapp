@@ -1,13 +1,35 @@
-type User @model @auth(rules: [{allow: groups, groups: ["Editors"], operations: [read, create, update, delete]}, {allow: private, operations: [create, read, update]}, {allow: public, operations: [create, read]}]) {
-  id: ID!
-  username: ID
-  times: [String]!
-  formChecked: [String]!
+type CustomValue {
+  customID: ID
+  value: String
+  name: String
+  type: String
+}
+
+type TimeInterval {
+  duration: String
+  end: AWSDateTime
+  start: AWSDateTime
 }
 
 type FormItem {
   name: String
   text: String
+}
+
+type User @model @auth(rules: [{allow: groups, groups: ["Editors"], operations: [read, create, update, delete]}, {allow: owner}]) {
+  id: ID!
+  username: ID
+  formChecked: [String]!
+}
+
+type TimeEntries @model @auth(rules: [{allow: groups, groups: ["Editors"], operations: [read, create, update, delete]}, {allow: groups, groups: ["Applicants"], operations: [read, create, update]}, {allow: owner}]) {
+  id: ID!
+  billable: Boolean
+  projectID: ID
+  timeInterval: TimeInterval
+  userID: ID
+  workID: ID
+  customValues: [CustomValue]
 }
 
 type OnBoardingForm @model @auth(rules: [{allow: groups, groups: ["Editors"], operations: [read, create, update, delete]}, {allow: private, operations: [read]}]) {
