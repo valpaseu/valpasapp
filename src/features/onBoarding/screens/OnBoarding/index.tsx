@@ -23,7 +23,6 @@ const OnBoarding = () => {
   const [states, setStates] = useState([]);
   const [timer, setTimer] = useState(100);
 
-  
   const saveButton = async (title) => {
     if (groupValue.find((g) => g.title === title) === undefined) {
       console.log("ss");
@@ -66,8 +65,9 @@ const OnBoarding = () => {
           await DataStore.save(
             new User({
               username: userAuth.username,
-              times: [],
               formChecked: [],
+              timeEntries: [],
+              Notifications: [],
             })
           );
         } catch (error) {
@@ -178,9 +178,7 @@ const OnBoarding = () => {
       </View>
     );
   } else {
-    return (
-      <AppLoading />
-    );
+    return <AppLoading />;
   }
 };
 

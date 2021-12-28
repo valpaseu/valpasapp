@@ -2,12 +2,23 @@ import { ModelInit, MutableModel, PersistentModelConstructor } from "@aws-amplif
 
 
 
-export declare class CustomValue {
-  readonly customID?: string;
-  readonly value?: string;
-  readonly name?: string;
-  readonly type?: string;
-  constructor(init: ModelInit<CustomValue>);
+export declare class Notifications {
+  readonly id?: string;
+  readonly title?: string;
+  readonly notification?: string;
+  readonly time?: string;
+  readonly sender?: string;
+  constructor(init: ModelInit<Notifications>);
+}
+
+export declare class TimeEntries {
+  readonly id?: string;
+  readonly billable?: boolean;
+  readonly projectID?: string;
+  readonly timeInterval?: TimeInterval;
+  readonly userID?: string;
+  readonly workID?: string;
+  constructor(init: ModelInit<TimeEntries>);
 }
 
 export declare class TimeInterval {
@@ -23,11 +34,15 @@ export declare class FormItem {
   constructor(init: ModelInit<FormItem>);
 }
 
-type UserMetaData = {
-  readOnlyFields: 'createdAt' | 'updatedAt';
+export declare class CustomValue {
+  readonly id?: string;
+  readonly value?: string;
+  readonly name?: string;
+  readonly type?: string;
+  constructor(init: ModelInit<CustomValue>);
 }
 
-type TimeEntriesMetaData = {
+type UserMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
 
@@ -39,24 +54,12 @@ export declare class User {
   readonly id: string;
   readonly username?: string;
   readonly formChecked: (string | null)[];
+  readonly timeEntries?: (TimeEntries | null)[];
+  readonly Notifications?: (Notifications | null)[];
   readonly createdAt?: string;
   readonly updatedAt?: string;
   constructor(init: ModelInit<User, UserMetaData>);
   static copyOf(source: User, mutator: (draft: MutableModel<User, UserMetaData>) => MutableModel<User, UserMetaData> | void): User;
-}
-
-export declare class TimeEntries {
-  readonly id: string;
-  readonly billable?: boolean;
-  readonly projectID?: string;
-  readonly timeInterval?: TimeInterval;
-  readonly userID?: string;
-  readonly workID?: string;
-  readonly customValues?: (CustomValue | null)[];
-  readonly createdAt?: string;
-  readonly updatedAt?: string;
-  constructor(init: ModelInit<TimeEntries, TimeEntriesMetaData>);
-  static copyOf(source: TimeEntries, mutator: (draft: MutableModel<TimeEntries, TimeEntriesMetaData>) => MutableModel<TimeEntries, TimeEntriesMetaData> | void): TimeEntries;
 }
 
 export declare class OnBoardingForm {

@@ -1,8 +1,23 @@
-type CustomValue {
-  customID: ID
-  value: String
-  name: String
-  type: String
+type Notifications {
+  id: ID
+  title: String
+  notification: String
+  time: AWSDateTime
+  sender: String
+}
+
+type User @model @auth(rules: [{allow: groups, groups: ["Editors"], operations: [read, create, update, delete]}, {allow: owner}]) {
+  id: ID!
+  username: ID
+  formChecked: [String]!
+  timeEntries: [TimeEntries]
+  Notifications: [Notifications]
+}
+
+type OnBoardingForm @model @auth(rules: [{allow: groups, groups: ["Editors"], operations: [read, create, update, delete]}, {allow: private, operations: [read]}]) {
+  id: ID!
+  title: String
+  data: [FormItem]
 }
 
 type TimeInterval {
@@ -11,30 +26,24 @@ type TimeInterval {
   start: AWSDateTime
 }
 
-type FormItem {
+type CustomValue {
+  id: ID
+  value: String
   name: String
-  text: String
+  type: String
 }
 
-type User @model @auth(rules: [{allow: groups, groups: ["Editors"], operations: [read, create, update, delete]}, {allow: owner}]) {
-  id: ID!
-  username: ID
-  formChecked: [String]!
-}
-
-type TimeEntries @model @auth(rules: [{allow: groups, groups: ["Editors"], operations: [read, create, update, delete]}, {allow: groups, groups: ["Applicants"], operations: [read, create, update]}, {allow: owner}]) {
-  id: ID!
+type TimeEntries {
+  id: ID
   billable: Boolean
   projectID: ID
   timeInterval: TimeInterval
   userID: ID
   workID: ID
-  customValues: [CustomValue]
 }
 
-type OnBoardingForm @model @auth(rules: [{allow: groups, groups: ["Editors"], operations: [read, create, update, delete]}, {allow: private, operations: [read]}]) {
-  id: ID!
-  title: String
-  data: [FormItem]
+type FormItem {
+  name: String
+  text: String
 }
  

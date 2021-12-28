@@ -11,9 +11,9 @@ import { Auth, nav } from "aws-amplify";
 import * as Sentry from "sentry-expo";
 
 import { AlertPopup } from "common/components/Alert";
-import colors from "constants/colors";
-import sizes from "constants/size";
-import routes from "constants/routes";
+import colors from "../../../../constants/colors";
+import sizes from "../../../../constants/size"
+import routes from "../../../../constants/routes";
 import { enableGettingStartedScreen } from "features/gettingStarted/services";
 
 const ProfileSetting = () => {
@@ -58,12 +58,16 @@ const ProfileSetting = () => {
     {
       label: "Edit profile",
       icon: <AntDesign name="profile" style={styles.icon} />,
-      handlePress: () => {navigation.navigate("Edit Profile")}
+      handlePress: () => {
+        navigation.navigate(routes.mainScreens.profile.editProfile.screen);
+      },
     },
     {
       label: "Test",
       icon: <AntDesign name="profile" style={styles.icon} />,
-      handlePress: () => {navigation.navigate("System Page")}
+      handlePress: () => {
+        navigation.navigate(routes.mainScreens.profile.systemPage.screen);
+      },
     },
     {
       label: "Log out",

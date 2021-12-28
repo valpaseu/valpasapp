@@ -6,74 +6,11 @@ import { TabView, SceneMap } from 'react-native-tab-view';
 import colors from 'constants/colors'
 
 export default function WorkShifts() {
-  const [activePage, setActivePage] = useState<number | string>(1)
-  const items: number[] = [1, 2, 3]
-
-  const selectComponent = (activePage: number | string) => () => setActivePage(activePage)
-
-  const renderComponent = (items: number[]) => {
-    return activePage === 1 ? (
-      <>
-        {/*// Calendar here*/}
-        <ScrollView style={styles.containerContent}>
-          {items?.map((idx) => {
-            return (
-              <Card key={`component-${idx}`} style={styles.event}>
-                <Text> Your Component 1 to display Your Component 1 to display</Text>
-              </Card>
-            )
-          })}
-        </ScrollView>
-      </>
-    ) : (
-      //... Your Component 1 to display
-      <>
-        {/*// Calendar here*/}
-        <ScrollView style={styles.containerContent}>
-          {items?.map((idx) => {
-            return (
-              <Card key={`component-${idx}`} style={styles.event}>
-                <Text> Your Component 2 to display Your Component 2 to display</Text>
-              </Card>
-            )
-          })}
-        </ScrollView>
-      </>
-    ) //... Your Component 2 to display
-  }
-
-
-  const FirstRoute = () => (
-    <View style={{ flex: 1, backgroundColor: '#ff4081' }} />
-  );
-
-  const SecondRoute = () => (
-    <View style={{ flex: 1, backgroundColor: '#673ab7' }} />
-  );
-
-  const renderScene = SceneMap({
-    first: FirstRoute,
-    second: SecondRoute,
-  });
-
-  const [index, setIndex] = React.useState(0);
-  const [routes] = React.useState([
-    { key: 'first', title: 'First' },
-    { key: 'second', title: 'Second' },
-  ]);
-
-  const layout = useWindowDimensions();
 
   return (
     <SafeAreaView style={styles.androidSafeArea}>
       <Container style={styles.container}>
-        <TabView
-          navigationState={{ index, routes }}
-          renderScene={renderScene}
-          onIndexChange={setIndex}
-          initialLayout={{ width: layout.width }}
-          style={styles.segment}
-        />
+        <Text>Work</Text>
       </Container>
     </SafeAreaView>
   )

@@ -38,6 +38,8 @@ export default {
       stack: "profile",
       profile: { screen: "profile" },
       addOnBoarding: { screen: "addOnBoarding" },
+      systemPage: { screen: "systemPage" },
+      editProfile: { screen: "editProfile" },
     },
     work: {
       screen: "work",
@@ -47,6 +49,12 @@ export default {
     },
     city: {
       screen: "city",
+    },
+    todo: {
+      stack: "todo",
+      todoMain: {
+        screen: "todo",
+      },
     },
   },
   gettingStarted: {

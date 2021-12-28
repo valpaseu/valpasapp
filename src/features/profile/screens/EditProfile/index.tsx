@@ -1,6 +1,4 @@
-import React, { useState } from "react";
-import { DataStore } from "@aws-amplify/datastore";
-import { UserDatabase } from "models";
+import React from "react";
 import {
   Button,
   View,
@@ -26,9 +24,8 @@ const editProfile = () => {
       await Auth.updateUserAttributes(userPool, {
         name: values.name,
         "custom:bio": values.bio,
-        "custom:location": values.location
-      })
-      
+        "custom:location": values.location,
+      });
     } catch (error) {
       console.log(error);
     }

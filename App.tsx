@@ -21,7 +21,7 @@ import { useFonts } from "expo-font";
 if (process.env.LOG_LEVEL) Amplify.Logger.LOG_LEVEL = process.env.LOG_LEVEL;
 if (process.env.SENTRY_DSN) {
   Sentry.init({
-    dsn: "https://17119c4ba468435eb367bfbaacb06eb3@o612632.ingest.sentry.io/5748470",
+    dsn: process.env.SENTRY_DSN,
     //enableInExpoDevelopment: true,
     debug: !!__DEV__,
   });

@@ -21,7 +21,6 @@ import {
 import * as Sentry from "sentry-expo";
 
 import colors from "constants/colors";
-import routes from "constants/routes";
 import { AlertPopup } from "common/components/Alert";
 
 export type ValueSignUpForm = {

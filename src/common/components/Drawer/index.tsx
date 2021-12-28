@@ -6,29 +6,28 @@ import Animated from 'react-native-reanimated'
 
 import color from 'constants/colors'
 import routes from 'constants/routes'
-import City from 'features/city/screens/City'
+import CityStack from 'features/city/navigators/CityStack'
 import HomeStack from 'features/home/navigators/HomeStack'
 import OnBoardingStack from 'features/onBoarding/navigators/OnBoardingStack'
 import PositionStack from 'features/positions/navigators/PositionStack'
-//import GettingStarted from 'features/gettingStarted/screens/GettingStarted'
 import AuthenticationStack from 'features/authentication/navigator/AuthenticationStack'
 import SideBar from 'common/components/SideBar'
 import MessageStack from 'features/messages/navigators/MessageStack'
-import WorkStack from 'features/work/navigators/WorkStack'
 import ProfileStack from 'features/profile/navigators/ProfileStack'
+import ToDoStack from '../../../features/todo/navigators/ProfileStack'
 
 const Drawer = () => {
-  const { mainScreens, gettingStarted, authentication } = routes
-  const { home, positions, work, city, messages, onBoarding, profile } = mainScreens
+  const { mainScreens, authentication } = routes
+  const { home, positions, city, messages, onBoarding, profile, todo } = mainScreens
 
   const screens = [
     { route: home.screen, component: HomeStack },
     { route: positions.stack, component: PositionStack },
-    { route: work.screen, component: WorkStack },
-    { route: city.screen, component: City },
+    { route: city.screen, component: CityStack },
     { route: messages.stack, component: MessageStack },
     { route: onBoarding.stack, component: OnBoardingStack },
     { route: profile.stack, component: ProfileStack },
+    { route: todo.stack, component: ToDoStack}
   ]
 
   const DrawerNav = createDrawerNavigator()
@@ -51,7 +50,6 @@ const Drawer = () => {
   return (
     <DrawerNav.Navigator
       screenOptions={{
-        title: "",
         drawerType: "slide",
         overlayColor: "transparent",
         drawerStyle: styles.drawer,
