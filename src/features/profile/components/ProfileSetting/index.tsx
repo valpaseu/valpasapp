@@ -39,7 +39,7 @@ const ProfileSetting = () => {
   };
 
   const settings = [
-    /*{
+    {
       label: "Schedule",
       icon: <MaterialIcons name="schedule" style={styles.icon} />,
     },
@@ -50,23 +50,22 @@ const ProfileSetting = () => {
     {
       label: "Notifications",
       icon: <Ionicons name="ios-notifications" style={styles.icon} />,
-    },*/
+      handlePress: () => {
+        navigation.navigate(routes.mainScreens.todo.stack)
+      }
+    },
     {
       label: "Messages",
       icon: <MaterialIcons name="message" style={styles.icon} />,
+      handlePress: () => {
+        navigation.navigate(routes.mainScreens.messages.stack)
+      }
     },
     {
       label: "Edit profile",
       icon: <AntDesign name="profile" style={styles.icon} />,
       handlePress: () => {
         navigation.navigate(routes.mainScreens.profile.editProfile.screen);
-      },
-    },
-    {
-      label: "Test",
-      icon: <AntDesign name="profile" style={styles.icon} />,
-      handlePress: () => {
-        navigation.navigate(routes.mainScreens.profile.systemPage.screen);
       },
     },
     {

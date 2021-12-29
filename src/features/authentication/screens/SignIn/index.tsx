@@ -83,7 +83,7 @@ export default function SignInForm() {
         //TODO: navigate to  confirm email screen using Daniel's confirm form
       } else {
         navigation.navigate(routes.mainScreens.stack, {
-          screen: routes.mainScreens.home.screen,
+          screen: routes.mainScreens.profile.profile.screen,
         });
         submitProps.resetForm();
       }

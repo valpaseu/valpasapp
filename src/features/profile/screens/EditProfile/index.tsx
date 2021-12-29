@@ -19,7 +19,8 @@ const editProfile = () => {
 
   const userDate = async (values) => {
     const userPool = await Auth.currentAuthenticatedUser();
-
+    console.log(values);
+    
     try {
       await Auth.updateUserAttributes(userPool, {
         name: values.name,

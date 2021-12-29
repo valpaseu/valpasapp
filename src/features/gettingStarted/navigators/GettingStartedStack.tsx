@@ -3,7 +3,6 @@ import React from "react";
 
 import routes from "constants/routes";
 import Drawer from "common/components/Drawer";
-import GettingStartedScreen from "features/gettingStarted/screens/GettingStarted";
 import AuthenticationStack from "features/authentication/navigator/AuthenticationStack";
 
 function GettingStartedStack() {

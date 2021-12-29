@@ -3,7 +3,7 @@ import React from "react";
 
 import routes from "../../../constants/routes";
 
-import CityMain from "../screens/City";
+import CityMain from "../screens/City/index";
 
 const CityStack = () => {
   const Stack = createStackNavigator();
@@ -11,7 +11,7 @@ const CityStack = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name={routes.mainScreens.city.screen}
+        name={routes.mainScreens.city.cityMain.screen}
         component={CityMain}
       />
     </Stack.Navigator>

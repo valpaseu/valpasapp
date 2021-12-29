@@ -36,7 +36,7 @@ export default {
     },
     profile: {
       stack: "profile",
-      profile: { screen: "profile" },
+      profile: { screen: "profileMain" },
       addOnBoarding: { screen: "addOnBoarding" },
       systemPage: { screen: "systemPage" },
       editProfile: { screen: "editProfile" },
@@ -48,7 +48,10 @@ export default {
       },
     },
     city: {
-      screen: "city",
+      stack: "city",
+      cityMain: {
+        screen: "cityMain"
+      },
     },
     todo: {
       stack: "todo",

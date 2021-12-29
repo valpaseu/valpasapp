@@ -23,7 +23,6 @@ const PositionStack = () => {
         name={positionMain.screen}
         component={PositionList}
         options={{
-          headerShown: false,
           headerLeft: () => (
             <View style={styles.navIconContainer}>
               <BurgerMenu backgroundVisible />

@@ -15,11 +15,10 @@ const SideBar: FC<Pick<DrawerContentComponentProps, "navigation" | "state">> =
       routes.mainScreens;
 
     const drawerMap = [
-      { labelName: "Home", route: home.screen },
-      { labelName: "Positions", route: positions.stack },
-      { labelName: "Cities", route: city.screen },
-      { labelName: "Messages", route: messages.stack },
       { labelName: "Profile", route: profile.stack },
+      { labelName: "Positions", route: positions.stack },
+      { labelName: "Cities", route: city.stack },
+      { labelName: "Messages", route: messages.stack },
       { labelName: "Onboarding", route: onBoarding.stack },
       { labelName: "ToDo", route: todo.stack }
     ];
