@@ -1,23 +1,19 @@
-type Notifications {
-  id: ID
-  title: String
-  notification: String
-  time: AWSDateTime
-  sender: String
+type UserSettings {
+  timeFormat: String
+  timeZone: String
+  dateFormat: String
 }
 
-type User @model @auth(rules: [{allow: groups, groups: ["Editors"], operations: [read, create, update, delete]}, {allow: owner}]) {
-  id: ID!
-  username: ID
-  formChecked: [String]!
-  timeEntries: [TimeEntries]
-  Notifications: [Notifications]
+type CostRate {
+  amount: Int
+  currency: String
 }
 
-type OnBoardingForm @model @auth(rules: [{allow: groups, groups: ["Editors"], operations: [read, create, update, delete]}, {allow: private, operations: [read]}]) {
-  id: ID!
-  title: String
-  data: [FormItem]
+type UserMemberships {
+  hourlyRate: HourlyRate
+  costRate: CostRate
+  membershipType: String
+  userId: String
 }
 
 type TimeInterval {
@@ -26,20 +22,59 @@ type TimeInterval {
   start: AWSDateTime
 }
 
-type CustomValue {
-  id: ID
-  value: String
-  name: String
-  type: String
+type TimeEntry @model @auth(rules: [{allow: owner}, {allow: groups, groups: ["Editors"], operations: [read, create, update, delete]}]) {
+  id: ID!
+  billable: Boolean
+  description: String
+  userId: ID
+  workspaceId: ID
+  timeInterval: TimeInterval
 }
 
-type TimeEntries {
-  id: ID
-  billable: Boolean
-  projectID: ID
-  timeInterval: TimeInterval
-  userID: ID
-  workID: ID
+type WorkspaceSettings {
+  shortBreak: Float
+  dinnerBreak: Float
+}
+
+type Membership {
+  NewField: String
+  hourlyRate: HourlyRate
+  membershipType: String
+  membershipStatus: String
+  userId: ID
+}
+
+type HourlyRate {
+  amount: String
+  currency: String
+}
+
+type WorkSpaces @model @auth(rules: [{allow: private, operations: [read]}, {allow: groups, groups: ["Editors"], operations: [read, create, update, delete]}]) {
+  id: ID!
+  hourlyRate: HourlyRate
+  imageUrl: AWSURL
+  memberships: [Membership]
+  name: String
+  workspaceSettings: WorkspaceSettings
+}
+
+type User @model @auth(rules: [{allow: owner}, {allow: groups, groups: ["Editors"], operations: [read, create, update, delete]}]) {
+  id: ID!
+  username: ID
+  formChecked: [String]!
+  email: String
+  memberships: [UserMemberships]
+  name: String
+  activeWorkspace: String
+  profilePicture: String
+  settings: UserSettings
+  status: String
+}
+
+type OnBoardingForm @model @auth(rules: [{allow: groups, groups: ["Editors"], operations: [read, create, update, delete]}, {allow: private, operations: [read]}]) {
+  id: ID!
+  title: String
+  data: [FormItem]
 }
 
 type FormItem {

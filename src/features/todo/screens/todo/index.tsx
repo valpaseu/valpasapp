@@ -31,14 +31,12 @@ const ToDo = () => {
   return (
     <SafeAreaView>
       <View style={styles.text}>
-        <Text>ToDo Screen</Text>
-        <View>
-          <TouchableOpacity
-            onPress={test}
-            style={{ padding: 10, backgroundColor: "#eef", width: 50 }}
-          >
-            <Text>Log</Text>
-          </TouchableOpacity>
+        <View style={{marginBottom: 10}}>
+          <Text style={{fontSize: 18, fontFamily: "SourceSansPro-semiBold"}}>OnBoarding</Text>
+        </View>
+        <View style={{padding: 15, backgroundColor: "#808080", borderRadius: 5, shadowOpacity: 0.34, flexDirection: "row", justifyContent: "space-between"}}>
+          <Text style={{color: "#fff", fontFamily: "SourceSansPro-regular"}}>Toimintatavat yrityksessä</Text>
+          <Text style={{color: "#fff", fontFamily: "SourceSansPro-regular"}}>Jan 2022</Text>
         </View>
       </View>
     </SafeAreaView>

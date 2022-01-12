@@ -1,5 +1,216 @@
 export const schema = {
     "models": {
+        "TimeEntry": {
+            "name": "TimeEntry",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "billable": {
+                    "name": "billable",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "description": {
+                    "name": "description",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "userId": {
+                    "name": "userId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "workspaceId": {
+                    "name": "workspaceId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "timeInterval": {
+                    "name": "timeInterval",
+                    "isArray": false,
+                    "type": {
+                        "nonModel": "TimeInterval"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "TimeEntries",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "provider": "userPools",
+                                "ownerField": "owner",
+                                "allow": "owner",
+                                "identityClaim": "cognito:username",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            },
+                            {
+                                "groupClaim": "cognito:groups",
+                                "provider": "userPools",
+                                "allow": "groups",
+                                "groups": [
+                                    "Editors"
+                                ],
+                                "operations": [
+                                    "read",
+                                    "create",
+                                    "update",
+                                    "delete"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "WorkSpaces": {
+            "name": "WorkSpaces",
+            "fields": {
+                "id": {
+                    "name": "id",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": true,
+                    "attributes": []
+                },
+                "hourlyRate": {
+                    "name": "hourlyRate",
+                    "isArray": false,
+                    "type": {
+                        "nonModel": "HourlyRate"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "imageUrl": {
+                    "name": "imageUrl",
+                    "isArray": false,
+                    "type": "AWSURL",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "memberships": {
+                    "name": "memberships",
+                    "isArray": true,
+                    "type": {
+                        "nonModel": "Membership"
+                    },
+                    "isRequired": false,
+                    "attributes": [],
+                    "isArrayNullable": true
+                },
+                "name": {
+                    "name": "name",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "workspaceSettings": {
+                    "name": "workspaceSettings",
+                    "isArray": false,
+                    "type": {
+                        "nonModel": "WorkspaceSettings"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "createdAt": {
+                    "name": "createdAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                },
+                "updatedAt": {
+                    "name": "updatedAt",
+                    "isArray": false,
+                    "type": "AWSDateTime",
+                    "isRequired": false,
+                    "attributes": [],
+                    "isReadOnly": true
+                }
+            },
+            "syncable": true,
+            "pluralName": "WorkSpaces",
+            "attributes": [
+                {
+                    "type": "model",
+                    "properties": {}
+                },
+                {
+                    "type": "auth",
+                    "properties": {
+                        "rules": [
+                            {
+                                "allow": "private",
+                                "operations": [
+                                    "read"
+                                ]
+                            },
+                            {
+                                "groupClaim": "cognito:groups",
+                                "provider": "userPools",
+                                "allow": "groups",
+                                "groups": [
+                                    "Editors"
+                                ],
+                                "operations": [
+                                    "read",
+                                    "create",
+                                    "update",
+                                    "delete"
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
         "User": {
             "name": "User",
             "fields": {
@@ -25,25 +236,59 @@ export const schema = {
                     "attributes": [],
                     "isArrayNullable": false
                 },
-                "timeEntries": {
-                    "name": "timeEntries",
+                "email": {
+                    "name": "email",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "memberships": {
+                    "name": "memberships",
                     "isArray": true,
                     "type": {
-                        "nonModel": "TimeEntries"
+                        "nonModel": "UserMemberships"
                     },
                     "isRequired": false,
                     "attributes": [],
                     "isArrayNullable": true
                 },
-                "Notifications": {
-                    "name": "Notifications",
-                    "isArray": true,
+                "name": {
+                    "name": "name",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "activeWorkspace": {
+                    "name": "activeWorkspace",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "profilePicture": {
+                    "name": "profilePicture",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "settings": {
+                    "name": "settings",
+                    "isArray": false,
                     "type": {
-                        "nonModel": "Notifications"
+                        "nonModel": "UserSettings"
                     },
                     "isRequired": false,
-                    "attributes": [],
-                    "isArrayNullable": true
+                    "attributes": []
+                },
+                "status": {
+                    "name": "status",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
                 },
                 "createdAt": {
                     "name": "createdAt",
@@ -74,6 +319,18 @@ export const schema = {
                     "properties": {
                         "rules": [
                             {
+                                "provider": "userPools",
+                                "ownerField": "owner",
+                                "allow": "owner",
+                                "identityClaim": "cognito:username",
+                                "operations": [
+                                    "create",
+                                    "update",
+                                    "delete",
+                                    "read"
+                                ]
+                            },
+                            {
                                 "groupClaim": "cognito:groups",
                                 "provider": "userPools",
                                 "allow": "groups",
@@ -85,18 +342,6 @@ export const schema = {
                                     "create",
                                     "update",
                                     "delete"
-                                ]
-                            },
-                            {
-                                "provider": "userPools",
-                                "ownerField": "owner",
-                                "allow": "owner",
-                                "identityClaim": "cognito:username",
-                                "operations": [
-                                    "create",
-                                    "update",
-                                    "delete",
-                                    "read"
                                 ]
                             }
                         ]
@@ -187,39 +432,25 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {
-        "Notifications": {
-            "name": "Notifications",
+        "UserSettings": {
+            "name": "UserSettings",
             "fields": {
-                "id": {
-                    "name": "id",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "title": {
-                    "name": "title",
+                "timeFormat": {
+                    "name": "timeFormat",
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
                     "attributes": []
                 },
-                "notification": {
-                    "name": "notification",
+                "timeZone": {
+                    "name": "timeZone",
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
                     "attributes": []
                 },
-                "time": {
-                    "name": "time",
-                    "isArray": false,
-                    "type": "AWSDateTime",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "sender": {
-                    "name": "sender",
+                "dateFormat": {
+                    "name": "dateFormat",
                     "isArray": false,
                     "type": "String",
                     "isRequired": false,
@@ -227,50 +458,76 @@ export const schema = {
                 }
             }
         },
-        "TimeEntries": {
-            "name": "TimeEntries",
+        "CostRate": {
+            "name": "CostRate",
             "fields": {
-                "id": {
-                    "name": "id",
+                "amount": {
+                    "name": "amount",
                     "isArray": false,
-                    "type": "ID",
+                    "type": "Int",
                     "isRequired": false,
                     "attributes": []
                 },
-                "billable": {
-                    "name": "billable",
+                "currency": {
+                    "name": "currency",
                     "isArray": false,
-                    "type": "Boolean",
+                    "type": "String",
                     "isRequired": false,
                     "attributes": []
-                },
-                "projectID": {
-                    "name": "projectID",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "timeInterval": {
-                    "name": "timeInterval",
+                }
+            }
+        },
+        "UserMemberships": {
+            "name": "UserMemberships",
+            "fields": {
+                "hourlyRate": {
+                    "name": "hourlyRate",
                     "isArray": false,
                     "type": {
-                        "nonModel": "TimeInterval"
+                        "nonModel": "HourlyRate"
                     },
                     "isRequired": false,
                     "attributes": []
                 },
-                "userID": {
-                    "name": "userID",
+                "costRate": {
+                    "name": "costRate",
                     "isArray": false,
-                    "type": "ID",
+                    "type": {
+                        "nonModel": "CostRate"
+                    },
                     "isRequired": false,
                     "attributes": []
                 },
-                "workID": {
-                    "name": "workID",
+                "membershipType": {
+                    "name": "membershipType",
                     "isArray": false,
-                    "type": "ID",
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "userId": {
+                    "name": "userId",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                }
+            }
+        },
+        "HourlyRate": {
+            "name": "HourlyRate",
+            "fields": {
+                "amount": {
+                    "name": "amount",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "currency": {
+                    "name": "currency",
+                    "isArray": false,
+                    "type": "String",
                     "isRequired": false,
                     "attributes": []
                 }
@@ -302,6 +559,67 @@ export const schema = {
                 }
             }
         },
+        "WorkspaceSettings": {
+            "name": "WorkspaceSettings",
+            "fields": {
+                "shortBreak": {
+                    "name": "shortBreak",
+                    "isArray": false,
+                    "type": "Float",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "dinnerBreak": {
+                    "name": "dinnerBreak",
+                    "isArray": false,
+                    "type": "Float",
+                    "isRequired": false,
+                    "attributes": []
+                }
+            }
+        },
+        "Membership": {
+            "name": "Membership",
+            "fields": {
+                "NewField": {
+                    "name": "NewField",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "hourlyRate": {
+                    "name": "hourlyRate",
+                    "isArray": false,
+                    "type": {
+                        "nonModel": "HourlyRate"
+                    },
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "membershipType": {
+                    "name": "membershipType",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "membershipStatus": {
+                    "name": "membershipStatus",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "userId": {
+                    "name": "userId",
+                    "isArray": false,
+                    "type": "ID",
+                    "isRequired": false,
+                    "attributes": []
+                }
+            }
+        },
         "FormItem": {
             "name": "FormItem",
             "fields": {
@@ -320,40 +638,7 @@ export const schema = {
                     "attributes": []
                 }
             }
-        },
-        "CustomValue": {
-            "name": "CustomValue",
-            "fields": {
-                "id": {
-                    "name": "id",
-                    "isArray": false,
-                    "type": "ID",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "value": {
-                    "name": "value",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "name": {
-                    "name": "name",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                },
-                "type": {
-                    "name": "type",
-                    "isArray": false,
-                    "type": "String",
-                    "isRequired": false,
-                    "attributes": []
-                }
-            }
         }
     },
-    "version": "06301cb088f4a75d48cfc616948b16ed"
+    "version": "99942b8c0c5099d758f0c804de1c091e"
 };

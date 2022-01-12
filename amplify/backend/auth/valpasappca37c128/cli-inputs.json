@@ -2,7 +2,7 @@
   "version": "1",
   "cognitoConfig": {
     "identityPoolName": "valpasappca37c128_identitypool_ca37c128",
-    "allowUnauthenticatedIdentities": true,
+    "allowUnauthenticatedIdentities": false,
     "resourceNameTruncated": "valpasca37c128",
     "userPoolName": "valpasappca37c128_userpool_ca37c128",
     "autoVerifiedAttributes": [

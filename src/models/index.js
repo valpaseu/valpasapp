@@ -4,14 +4,19 @@ import { schema } from './schema';
 
 
 
-const { User, OnBoardingForm, Notifications, TimeEntries, TimeInterval, FormItem, CustomValue } = initSchema(schema);
+const { TimeEntry, WorkSpaces, User, OnBoardingForm, UserSettings, CostRate, UserMemberships, HourlyRate, TimeInterval, WorkspaceSettings, Membership, FormItem } = initSchema(schema);
 
 export {
+  TimeEntry,
+  WorkSpaces,
   User,
   OnBoardingForm,
-  Notifications,
-  TimeEntries,
+  UserSettings,
+  CostRate,
+  UserMemberships,
+  HourlyRate,
   TimeInterval,
-  FormItem,
-  CustomValue
+  WorkspaceSettings,
+  Membership,
+  FormItem
 };

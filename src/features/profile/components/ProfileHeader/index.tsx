@@ -2,11 +2,9 @@ import React, { FC, useState } from "react";
 import { View, Text, StyleSheet, Image } from "react-native";
 
 import { ProfileHeaderProps } from "features/types";
-import colors from "constants/colors";
-import sizes from "constants/size";
-import { DataStore } from "@aws-amplify/datastore";
+import colors from "../../../../constants/colors";
+import sizes from "../../../../constants/size";
 import Auth from "@aws-amplify/auth";
-import { UserDatabase } from "models";
 
 const ProfileHeader: FC<ProfileHeaderProps> = ({ photoUrl }) => {
   const [user, setUser] = useState([]);
