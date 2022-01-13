@@ -9,8 +9,8 @@ export default {
       positionMain: {
         screen: "positionMain",
       },
-      positionDetail: {
-        screen: "positionDetail",
+      positionAdd: {
+        screen: "positionAdd",
       },
       applyNow: {
         screen: "applyNow",

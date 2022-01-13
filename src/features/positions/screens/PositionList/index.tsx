@@ -28,22 +28,6 @@ const PositionList = () => {
   const [selectedOption, setSelectedOption] = useState("chocolate");
   const navigation: any = useNavigation();
 
-  const timeEntryStart = async () => {
-    const user = await Auth.currentUserInfo();
-    await DataStore.save(
-      new TimeEntry({
-        billable: true,
-        description: "Work",
-        userId: user.username,
-        workspaceId: "a3f4095e-39de-43d2-baf4-f8c16f0f6f4d",
-        timeInterval: {
-          duration: "",
-          end: date.toISOString(),
-          start: date.toISOString(),
-        },
-      })
-    );
-  };
   const timeEntryLog = async () => {
     console.log(await DataStore.query(TimeEntry));
   };
@@ -60,8 +44,8 @@ const PositionList = () => {
     <SafeAreaView>
       <View style={styles.wrapperJobList}>
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-          <TouchableOpacity style={styles.button} onPress={timeEntryStart}>
-            <Text style={styles.buttonText}>Start</Text>
+          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate(routes.mainScreens.positions.positionAdd.screen)}>
+            <Text style={styles.buttonText}>Add</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.button}>
             <Text style={styles.buttonText}>Delete</Text>
@@ -82,11 +66,6 @@ const PositionList = () => {
             <Text style={styles.buttonText}>Refresh</Text>
           </TouchableOpacity>
         </View>
-        <Select
-          value={selectedOption}
-          //onChange={() => setSelectedOption(selectedOption)}
-          options={options}
-        />
         {list.map((d) => (
           <View>
             <Text>{d.id}</Text>

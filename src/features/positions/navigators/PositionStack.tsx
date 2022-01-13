@@ -2,10 +2,10 @@ import { createStackNavigator } from '@react-navigation/stack'
 import React from 'react'
 import { View, StyleSheet, Dimensions } from 'react-native'
 
-import colors from 'constants/colors'
-import routes from 'constants/routes'
+import colors from '../../../constants/colors'
+import routes from '../../../constants/routes'
 import BackButton from 'common/components/BackButton'
-import PositionDetail from 'features/positions/screens/PositionDetail'
+import PositionAdd from 'features/positions/screens/PositionAdd'
 import PositionList from 'features/positions/screens/PositionList'
 import ApplyNow from 'features/positions/screens/ApplyNow'
 import BurgerMenu from 'common/components/BurgerMenu'
@@ -15,7 +15,7 @@ const width = Dimensions.get('screen').width * 0.05
 
 const PositionStack = () => {
   const Stack = createStackNavigator()
-  const { positionMain, positionDetail, applyNow } = routes.mainScreens.positions
+  const { positionMain, positionAdd, applyNow } = routes.mainScreens.positions
 
   return (
     <Stack.Navigator>
@@ -25,7 +25,7 @@ const PositionStack = () => {
         options={{
           headerLeft: () => (
             <View style={styles.navIconContainer}>
-              <BurgerMenu backgroundVisible />
+              <BackButton isWhite />
             </View>
           ),
           headerStyle: styles.header,
@@ -38,8 +38,8 @@ const PositionStack = () => {
         }}
       />
       <Stack.Screen
-        name={positionDetail.screen}
-        component={PositionDetail}
+        name={positionAdd.screen}
+        component={PositionAdd}
         options={{
           headerLeft: () => (
             <View style={styles.navIconContainer}>
