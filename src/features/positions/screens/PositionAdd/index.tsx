@@ -7,60 +7,151 @@ import {
   StyleSheet,
   Dimensions,
   TouchableOpacity,
+  Platform,
+  TextInput,
+  Switch,
 } from "react-native";
-import { TimePicker } from "@material-ui/pickers";
+import DateTimePicker from "@react-native-community/datetimepicker";
 
-import colors from "constants/colors";
-import routes from "constants/routes";
+import colors from "../../../../constants/colors";
+import routes from "../../../../constants/routes";
+import { Formik } from "formik";
+import { Auth, DataStore } from "aws-amplify";
+import { TimeEntry } from "../../../../models";
 
-const leftandright = Dimensions.get("screen").width * 0.03;
+const leftandright = Dimensions.get("screen").width * 0.06;
 
 const PositionDetail: FC<object> = () => {
   const navigation = useNavigation();
-  const [selectedDate, handleDateChange] = useState(new Date());
+  const [dateStart, setDateStart] = useState(new Date());
+  const [dateEnd, setDateEnd] = useState(new Date());
+  const [show, setShow] = useState(Platform.OS === "ios");
+  const [billable, setbillable] = useState(false);
+  const toggleSwitch = () => setbillable((previousState) => !previousState);
+
+  const onChangeStart = (event, selectedDate) => {
+    const currentDate = selectedDate || dateStart;
+    setShow(Platform.OS === "ios");
+    setDateStart(currentDate);
+  };
+  const onChangeEnd = (event, selectedDate) => {
+    const currentDate = selectedDate || dateEnd;
+    setShow(Platform.OS === "ios");
+    setDateEnd(currentDate);
+  };
 
   return (
     <View style={styles.positionDetailContainer}>
-      <ScrollView style={styles.positionDetailContainer}>
-        <TouchableOpacity>
-          <View
-            style={{ flexDirection: "row", justifyContent: "space-between" }}
-          >
-            <View>
-              <Text>Start</Text>
-              <Text>End</Text>
-            </View>
-            <View>
-              <Text>Thu, 13 Jan</Text>
-            </View>
-          </View>
-        </TouchableOpacity>
-        <Text><TimePicker
-          clearable
-          ampm={false}
-          label="24 hours"
-          value={selectedDate}
-          onChange={handleDateChange}
-        /></Text>
-        <View>
-          <Text>Description</Text>
-        </View>
-        <View>
-          <Text>Billable</Text>
-        </View>
-      </ScrollView>
-      <LinearGradient colors={["#ffffff3b", "#ffffff6b", "#FFFFFF"]}>
-        <View style={styles.applyButtonContainer}>
-          <Button
-            style={styles.applyButton}
-            onPress={() =>
-              navigation.navigate(routes.mainScreens.positions.applyNow.screen)
+      <Formik
+        initialValues={{
+          description: "",
+        }}
+        onSubmit={async (values) => {
+          console.log(values);
+          console.log(dateStart.toISOString());
+          console.log(dateEnd.toISOString());
+          console.log(billable);
+          if (true) {
+            try {
+              const loginedUser = await Auth.currentUserInfo()
+              await DataStore.save(
+                new TimeEntry({
+                  billable: billable,
+                  description: values.description,
+                  userId: loginedUser.username,
+                  workspaceId: "a3f4095e-39de-43d2-baf4-f8c16f0f6f4d",
+                  timeInterval: {
+                    duration: "",
+                    end: dateEnd.toISOString(),
+                    start: dateStart.toISOString(),
+                  },
+                })
+              );
+              navigation.goBack()
+            } catch (error) {
+              console.log(error);
             }
-          >
-            <Text style={styles.applyText}>Start</Text>
-          </Button>
-        </View>
-      </LinearGradient>
+          }
+        }}
+      >
+        {({ handleChange, handleSubmit, handleBlur, values }) => (
+          <>
+            <ScrollView>
+              <View style={{ alignContent: "center" }}>
+                <Text
+                  style={{ fontSize: 18, fontFamily: "SourceSansPro-semiBold" }}
+                >
+                  Time Adding
+                </Text>
+              </View>
+              <View>
+                <View>
+                  <Text>Start</Text>
+                  {show && (
+                    <DateTimePicker
+                      testID="dateTimePicker"
+                      value={dateStart}
+                      mode="datetime"
+                      locale="fi-FI"
+                      display="default"
+                      onChange={onChangeStart}
+                    />
+                  )}
+                </View>
+                <View>
+                  <Text>End</Text>
+                  {show && (
+                    <DateTimePicker
+                      testID="dateTimePicker"
+                      value={dateEnd}
+                      mode="datetime"
+                      locale="fi-FI"
+                      display="default"
+                      onChange={onChangeEnd}
+                    />
+                  )}
+                </View>
+              </View>
+              <View>
+                <Text>Description</Text>
+                <TextInput
+                  onChangeText={handleChange("description")}
+                  onBlur={handleBlur("description")}
+                  value={values.description}
+                  style={{
+                    paddingTop: 5,
+                    paddingBottom: 5,
+                    paddingLeft: 2,
+                    paddingRight: 2,
+                  }}
+                />
+              </View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  flex: 1,
+                }}
+              >
+                <Text>Billable</Text>
+                <Switch
+                  trackColor={{ false: "#767577", true: "#81b0ff" }}
+                  thumbColor={billable ? "#f5dd4b" : "#f4f3f4"}
+                  onValueChange={toggleSwitch}
+                  value={billable}
+                />
+              </View>
+            </ScrollView>
+            <LinearGradient colors={["#ffffff3b", "#ffffff6b", "#FFFFFF"]}>
+              <View style={styles.applyButtonContainer}>
+                <Button style={styles.applyButton} onPress={handleSubmit}>
+                  <Text style={styles.applyText}>Add</Text>
+                </Button>
+              </View>
+            </LinearGradient>
+          </>
+        )}
+      </Formik>
     </View>
   );
 };

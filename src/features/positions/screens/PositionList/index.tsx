@@ -6,26 +6,20 @@ import {
   Text,
   Dimensions,
   TouchableOpacity,
+  Button,
 } from "react-native";
 import { View } from "native-base";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
-import Select from "react-select";
+import { Icon } from "native-base";
+import { FontAwesome } from "@expo/vector-icons";
 
 import routes from "../../../../constants/routes";
 import colors from "../../../../constants/colors";
 import { TimeEntry, User, WorkSpaces } from "../../../../models";
 import { Auth, DataStore } from "aws-amplify";
 
-const date = new Date();
-const options = [
-  { value: "chocolate", label: "Chocolate" },
-  { value: "strawberry", label: "Strawberry" },
-  { value: "vanilla", label: "Vanilla" },
-];
-
 const PositionList = () => {
   const [list, setList] = useState([]);
-  const [selectedOption, setSelectedOption] = useState("chocolate");
   const navigation: any = useNavigation();
 
   const timeEntryLog = async () => {
@@ -44,14 +38,15 @@ const PositionList = () => {
     <SafeAreaView>
       <View style={styles.wrapperJobList}>
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-          <TouchableOpacity style={styles.button} onPress={() => navigation.navigate(routes.mainScreens.positions.positionAdd.screen)}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() =>
+              navigation.navigate(
+                routes.mainScreens.positions.positionAdd.screen
+              )
+            }
+          >
             <Text style={styles.buttonText}>Add</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>Delete</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>Edit</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={timeEntryLog}>
             <Text style={styles.buttonText}>Log</Text>
@@ -66,9 +61,63 @@ const PositionList = () => {
             <Text style={styles.buttonText}>Refresh</Text>
           </TouchableOpacity>
         </View>
-        {list.map((d) => (
-          <View>
-            <Text>{d.id}</Text>
+
+        {list.map((data) => (
+          <View style={{ marginTop: 5, marginBottom: 5 }}>
+            <Text style={{ marginBottom: 10, marginTop: 5, marginLeft: 4 }}>
+              {new Date(data.timeInterval.start).toDateString()}
+            </Text>
+            <View
+              style={{
+                backgroundColor: colors.primaryColors.white,
+                padding: 15,
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: 0.23,
+                shadowRadius: 2.62,
+                shadowColor: colors.primaryColors.primary700,
+                borderRadius: 10,
+              }}
+            >
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}
+              >
+                {data.billable == true ? (
+                  <Text>Paid</Text>
+                ) : (
+                  <Text>UnPaid</Text>
+                )}
+                <Icon
+                  as={FontAwesome}
+                  name="angle-double-down"
+                  size="5"
+                  onPress={async () => {
+                    try {
+                      await DataStore.delete(TimeEntry, data.id);
+                      setList([]);
+                      dbList();
+                    } catch (error) {
+                      console.log(error);
+                    }
+                  }}
+                />
+              </View>
+              {data.description != "" ? (
+                <Text>{data.description}</Text>
+              ) : (
+                <Text>Without description</Text>
+              )}
+              <Text>
+                Start:{" "}
+                {new Date(data.timeInterval.start).toLocaleTimeString("fi-FI")}
+              </Text>
+              <Text>
+                End:{" "}
+                {new Date(data.timeInterval.end).toLocaleTimeString("fi-FI")}
+              </Text>
+            </View>
           </View>
         ))}
       </View>
@@ -76,7 +125,7 @@ const PositionList = () => {
   );
 };
 
-const leftandright = Dimensions.get("screen").width * 0.06;
+const leftandright = Dimensions.get("screen").width * 0.02;
 
 const styles = StyleSheet.create({
   buttonText: {
