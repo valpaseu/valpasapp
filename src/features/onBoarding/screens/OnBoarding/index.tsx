@@ -63,7 +63,6 @@ const OnBoarding = () => {
       if (user === undefined) {
         try {
           console.log(userAuth.attributes);
-          
           await DataStore.save(
             new User({
               username: userAuth.username,
@@ -71,14 +70,15 @@ const OnBoarding = () => {
               email: userAuth.attributes.email,
               memberships: [],
               name: userAuth.attributes.name,
-              activeWorkspace: "",
-              profilePicture: "",
+              activeWorkspace: null,
+              profilePicture: null,
               settings: {
-                timeFormat: "",
-                timeZone: "",
-                dateFormat: "",
+                timeFormat: null,
+                timeZone: null,
+                dateFormat: null,
               },
               status: "ACTIVE",
+              defaultWorkspace: null,
             })
           );
         } catch (error) {

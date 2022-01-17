@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useNavigation } from "@react-navigation/native";
 import {
   StyleSheet,
@@ -17,21 +17,42 @@ import routes from "../../../../constants/routes";
 import colors from "../../../../constants/colors";
 import { TimeEntry, User, WorkSpaces } from "../../../../models";
 import { Auth, DataStore } from "aws-amplify";
+import DropDownPicker from "react-native-dropdown-picker";
 
 const PositionList = () => {
   const [list, setList] = useState([]);
   const navigation: any = useNavigation();
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState(null);
+  const [items, setItems] = useState([]);
+  const [stopCheckList, setStopCheckList] = useState(false);
+  const [stopCheckItems, setStopCheckItems] = useState(false);
 
   const timeEntryLog = async () => {
-    console.log(await DataStore.query(TimeEntry));
+    const test = await DataStore.query(WorkSpaces);
+    console.log(test);
   };
 
   const dbList = async () => {
     const db = await DataStore.query(TimeEntry);
-    setList(db);
+    if (db.length !== 0) setList(db);
+    else setStopCheckList(true);
   };
-  if (list.length === 0) {
+  if (list.length === 0 && !stopCheckList) {
     dbList();
+  }
+  const dbItem = async () => {
+    const work = await DataStore.query(WorkSpaces);
+    if (work.length !== 0) {
+      const q = [];
+      for (let i = 0; i < work.length; i++) {
+        q.push({ label: work[i].name, value: work[i].id });
+      }
+      setItems(q);
+    } else setStopCheckItems(true);
+  };
+  if (items.length === 0 && !stopCheckItems) {
+    dbItem();
   }
 
   return (
@@ -56,12 +77,21 @@ const PositionList = () => {
             onPress={() => {
               setList([]);
               dbList();
+              dbItem();
             }}
           >
             <Text style={styles.buttonText}>Refresh</Text>
           </TouchableOpacity>
         </View>
-
+        <DropDownPicker
+          open={open}
+          value={value}
+          items={items}
+          setOpen={setOpen}
+          disableBorderRadius={true}
+          setValue={setValue}
+          setItems={setItems}
+        />
         {list.map((data) => (
           <View style={{ marginTop: 5, marginBottom: 5 }}>
             <Text style={{ marginBottom: 10, marginTop: 5, marginLeft: 4 }}>
@@ -109,13 +139,23 @@ const PositionList = () => {
               ) : (
                 <Text>Without description</Text>
               )}
-              <Text>
-                Start:{" "}
-                {new Date(data.timeInterval.start).toLocaleTimeString("fi-FI")}
-              </Text>
-              <Text>
-                End:{" "}
-                {new Date(data.timeInterval.end).toLocaleTimeString("fi-FI")}
+              <Text
+                onPress={() => {
+                  console.log(
+                    new Date(
+                      Date.parse(data?.timeInterval?.end) -
+                        Date.parse(data?.timeInterval?.start)
+                    )
+                  );
+                }}
+              >
+                Substant: {""}
+                {new Date(
+                  new Date(data?.timeInterval?.end) -
+                    new Date(data?.timeInterval?.start)
+                ).toLocaleTimeString("es-ES", {
+                  timeZone: "Africa/Casablanca",
+                })}
               </Text>
             </View>
           </View>

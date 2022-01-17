@@ -26,18 +26,40 @@ const PositionDetail: FC<object> = () => {
   const [dateStart, setDateStart] = useState(new Date());
   const [dateEnd, setDateEnd] = useState(new Date());
   const [show, setShow] = useState(Platform.OS === "ios");
-  const [billable, setbillable] = useState(false);
+  const [billable, setbillable] = useState(true);
+  const [correct, setCorrrect] = useState(false);
   const toggleSwitch = () => setbillable((previousState) => !previousState);
+  const [spinnerTime, setSpinnerTime] = useState(new Date(dateEnd - dateStart));
 
   const onChangeStart = (event, selectedDate) => {
     const currentDate = selectedDate || dateStart;
     setShow(Platform.OS === "ios");
     setDateStart(currentDate);
+    setCorrrect(true);
+    setbillable(false);
   };
   const onChangeEnd = (event, selectedDate) => {
     const currentDate = selectedDate || dateEnd;
     setShow(Platform.OS === "ios");
     setDateEnd(currentDate);
+    setCorrrect(true);
+    setbillable(false);
+  };
+  const onChangeSpinner = (event, selectedTime) => {
+    const currentDate = selectedTime || spinnerTime;
+    setShow(Platform.OS === "ios");
+    setSpinnerTime(currentDate);
+    const ddd = new Date(
+      dateStart.getFullYear(),
+      dateStart.getMonth(),
+      dateStart.getDate(),
+      currentDate.getHours() + dateStart.getHours() - 2,
+      currentDate.getMinutes() + dateStart.getMinutes(),
+      "0"
+    )
+    setDateEnd(ddd)
+    setbillable(false);
+    setCorrrect(true);
   };
 
   return (
@@ -47,13 +69,9 @@ const PositionDetail: FC<object> = () => {
           description: "",
         }}
         onSubmit={async (values) => {
-          console.log(values);
-          console.log(dateStart.toISOString());
-          console.log(dateEnd.toISOString());
-          console.log(billable);
           if (true) {
             try {
-              const loginedUser = await Auth.currentUserInfo()
+              const loginedUser = await Auth.currentUserInfo();
               await DataStore.save(
                 new TimeEntry({
                   billable: billable,
@@ -67,7 +85,7 @@ const PositionDetail: FC<object> = () => {
                   },
                 })
               );
-              navigation.goBack()
+              navigation.goBack();
             } catch (error) {
               console.log(error);
             }
@@ -89,7 +107,7 @@ const PositionDetail: FC<object> = () => {
                   <Text>Start</Text>
                   {show && (
                     <DateTimePicker
-                      testID="dateTimePicker"
+                      testID="dateTimePicker1"
                       value={dateStart}
                       mode="datetime"
                       locale="fi-FI"
@@ -102,12 +120,25 @@ const PositionDetail: FC<object> = () => {
                   <Text>End</Text>
                   {show && (
                     <DateTimePicker
-                      testID="dateTimePicker"
+                      testID="dateTimePicker2"
                       value={dateEnd}
                       mode="datetime"
                       locale="fi-FI"
                       display="default"
                       onChange={onChangeEnd}
+                    />
+                  )}
+                </View>
+                <View>
+                  {show && (
+                    <DateTimePicker
+                      testID="dateTimePicker3"
+                      value={spinnerTime}
+                      timeZoneOffsetInMinutes={0}
+                      mode="time"
+                      locale="fi-FI"
+                      display="spinner"
+                      onChange={onChangeSpinner}
                     />
                   )}
                 </View>
@@ -145,7 +176,11 @@ const PositionDetail: FC<object> = () => {
             <LinearGradient colors={["#ffffff3b", "#ffffff6b", "#FFFFFF"]}>
               <View style={styles.applyButtonContainer}>
                 <Button style={styles.applyButton} onPress={handleSubmit}>
-                  <Text style={styles.applyText}>Add</Text>
+                  {correct ? (
+                    <Text style={styles.applyText}>Add</Text>
+                  ) : (
+                    <Text style={styles.applyText}>Start</Text>
+                  )}
                 </Button>
               </View>
             </LinearGradient>
