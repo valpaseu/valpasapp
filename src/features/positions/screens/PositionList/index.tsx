@@ -20,6 +20,7 @@ import { TimeEntry, UserCredentials, AllWorkSpaces } from "../../../../models";
 import { Auth, DataStore } from "aws-amplify";
 import DropDownPicker from "react-native-dropdown-picker";
 import { Modalize } from "react-native-modalize";
+import ActiveWork from "../../components/ActiveWork";
 
 const PositionList = () => {
   const [list, setList] = useState([]);
@@ -33,11 +34,6 @@ const PositionList = () => {
   const [stopCheckWork, setStopCheckWork] = useState(false);
   const [currentTime, setCurrentTime] = useState(null);
   const modalizeRef = useRef<Modalize>(null);
-
-  const timeEntryLog = async () => {
-    const test = await DataStore.query(UserCredentials);
-    console.log(test);
-  };
 
   const dbList = async () => {
     const db = await DataStore.query(TimeEntry);
@@ -73,14 +69,14 @@ const PositionList = () => {
       dbList();
       dbItem();
       setValue(null);
-      modalizeRef.current?.close()
+      modalizeRef.current?.close();
     } catch (error) {
       console.log(error);
     }
   };
 
   const RenderContent = () => (
-    <View style={{marginTop: 10}}>
+    <View>
       <TouchableOpacity style={styles.subMenuIcon}>
         <Icon
           as={FontAwesome}
@@ -110,110 +106,114 @@ const PositionList = () => {
           <Text>Loading</Text>
         </View>
       ) : (
-        <View style={styles.wrapperJobList}>
-          <View style={styles.viewScreen}>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() =>
-                navigation.navigate(
-                  routes.mainScreens.positions.positionAdd.screen,
-                  { value }
-                )
-              }
-            >
-              <Text style={styles.buttonText}>Add</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => {
-                console.log(currentTime);
-              }}
-            >
-              <Text style={styles.buttonText}>Log</Text>
-            </TouchableOpacity>
+        <View>
+          <ActiveWork />
+          <View style={styles.wrapperJobList}>
             <TouchableOpacity
               style={styles.button}
               onPress={() => {
                 setList([]);
                 dbList();
                 dbItem();
-                setValue(null);
+                //setValue(null);
               }}
             >
               <Text style={styles.buttonText}>Refresh</Text>
             </TouchableOpacity>
-          </View>
-          <DropDownPicker
-            style={{ marginTop: 10, borderRadius: 5 }}
-            containerStyle={{ borderWidth: 0, borderRadius: 5 }}
-            open={open}
-            value={value}
-            items={items}
-            setOpen={setOpen}
-            setValue={(q) => {
-              console.log(q());
-              setValue(q());
-            }}
-            setItems={setItems}
-          />
-          <ScrollView>
-            {list.map((data) => {
-              if (data.workspaceId === value || value === null) {
-                return (
-                  <View style={{ marginTop: 5, marginBottom: 5 }}>
-                    <Text style={styles.timeEntryDate}>
-                      {new Date(data.timeInterval.start).toDateString()}
-                    </Text>
-                    <View style={styles.timeElement}>
-                      <View style={styles.firmName}>
-                        {work.length != 0 && data.workspaceId != null ? (
-                          <Text>
-                            {work.find((w) => w.id === data.workspaceId).name}
-                          </Text>
-                        ) : (
-                          <Text>Loading...</Text>
-                        )}
-
-                        <Icon
-                          as={FontAwesome}
-                          name="ellipsis-h"
-                          size="6"
-                          onPress={() => {
-                            modalizeRef.current?.open();
-                            setCurrentTime(data.id);
-                          }}
-                        />
-                      </View>
-                      {data.billable == true ? (
-                        <Text>Paid</Text>
-                      ) : (
-                        <Text>UnPaid</Text>
-                      )}
-                      {data.description != "" ? (
-                        <Text>{data.description}</Text>
-                      ) : (
-                        <Text>Without description</Text>
-                      )}
-                      <Text>
-                        Substant: {""}
-                        {new Date(
-                          new Date(data?.timeInterval?.end) -
-                            new Date(data?.timeInterval?.start)
-                        ).toLocaleTimeString("es-ES", {
-                          timeZone: "Africa/Casablanca",
-                        })}
+            <DropDownPicker
+              style={{ marginTop: 10, borderRadius: 5 }}
+              containerStyle={{ borderWidth: 0, borderRadius: 5 }}
+              open={open}
+              value={value}
+              items={items}
+              setOpen={setOpen}
+              setValue={setValue}
+              setItems={setItems}
+            />
+            <ScrollView>
+              {list.map((data) => {
+                if (
+                  (data.workspaceId === value || value === null) &&
+                  !data.isActive
+                ) {
+                  return (
+                    <View style={{ marginTop: 5, marginBottom: 5 }}>
+                      <Text style={styles.timeEntryDate}>
+                        {new Date(data.timeInterval.start).toDateString()}
                       </Text>
+                      <View style={styles.timeElement}>
+                        <View style={styles.firmName}>
+                          {work.length != 0 && data.workspaceId != null ? (
+                            <Text>
+                              {work.find((w) => w.id === data.workspaceId).name}
+                            </Text>
+                          ) : (
+                            <Text>Without work</Text>
+                          )}
+
+                          <Icon
+                            as={FontAwesome}
+                            name="ellipsis-h"
+                            size="6"
+                            onPress={() => {
+                              modalizeRef.current?.open();
+                              setCurrentTime(data.id);
+                            }}
+                          />
+                        </View>
+                        {data.billable == true ? (
+                          <Text>Paid</Text>
+                        ) : (
+                          <Text>UnPaid</Text>
+                        )}
+                        {data.description != "" ? (
+                          <Text>{data.description}</Text>
+                        ) : (
+                          <Text>Without description</Text>
+                        )}
+                        <Text>
+                          Substant: {""}
+                          {new Date(
+                            new Date(data?.timeInterval?.end) -
+                              new Date(data?.timeInterval?.start)
+                          ).toLocaleTimeString("es-ES", {
+                            timeZone: "Africa/Casablanca",
+                          })}
+                        </Text>
+                      </View>
                     </View>
-                  </View>
-                );
+                  );
+                }
+              })}
+            </ScrollView>
+          </View>
+          <TouchableOpacity
+              activeOpacity={0.5}
+              onPress={() =>
+                navigation.navigate(
+                  routes.mainScreens.positions.positionAdd.screen,
+                  {
+                    value,
+                  }
+                )
               }
-            })}
-          </ScrollView>
+              style={styles.TouchableOpacityStyle}
+            >
+              <Icon
+                as={FontAwesome}
+                name="plus"
+                size={6}
+                color="white"
+                style={{
+                  left: 2.5,
+                }}
+              />
+            </TouchableOpacity>
+            <Modalize ref={modalizeRef} adjustToContentHeight={true}>
+              <RenderContent />
+            </Modalize>
         </View>
       )}
-      <Modalize ref={modalizeRef} adjustToContentHeight={true}>
-        <RenderContent />
-      </Modalize>
     </SafeAreaView>
   );
 };
@@ -221,6 +221,18 @@ const PositionList = () => {
 const leftandright = Dimensions.get("screen").width * 0.02;
 
 const styles = StyleSheet.create({
+  TouchableOpacityStyle: {
+    position: "absolute",
+    width: 56,
+    height: 56,
+    alignItems: "center",
+    justifyContent: "center",
+    right: 20,
+    bottom: 20,
+    backgroundColor: "#03A9F4",
+    borderRadius: 30,
+    elevation: 8,
+  },
   firmName: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -236,7 +248,7 @@ const styles = StyleSheet.create({
   },
   subMenuIcon: {
     flexDirection: "row",
-    backgroundColor: colors.primaryColors.primary400,
+    backgroundColor: colors.primaryColors.white,
     padding: 15,
     borderColor: colors.primaryColors.primary300,
     borderBottomWidth: 1,
@@ -272,9 +284,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
   },
   wrapperJobList: {
-    margin: leftandright,
-    padding: 5,
-    height: hp("85%"),
+    padding: leftandright + 5,
+    height: hp("78%"),
   },
 });
 

@@ -14,12 +14,21 @@ import ProfileSetting from "features/profile/components/ProfileSetting";
 
 import { Hub } from "@aws-amplify/core";
 import userCreate from "../../../../common/services/UserCreate";
+import { DataStore } from "aws-amplify";
 Hub.listen("datastore", async (hubData) => {
   switch (hubData.payload.event) {
     case "ready":
       userCreate()
       break;
     default:
+      break;
+  }
+});
+Hub.listen("auth", async (res) => {
+  switch (res.payload.event) {
+    case "signIn":
+      if (!res.payload.data.signInUserSession) break;
+      await DataStore.start();
       break;
   }
 });

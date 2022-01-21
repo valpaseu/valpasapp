@@ -30,6 +30,7 @@ type TimeEntry @model @auth(rules: [{allow: owner}, {allow: groups, groups: ["Ed
   userId: ID
   workspaceId: ID
   timeInterval: TimeInterval
+  isActive: Boolean
 }
 
 type WorkspaceSettings {

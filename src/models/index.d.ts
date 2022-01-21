@@ -81,6 +81,7 @@ export declare class TimeEntry {
   readonly userId?: string;
   readonly workspaceId?: string;
   readonly timeInterval?: TimeInterval;
+  readonly isActive?: boolean;
   readonly createdAt?: string;
   readonly updatedAt?: string;
   constructor(init: ModelInit<TimeEntry, TimeEntryMetaData>);

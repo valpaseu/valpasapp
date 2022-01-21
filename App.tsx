@@ -71,7 +71,7 @@ function App() {
         break;
       case "signOut":
         dispatch(removeAuth());
-        await DataStore.clear();
+        DataStore.clear();
         break;
     }
   });

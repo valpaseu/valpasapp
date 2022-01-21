@@ -31,9 +31,6 @@ const userCreate = async () => {
   };
 
   if (user.length === 0) add();
-  else {
-    console.log("User Not added or user already in");
-  }
 };
 
 export default userCreate;

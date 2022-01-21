@@ -47,6 +47,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "isActive": {
+                    "name": "isActive",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "createdAt": {
                     "name": "createdAt",
                     "isArray": false,
@@ -654,5 +661,5 @@ export const schema = {
             }
         }
     },
-    "version": "29044914882e075ad02457cf99e332c9"
+    "version": "36d8ce91cf6e4cada68d581b84db40af"
 };

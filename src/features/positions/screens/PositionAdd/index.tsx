@@ -17,7 +17,7 @@ import colors from "../../../../constants/colors";
 import routes from "../../../../constants/routes";
 import { Formik } from "formik";
 import { Auth, DataStore } from "aws-amplify";
-import { TimeEntry } from "../../../../models";
+import { TimeEntry, UserCredentials } from "../../../../models";
 
 const leftandright = Dimensions.get("screen").width * 0.06;
 
@@ -56,8 +56,8 @@ const PositionDetail: FC<object> = (val) => {
       currentDate.getHours() + dateStart.getHours() - 2,
       currentDate.getMinutes() + dateStart.getMinutes(),
       "0"
-    )
-    setDateEnd(ddd)
+    );
+    setDateEnd(ddd);
     setbillable(false);
     setCorrrect(true);
   };
@@ -78,6 +78,7 @@ const PositionDetail: FC<object> = (val) => {
                   description: values.description,
                   userId: loginedUser.username,
                   workspaceId: val.route.params.value,
+                  isActive: !correct,
                   timeInterval: {
                     duration: "",
                     end: dateEnd.toISOString(),
@@ -90,7 +91,34 @@ const PositionDetail: FC<object> = (val) => {
               console.log(error);
             }
           } else {
-            
+            try {
+              const loginedUser = await Auth.currentUserInfo();
+              const original = await DataStore.query(UserCredentials);
+
+              const create = await DataStore.save(
+                new TimeEntry({
+                  billable: billable,
+                  description: values.description,
+                  userId: loginedUser.username,
+                  workspaceId: val.route.params.value,
+                  isActive: !correct,
+                  timeInterval: {
+                    duration: "",
+                    end: dateEnd.toISOString(),
+                    start: dateStart.toISOString(),
+                  },
+                })
+              );
+              
+              await DataStore.save(
+                UserCredentials.copyOf(original[0], (updated) => {
+                  updated.activeWorkspace = create.id;
+                })
+              );
+              navigation.goBack();
+            } catch (error) {
+              console.log(error);
+            }
           }
         }}
       >
