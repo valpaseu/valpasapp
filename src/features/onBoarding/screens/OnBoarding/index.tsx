@@ -1,7 +1,7 @@
 import Auth from "@aws-amplify/auth";
 import { DataStore } from "@aws-amplify/datastore";
 import { useNavigation } from "@react-navigation/native";
-import { OnBoardingForm, User } from "models";
+import { OnBoardingForm, UserCredentials } from "../../../../models";
 import React, { useEffect, useState } from "react";
 import {
   ScrollView,
@@ -14,6 +14,7 @@ import "react-native-get-random-values";
 import Accordion from "react-native-collapsible/Accordion";
 import { Checkbox } from "native-base";
 import AppLoading from "expo-app-loading";
+import userCreate from "../../../../common/services/UserCreate";
 
 const OnBoarding = () => {
   const [loading, setLoading] = useState(true);
@@ -21,7 +22,7 @@ const OnBoarding = () => {
   const [userr, setUserr] = useState([]);
   const [groupValue, setGroupValue] = React.useState([]);
   const [states, setStates] = useState([]);
-  const [timer, setTimer] = useState(100);
+  userCreate()
 
   const saveButton = async (title) => {
     if (groupValue.find((g) => g.title === title) === undefined) {
@@ -30,7 +31,7 @@ const OnBoarding = () => {
       if (!userr.formChecked.includes(title)) {
         try {
           await DataStore.save(
-            User.copyOf(userr, (updated) => {
+            UserCredentials.copyOf(userr, (updated) => {
               updated.formChecked.push(title);
             })
           );
@@ -40,58 +41,6 @@ const OnBoarding = () => {
       }
     }
   };
-
-  setTimeout(async () => {
-    const userAuth = await Auth.currentAuthenticatedUser();
-    const userAll = await DataStore.query(User);
-    const user = await DataStore.query(
-      User,
-      userAuth.attributes["custom:formID"]
-    );
-    const userFind = userAll.find((u) => u.username === userAuth.username);
-    const updateFormId = async (id) => {
-      try {
-        await Auth.updateUserAttributes(userAuth, {
-          "custom:formID": id,
-        });
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    if (userFind === undefined) {
-      if (user === undefined) {
-        try {
-          console.log(userAuth.attributes);
-          await DataStore.save(
-            new User({
-              username: userAuth.username,
-              formChecked: [],
-              email: userAuth.attributes.email,
-              memberships: [],
-              name: userAuth.attributes.name,
-              activeWorkspace: null,
-              profilePicture: null,
-              settings: {
-                timeFormat: null,
-                timeZone: null,
-                dateFormat: null,
-              },
-              status: "ACTIVE",
-              defaultWorkspace: null,
-            })
-          );
-        } catch (error) {
-          console.log(error);
-        }
-      }
-    } else {
-      if (userFind.id !== userAuth.attributes["custom:formID"]) {
-        updateFormId(userFind.id);
-      }
-    }
-    setTimer(30000);
-  }, timer);
 
   if (data.length === 0) {
     const dataSet = async () => {
@@ -109,10 +58,10 @@ const OnBoarding = () => {
     if (userr.length === 0) {
       const currentUser = await Auth.currentAuthenticatedUser();
       const userrr = await DataStore.query(
-        User,
+        UserCredentials,
         currentUser.attributes["custom:formID"]
       );
-      setUserr(userrr);
+      if (userrr.length !== 0) setUserr(userrr);
     }
   }, 500);
 

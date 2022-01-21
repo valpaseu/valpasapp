@@ -106,8 +106,8 @@ export const schema = {
                 }
             ]
         },
-        "WorkSpaces": {
-            "name": "WorkSpaces",
+        "AllWorkSpaces": {
+            "name": "AllWorkSpaces",
             "fields": {
                 "id": {
                     "name": "id",
@@ -176,7 +176,7 @@ export const schema = {
                 }
             },
             "syncable": true,
-            "pluralName": "WorkSpaces",
+            "pluralName": "AllWorkSpaces",
             "attributes": [
                 {
                     "type": "model",
@@ -211,8 +211,8 @@ export const schema = {
                 }
             ]
         },
-        "User": {
-            "name": "User",
+        "UserCredentials": {
+            "name": "UserCredentials",
             "fields": {
                 "id": {
                     "name": "id",
@@ -234,7 +234,7 @@ export const schema = {
                     "type": "String",
                     "isRequired": false,
                     "attributes": [],
-                    "isArrayNullable": false
+                    "isArrayNullable": true
                 },
                 "email": {
                     "name": "email",
@@ -263,14 +263,14 @@ export const schema = {
                 "activeWorkspace": {
                     "name": "activeWorkspace",
                     "isArray": false,
-                    "type": "String",
+                    "type": "ID",
                     "isRequired": false,
                     "attributes": []
                 },
                 "profilePicture": {
                     "name": "profilePicture",
                     "isArray": false,
-                    "type": "String",
+                    "type": "AWSURL",
                     "isRequired": false,
                     "attributes": []
                 },
@@ -287,6 +287,13 @@ export const schema = {
                     "name": "status",
                     "isArray": false,
                     "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
+                "defaultWorkspace": {
+                    "name": "defaultWorkspace",
+                    "isArray": false,
+                    "type": "ID",
                     "isRequired": false,
                     "attributes": []
                 },
@@ -308,7 +315,7 @@ export const schema = {
                 }
             },
             "syncable": true,
-            "pluralName": "Users",
+            "pluralName": "UserCredentials",
             "attributes": [
                 {
                     "type": "model",
@@ -498,6 +505,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "membershipStatus": {
+                    "name": "membershipStatus",
+                    "isArray": false,
+                    "type": "String",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "membershipType": {
                     "name": "membershipType",
                     "isArray": false,
@@ -508,7 +522,7 @@ export const schema = {
                 "userId": {
                     "name": "userId",
                     "isArray": false,
-                    "type": "String",
+                    "type": "ID",
                     "isRequired": false,
                     "attributes": []
                 }
@@ -527,7 +541,7 @@ export const schema = {
                 "currency": {
                     "name": "currency",
                     "isArray": false,
-                    "type": "String",
+                    "type": "Int",
                     "isRequired": false,
                     "attributes": []
                 }
@@ -565,14 +579,14 @@ export const schema = {
                 "shortBreak": {
                     "name": "shortBreak",
                     "isArray": false,
-                    "type": "Float",
+                    "type": "Int",
                     "isRequired": false,
                     "attributes": []
                 },
                 "dinnerBreak": {
                     "name": "dinnerBreak",
                     "isArray": false,
-                    "type": "Float",
+                    "type": "Int",
                     "isRequired": false,
                     "attributes": []
                 }
@@ -640,5 +654,5 @@ export const schema = {
             }
         }
     },
-    "version": "99942b8c0c5099d758f0c804de1c091e"
+    "version": "29044914882e075ad02457cf99e332c9"
 };

@@ -21,7 +21,7 @@ import { TimeEntry } from "../../../../models";
 
 const leftandright = Dimensions.get("screen").width * 0.06;
 
-const PositionDetail: FC<object> = () => {
+const PositionDetail: FC<object> = (val) => {
   const navigation = useNavigation();
   const [dateStart, setDateStart] = useState(new Date());
   const [dateEnd, setDateEnd] = useState(new Date());
@@ -69,7 +69,7 @@ const PositionDetail: FC<object> = () => {
           description: "",
         }}
         onSubmit={async (values) => {
-          if (true) {
+          if (correct) {
             try {
               const loginedUser = await Auth.currentUserInfo();
               await DataStore.save(
@@ -77,7 +77,7 @@ const PositionDetail: FC<object> = () => {
                   billable: billable,
                   description: values.description,
                   userId: loginedUser.username,
-                  workspaceId: "a3f4095e-39de-43d2-baf4-f8c16f0f6f4d",
+                  workspaceId: val.route.params.value,
                   timeInterval: {
                     duration: "",
                     end: dateEnd.toISOString(),
@@ -89,6 +89,8 @@ const PositionDetail: FC<object> = () => {
             } catch (error) {
               console.log(error);
             }
+          } else {
+            
           }
         }}
       >
@@ -199,69 +201,6 @@ const styles = StyleSheet.create({
     marginRight: leftandright,
     flex: 1,
     backgroundColor: colors.primaryColors.background,
-  },
-  logo: {
-    width: 80,
-    height: 80,
-    borderRadius: 15,
-  },
-  positionLogo: {
-    flexDirection: "row",
-    justifyContent: "center",
-    marginTop: 30,
-  },
-  positionTitle: {
-    textAlign: "center",
-    marginTop: 20,
-    fontSize: 18,
-    fontWeight: "600",
-  },
-  subTitle: {
-    justifyContent: "center",
-    flexDirection: "row",
-    marginTop: 10,
-  },
-  subTitleText: {
-    fontSize: 13,
-    color: colors.primaryColors.primary200,
-  },
-  positionLocation: {
-    flexDirection: "row",
-    borderLeftColor: colors.primaryColors.primary300,
-    borderLeftWidth: 1,
-    paddingLeft: 5,
-    marginLeft: 8,
-  },
-  tabsButton: {
-    flexDirection: "row",
-    justifyContent: "center",
-    marginTop: 20,
-  },
-  button: {
-    width: "42.5%",
-    justifyContent: "center",
-    backgroundColor: colors.primaryColors.white,
-    borderRadius: 0,
-  },
-  activeButton: {
-    marginHorizontal: 2.5,
-    width: "42.5%",
-    justifyContent: "center",
-    backgroundColor: colors.primaryColors.white,
-    borderRadius: 0,
-  },
-  activeTextTabButton: {
-    color: colors.primaryColors.primary100,
-  },
-  textTabButton: {
-    color: colors.primaryColors.primary600,
-  },
-  content: {
-    alignItems: "center",
-  },
-  contentText: {
-    fontSize: 13,
-    color: colors.primaryColors.primary200,
   },
   applyButtonContainer: {
     flexDirection: "row",

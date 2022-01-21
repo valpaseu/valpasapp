@@ -1,27 +1,32 @@
 import React, { FC, useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
-import { DataStore } from "@aws-amplify/datastore";
-import { UserDatabase } from "models";
 
 import { ProfileBioProps } from "features/types";
-import colors from "constants/colors";
-import sizes from "constants/size";
+import colors from "../../../../constants/colors";
+import size from "../../../../constants/size";
 import { Auth } from "aws-amplify";
 
-const ProfileBio: FC<ProfileBioProps> = () => {
-
-  const [user, setUser] = useState([]); 
-  setTimeout(async () => {
-    if (user.length === 0) {
-      const userAuth = await Auth.currentUserInfo()
-      setUser(userAuth.attributes)
+const ProfileBio: FC<ProfileBioProps> = (q) => {
+  const [user, setUser] = useState([]);
+  const [loaded, setLoaded] = useState(false);
+  const DBProfile = async () => {
+    const userr = await Auth.currentUserInfo();
+    if (user.length === 0 || user.username !== user.username) {
+      setUser(userr);
+      setLoaded(true);
     }
-  }, 100);
+  };
+  DBProfile();
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>BIO</Text>
-      <Text style={styles.description}>{user["custom:bio"]}</Text>
+      
+      {loaded ? (
+        <Text style={styles.description}>{user.attributes["custom:bio"]}</Text>
+      ) : (
+        <Text style={styles.description}>loading</Text>
+      )}
     </View>
   );
 };
@@ -37,7 +42,7 @@ const styles = StyleSheet.create({
   title: {
     fontFamily: "SourceSansPro-semiBold",
     color: colors.primaryColors.primary300,
-    fontSize: sizes.profile.bioTitle,
+    fontSize: size.profile.bioTitle,
     fontWeight: "500",
     paddingBottom: "3%",
     letterSpacing: 1.5,
@@ -46,7 +51,7 @@ const styles = StyleSheet.create({
     fontFamily: "SourceSansPro-regular",
     color: colors.primaryColors.primary300,
     textAlign: "justify",
-    fontSize: sizes.profile.bioDesc,
+    fontSize: size.profile.bioDesc,
     lineHeight: 18,
     letterSpacing: 1.2,
   },

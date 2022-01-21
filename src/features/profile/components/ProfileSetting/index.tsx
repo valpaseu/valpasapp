@@ -12,7 +12,7 @@ import * as Sentry from "sentry-expo";
 
 import { AlertPopup } from "common/components/Alert";
 import colors from "../../../../constants/colors";
-import sizes from "../../../../constants/size"
+import sizes from "../../../../constants/size";
 import routes from "../../../../constants/routes";
 import { enableGettingStartedScreen } from "features/gettingStarted/services";
 
@@ -51,15 +51,15 @@ const ProfileSetting = () => {
       label: "Notifications",
       icon: <Ionicons name="ios-notifications" style={styles.icon} />,
       handlePress: () => {
-        navigation.navigate(routes.mainScreens.todo.stack)
-      }
+        navigation.navigate(routes.mainScreens.todo.stack);
+      },
     },
     {
       label: "Messages",
       icon: <MaterialIcons name="message" style={styles.icon} />,
       handlePress: () => {
-        navigation.navigate(routes.mainScreens.messages.stack)
-      }
+        navigation.navigate(routes.mainScreens.messages.stack);
+      },
     },
     {
       label: "Edit profile",

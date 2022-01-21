@@ -17,6 +17,7 @@ import { loadAuth } from "./src/features/authentication/redux/actions";
 import awsExports from "./src/aws-exports";
 import { removeAuth } from "./src/features/authentication/redux/actions";
 import { useFonts } from "expo-font";
+import userCreate from "./src/common/services/UserCreate";
 
 if (process.env.LOG_LEVEL) Amplify.Logger.LOG_LEVEL = process.env.LOG_LEVEL;
 if (process.env.SENTRY_DSN) {

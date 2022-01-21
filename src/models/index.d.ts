@@ -18,6 +18,7 @@ export declare class CostRate {
 export declare class UserMemberships {
   readonly hourlyRate?: HourlyRate;
   readonly costRate?: CostRate;
+  readonly membershipStatus?: string;
   readonly membershipType?: string;
   readonly userId?: string;
   constructor(init: ModelInit<UserMemberships>);
@@ -25,7 +26,7 @@ export declare class UserMemberships {
 
 export declare class HourlyRate {
   readonly amount?: string;
-  readonly currency?: string;
+  readonly currency?: number;
   constructor(init: ModelInit<HourlyRate>);
 }
 
@@ -61,11 +62,11 @@ type TimeEntryMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
 
-type WorkSpacesMetaData = {
+type AllWorkSpacesMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
 
-type UserMetaData = {
+type UserCredentialsMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
 
@@ -86,7 +87,7 @@ export declare class TimeEntry {
   static copyOf(source: TimeEntry, mutator: (draft: MutableModel<TimeEntry, TimeEntryMetaData>) => MutableModel<TimeEntry, TimeEntryMetaData> | void): TimeEntry;
 }
 
-export declare class WorkSpaces {
+export declare class AllWorkSpaces {
   readonly id: string;
   readonly hourlyRate?: HourlyRate;
   readonly imageUrl?: string;
@@ -95,14 +96,14 @@ export declare class WorkSpaces {
   readonly workspaceSettings?: WorkspaceSettings;
   readonly createdAt?: string;
   readonly updatedAt?: string;
-  constructor(init: ModelInit<WorkSpaces, WorkSpacesMetaData>);
-  static copyOf(source: WorkSpaces, mutator: (draft: MutableModel<WorkSpaces, WorkSpacesMetaData>) => MutableModel<WorkSpaces, WorkSpacesMetaData> | void): WorkSpaces;
+  constructor(init: ModelInit<AllWorkSpaces, AllWorkSpacesMetaData>);
+  static copyOf(source: AllWorkSpaces, mutator: (draft: MutableModel<AllWorkSpaces, AllWorkSpacesMetaData>) => MutableModel<AllWorkSpaces, AllWorkSpacesMetaData> | void): AllWorkSpaces;
 }
 
-export declare class User {
+export declare class UserCredentials {
   readonly id: string;
   readonly username?: string;
-  readonly formChecked: (string | null)[];
+  readonly formChecked?: (string | null)[];
   readonly email?: string;
   readonly memberships?: (UserMemberships | null)[];
   readonly name?: string;
@@ -110,10 +111,11 @@ export declare class User {
   readonly profilePicture?: string;
   readonly settings?: UserSettings;
   readonly status?: string;
+  readonly defaultWorkspace?: string;
   readonly createdAt?: string;
   readonly updatedAt?: string;
-  constructor(init: ModelInit<User, UserMetaData>);
-  static copyOf(source: User, mutator: (draft: MutableModel<User, UserMetaData>) => MutableModel<User, UserMetaData> | void): User;
+  constructor(init: ModelInit<UserCredentials, UserCredentialsMetaData>);
+  static copyOf(source: UserCredentials, mutator: (draft: MutableModel<UserCredentials, UserCredentialsMetaData>) => MutableModel<UserCredentials, UserCredentialsMetaData> | void): UserCredentials;
 }
 
 export declare class OnBoardingForm {

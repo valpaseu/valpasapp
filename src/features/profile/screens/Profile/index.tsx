@@ -11,8 +11,18 @@ import {
 import ProfileBio from "features/profile/components/ProfileBio";
 import ProfileHeader from "features/profile/components/ProfileHeader";
 import ProfileSetting from "features/profile/components/ProfileSetting";
+
 import { Hub } from "@aws-amplify/core";
-import Auth from "@aws-amplify/auth";
+import userCreate from "../../../../common/services/UserCreate";
+Hub.listen("datastore", async (hubData) => {
+  switch (hubData.payload.event) {
+    case "ready":
+      userCreate()
+      break;
+    default:
+      break;
+  }
+});
 
 const Profile = () => {
   return (

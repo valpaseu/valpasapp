@@ -12,8 +12,9 @@ type CostRate {
 type UserMemberships {
   hourlyRate: HourlyRate
   costRate: CostRate
+  membershipStatus: String
   membershipType: String
-  userId: String
+  userId: ID
 }
 
 type TimeInterval {
@@ -32,8 +33,8 @@ type TimeEntry @model @auth(rules: [{allow: owner}, {allow: groups, groups: ["Ed
 }
 
 type WorkspaceSettings {
-  shortBreak: Float
-  dinnerBreak: Float
+  shortBreak: Int
+  dinnerBreak: Int
 }
 
 type Membership {
@@ -46,10 +47,10 @@ type Membership {
 
 type HourlyRate {
   amount: String
-  currency: String
+  currency: Int
 }
 
-type WorkSpaces @model @auth(rules: [{allow: private, operations: [read]}, {allow: groups, groups: ["Editors"], operations: [read, create, update, delete]}]) {
+type AllWorkSpaces @model @auth(rules: [{allow: private, operations: [read]}, {allow: groups, groups: ["Editors"], operations: [read, create, update, delete]}]) {
   id: ID!
   hourlyRate: HourlyRate
   imageUrl: AWSURL
@@ -58,17 +59,18 @@ type WorkSpaces @model @auth(rules: [{allow: private, operations: [read]}, {allo
   workspaceSettings: WorkspaceSettings
 }
 
-type User @model @auth(rules: [{allow: owner}, {allow: groups, groups: ["Editors"], operations: [read, create, update, delete]}]) {
+type UserCredentials @model @auth(rules: [{allow: owner}, {allow: groups, groups: ["Editors"], operations: [read, create, update, delete]}]) {
   id: ID!
   username: ID
-  formChecked: [String]!
+  formChecked: [String]
   email: String
   memberships: [UserMemberships]
   name: String
-  activeWorkspace: String
-  profilePicture: String
+  activeWorkspace: ID
+  profilePicture: AWSURL
   settings: UserSettings
   status: String
+  defaultWorkspace: ID
 }
 
 type OnBoardingForm @model @auth(rules: [{allow: groups, groups: ["Editors"], operations: [read, create, update, delete]}, {allow: private, operations: [read]}]) {

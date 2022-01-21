@@ -6,20 +6,31 @@ import colors from "../../../../constants/colors";
 import sizes from "../../../../constants/size";
 import Auth from "@aws-amplify/auth";
 
-const ProfileHeader: FC<ProfileHeaderProps> = ({ photoUrl }) => {
+const ProfileHeader: FC<ProfileHeaderProps> = () => {
+  const [loaded, setLoaded] = useState(false);
   const [user, setUser] = useState([]);
-  setTimeout(async () => {
-    if (user.length === 0) {
-      const userAuth = await Auth.currentUserInfo();
-      setUser(userAuth.attributes);
+  const DBProfile = async () => {
+    const userr = await Auth.currentUserInfo();
+    if (user.length === 0 || user.username !== user.username) {
+      setUser(userr);
+      setLoaded(true);
     }
-  }, 100);
-
+  };
+  DBProfile();
+  
   return (
     <View style={styles.container}>
       <Image style={styles.avatar} source={{}} />
-      <Text style={styles.name}>{user.name}</Text>
-      <Text style={styles.subtitle}>{user.email}</Text>
+      {loaded ? (
+        <Text style={styles.name}>{user.attributes.name}</Text>
+      ) : (
+        <Text style={styles.name}>loading</Text>
+      )}
+      {loaded ? (
+        <Text style={styles.subtitle}>{user.attributes.email}</Text>
+      ) : (
+        <Text style={styles.subtitle}>loading</Text>
+      )}
     </View>
   );
 };

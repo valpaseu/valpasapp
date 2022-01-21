@@ -4,12 +4,12 @@ import { schema } from './schema';
 
 
 
-const { TimeEntry, WorkSpaces, User, OnBoardingForm, UserSettings, CostRate, UserMemberships, HourlyRate, TimeInterval, WorkspaceSettings, Membership, FormItem } = initSchema(schema);
+const { TimeEntry, AllWorkSpaces, UserCredentials, OnBoardingForm, UserSettings, CostRate, UserMemberships, HourlyRate, TimeInterval, WorkspaceSettings, Membership, FormItem } = initSchema(schema);
 
 export {
   TimeEntry,
-  WorkSpaces,
-  User,
+  AllWorkSpaces,
+  UserCredentials,
   OnBoardingForm,
   UserSettings,
   CostRate,
