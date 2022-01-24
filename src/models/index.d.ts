@@ -108,7 +108,7 @@ export declare class UserCredentials {
   readonly email?: string;
   readonly memberships?: (UserMemberships | null)[];
   readonly name?: string;
-  readonly activeWorkspace?: string;
+  readonly activeTimeEntry?: string;
   readonly profilePicture?: string;
   readonly settings?: UserSettings;
   readonly status?: string;

@@ -109,13 +109,15 @@ const PositionDetail: FC<object> = (val) => {
                   },
                 })
               );
-              
+
               await DataStore.save(
                 UserCredentials.copyOf(original[0], (updated) => {
-                  updated.activeWorkspace = create.id;
+                  updated.activeTimeEntry = create.id;
                 })
               );
-              navigation.goBack();
+              setTimeout(() => {
+                navigation.goBack();
+              }, 1000);
             } catch (error) {
               console.log(error);
             }

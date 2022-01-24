@@ -67,7 +67,7 @@ type UserCredentials @model @auth(rules: [{allow: owner}, {allow: groups, groups
   email: String
   memberships: [UserMemberships]
   name: String
-  activeWorkspace: ID
+  activeTimeEntry: ID
   profilePicture: AWSURL
   settings: UserSettings
   status: String

@@ -267,8 +267,8 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
-                "activeWorkspace": {
-                    "name": "activeWorkspace",
+                "activeTimeEntry": {
+                    "name": "activeTimeEntry",
                     "isArray": false,
                     "type": "ID",
                     "isRequired": false,
@@ -661,5 +661,5 @@ export const schema = {
             }
         }
     },
-    "version": "36d8ce91cf6e4cada68d581b84db40af"
+    "version": "1a3cf50a7e7fadacf814555c324c7529"
 };

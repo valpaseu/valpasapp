@@ -22,6 +22,8 @@ import DropDownPicker from "react-native-dropdown-picker";
 import { Modalize } from "react-native-modalize";
 import ActiveWork from "../../components/ActiveWork";
 
+DataStore.start();
+
 const PositionList = () => {
   const [list, setList] = useState([]);
   const navigation: any = useNavigation();
@@ -33,14 +35,8 @@ const PositionList = () => {
   const [stopCheckItems, setStopCheckItems] = useState(false);
   const [stopCheckWork, setStopCheckWork] = useState(false);
   const [currentTime, setCurrentTime] = useState(null);
-  const modalizeRef = useRef<Modalize>(null);
 
-  const dbList = async () => {
-    const db = await DataStore.query(TimeEntry);
-    if (db.length !== 0) setList(db);
-    else setStopCheckList(true);
-  };
-  if (list.length === 0 && !stopCheckList) dbList();
+  const modalizeRef = useRef<Modalize>(null);
 
   const dbWork = async () => {
     const w = await DataStore.query(AllWorkSpaces);
@@ -48,6 +44,13 @@ const PositionList = () => {
     else setStopCheckWork(true);
   };
   if (work.length === 0 && !stopCheckWork) dbWork();
+
+  const dbList = async () => {
+    const w = await DataStore.query(TimeEntry);
+    if (w.length !== 0) setList(w);
+    else setStopCheckList(true);
+  };
+  if (list.length === 0 && !stopCheckList) dbList();
 
   const dbItem = async () => {
     const w = await DataStore.query(AllWorkSpaces);
@@ -115,7 +118,7 @@ const PositionList = () => {
                 setList([]);
                 dbList();
                 dbItem();
-                //setValue(null);
+                setValue(null);
               }}
             >
               <Text style={styles.buttonText}>Refresh</Text>
@@ -188,30 +191,30 @@ const PositionList = () => {
             </ScrollView>
           </View>
           <TouchableOpacity
-              activeOpacity={0.5}
-              onPress={() =>
-                navigation.navigate(
-                  routes.mainScreens.positions.positionAdd.screen,
-                  {
-                    value,
-                  }
-                )
-              }
-              style={styles.TouchableOpacityStyle}
-            >
-              <Icon
-                as={FontAwesome}
-                name="plus"
-                size={6}
-                color="white"
-                style={{
-                  left: 2.5,
-                }}
-              />
-            </TouchableOpacity>
-            <Modalize ref={modalizeRef} adjustToContentHeight={true}>
-              <RenderContent />
-            </Modalize>
+            activeOpacity={0.5}
+            onPress={() =>
+              navigation.navigate(
+                routes.mainScreens.positions.positionAdd.screen,
+                {
+                  value,
+                }
+              )
+            }
+            style={styles.TouchableOpacityStyle}
+          >
+            <Icon
+              as={FontAwesome}
+              name="plus"
+              size={6}
+              color="white"
+              style={{
+                left: 2.5,
+              }}
+            />
+          </TouchableOpacity>
+          <Modalize ref={modalizeRef} adjustToContentHeight={true}>
+            <RenderContent />
+          </Modalize>
         </View>
       )}
     </SafeAreaView>

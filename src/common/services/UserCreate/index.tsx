@@ -14,7 +14,7 @@ const userCreate = async () => {
           email: userAuth.attributes.email,
           memberships: [],
           name: userAuth.attributes.name,
-          activeWorkspace: "a3f4095e-39de-43d2-baf4-f8c16f0f6f4d",
+          activeTimeEntry: "a3f4095e-39de-43d2-baf4-f8c16f0f6f4d",
           profilePicture: "http://undefined.name",
           settings: {
             timeFormat: "",
