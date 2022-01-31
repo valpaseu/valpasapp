@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import {
   StyleSheet,
@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   Button,
   ScrollView,
+  RefreshControl,
 } from "react-native";
 import { View } from "native-base";
 import { heightPercentageToDP as hp } from "react-native-responsive-screen";
@@ -17,10 +18,9 @@ import { FontAwesome } from "@expo/vector-icons";
 import routes from "../../../../constants/routes";
 import colors from "../../../../constants/colors";
 import { TimeEntry, UserCredentials, AllWorkSpaces } from "../../../../models";
-import { Auth, DataStore } from "aws-amplify";
+import { DataStore } from "aws-amplify";
 import DropDownPicker from "react-native-dropdown-picker";
 import { Modalize } from "react-native-modalize";
-import ActiveWork from "../../components/ActiveWork";
 
 DataStore.start();
 
@@ -35,6 +35,34 @@ const PositionList = () => {
   const [stopCheckItems, setStopCheckItems] = useState(false);
   const [stopCheckWork, setStopCheckWork] = useState(false);
   const [currentTime, setCurrentTime] = useState(null);
+  const [hide, setHide] = useState(false);
+  const [height, setHeight] = useState("82%");
+  const [timeWork, setTimeWork] = useState(false);
+  const [activeWork, setActiveWork] = useState([]);
+  const [user, setUser] = useState([]);
+  const [update, setUpdate] = useState(0);
+  const [timer, setTimer] = useState({
+    seconds: 0,
+    minutes: 0,
+    hours: 0,
+  });
+
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const wait = (timeout) => {
+    return new Promise((resolve) => setTimeout(resolve, timeout));
+  };
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    wait(2000).then(() => {
+      setRefreshing(false);
+      setList([]);
+      dbList();
+      dbItem();
+      setValue(null);
+    });
+  }, []);
 
   const modalizeRef = useRef<Modalize>(null);
 
@@ -47,8 +75,9 @@ const PositionList = () => {
 
   const dbList = async () => {
     const w = await DataStore.query(TimeEntry);
-    if (w.length !== 0) setList(w);
-    else setStopCheckList(true);
+    if (w.length !== 0) {
+      setList(w);
+    } else setStopCheckList(true);
   };
   if (list.length === 0 && !stopCheckList) dbList();
 
@@ -78,6 +107,56 @@ const PositionList = () => {
     }
   };
 
+  const userDB = async () => {
+    const userr = await DataStore.query(UserCredentials);
+    setUser(userr[0]);
+  };
+
+  const worksDB = async () => {
+    const userr = await DataStore.query(UserCredentials);
+    if (userr[0].activeTimeEntry !== null) {
+      const activeTime = await DataStore.query(
+        TimeEntry,
+        userr[0].activeTimeEntry
+      );
+      if (activeTime !== undefined) {
+        if (activeTime.isActive) {
+          setTimeWork(true);
+          const q = [];
+          q.push(activeTime);
+          setActiveWork(q);
+        }
+      }
+    }
+  };
+
+  useEffect(() => {
+    if (!timeWork) {
+      setHeight("82%");
+      setHide(false);
+    }
+    setTimeout(() => {
+      if (timeWork) {
+        setHide(true);
+        setHeight("65%");
+        let dateActivator = new Date();
+        let subDate = new Date(
+          dateActivator - new Date(activeWork[0].timeInterval.start)
+        );
+        setTimer({
+          seconds: subDate.getSeconds(),
+          minutes: subDate.getMinutes(),
+          hours: subDate.getHours() - 2,
+        });
+      }
+      let q = update;
+      q++;
+      setUpdate(q);
+      if (activeWork.length === 0) worksDB();
+      if (user.length === 0) userDB();
+    }, 1000);
+  }, [update]);
+
   const RenderContent = () => (
     <View>
       <TouchableOpacity style={styles.subMenuIcon}>
@@ -102,94 +181,134 @@ const PositionList = () => {
     </View>
   );
 
-  return (
-    <SafeAreaView>
-      {list.length == 0 && items.length == 0 && work.length == 0 ? (
-        <View style={{ alignItems: "center", justifyContent: "center" }}>
-          <Text>Loading</Text>
-        </View>
-      ) : (
-        <View>
-          <ActiveWork />
-          <View style={styles.wrapperJobList}>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() => {
-                setList([]);
-                dbList();
-                dbItem();
-                setValue(null);
-              }}
-            >
-              <Text style={styles.buttonText}>Refresh</Text>
-            </TouchableOpacity>
-            <DropDownPicker
-              style={{ marginTop: 10, borderRadius: 5 }}
-              containerStyle={{ borderWidth: 0, borderRadius: 5 }}
-              open={open}
-              value={value}
-              items={items}
-              setOpen={setOpen}
-              setValue={setValue}
-              setItems={setItems}
-            />
-            <ScrollView>
-              {list.map((data) => {
-                if (
-                  (data.workspaceId === value || value === null) &&
-                  !data.isActive
-                ) {
-                  return (
-                    <View style={{ marginTop: 5, marginBottom: 5 }}>
-                      <Text style={styles.timeEntryDate}>
+  if (list.length !== 0 && items.length !== 0 && work.length !== 0) {
+    return (
+      <SafeAreaView>
+        <DropDownPicker
+          style={{ borderRadius: 5, top: 5 }}
+          open={open}
+          value={value}
+          items={items}
+          setOpen={setOpen}
+          setValue={setValue}
+          setItems={setItems}
+        />
+        {activeWork.length !== 0 && user.length !== 0 && timeWork ? (
+          <View style={{ paddingBottom: 5 }}>
+            <View style={styles.currentlyRun}>
+              <Text style={styles.textMain}>Currently running</Text>
+            </View>
+            <View style={styles.element}>
+              <View style={styles.spaces}>
+                <Text style={styles.textMain}>Work</Text>
+                <Text style={styles.textMain}>
+                  {timer.hours}:{String("0" + timer.minutes).slice(-2)}:
+                  {String("0" + timer.seconds).slice(-2)}
+                </Text>
+              </View>
+              {activeWork[0].description != "" ? (
+                <Text style={styles.textMain}>{activeWork[0].description}</Text>
+              ) : (
+                <Text style={styles.textMain}>Without description</Text>
+              )}
+              <Text
+                style={styles.textMain}
+                onPress={async () => {
+                  try {
+                    const qqq = new Date();
+                    await DataStore.save(
+                      TimeEntry.copyOf(activeWork[0], (updated) => {
+                        updated.timeInterval.end = qqq.toISOString();
+                        updated.isActive = false;
+                      })
+                    );
+                    setTimeWork(false);
+                    setActiveWork([]);
+                    setUser([]);
+                  } catch (error) {
+                    console.log(error);
+                  }
+                }}
+              >
+                Stop
+              </Text>
+            </View>
+          </View>
+        ) : (
+          <View></View>
+        )}
+        <ScrollView
+          style={{
+            padding: leftandright,
+            height: hp(height),
+          }}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+        >
+          {list
+            .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+            .map((data) => {
+              if (
+                (data.workspaceId === value || value === null) &&
+                !data.isActive
+              ) {
+                const dateEro = new Date(Date.parse(data?.timeInterval?.end) - Date.parse(data?.timeInterval?.start))
+                return (
+                  <View style={{ marginTop: 0, marginBottom: 5 }}>
+                    <View style={styles.timeEntryDate}>
+                      <Text style={styles.textMain}>
                         {new Date(data.timeInterval.start).toDateString()}
                       </Text>
-                      <View style={styles.timeElement}>
-                        <View style={styles.firmName}>
-                          {work.length != 0 && data.workspaceId != null ? (
-                            <Text>
-                              {work.find((w) => w.id === data.workspaceId).name}
-                            </Text>
-                          ) : (
-                            <Text>Without work</Text>
-                          )}
+                    </View>
 
+                    <View style={styles.timeElement}>
+                      <View style={styles.firmName}>
+                        {work.length != 0 && data.workspaceId != null ? (
+                          <Text style={styles.textMain}>
+                            {work.find((w) => w.id === data.workspaceId).name}
+                          </Text>
+                        ) : (
+                          <Text style={styles.textMain}>Without work</Text>
+                        )}
+                        <View
+                          style={{
+                            width: 80,
+                            justifyContent: "space-between",
+                            flexDirection: "row",
+                          }}
+                        >
+                          <Text style={styles.textMain}>
+                            {dateEro.getUTCHours()}:{String("0" + dateEro.getUTCMinutes()).slice(-2)}:{String("0" + dateEro.getUTCSeconds()).slice(-2)}
+                          </Text>
                           <Icon
                             as={FontAwesome}
                             name="ellipsis-h"
-                            size="6"
+                            size="4"
                             onPress={() => {
                               modalizeRef.current?.open();
                               setCurrentTime(data.id);
                             }}
                           />
                         </View>
-                        {data.billable == true ? (
-                          <Text>Paid</Text>
-                        ) : (
-                          <Text>UnPaid</Text>
-                        )}
-                        {data.description != "" ? (
-                          <Text>{data.description}</Text>
-                        ) : (
-                          <Text>Without description</Text>
-                        )}
-                        <Text>
-                          Substant: {""}
-                          {new Date(
-                            new Date(data?.timeInterval?.end) -
-                              new Date(data?.timeInterval?.start)
-                          ).toLocaleTimeString("es-ES", {
-                            timeZone: "Africa/Casablanca",
-                          })}
-                        </Text>
                       </View>
+                      {data.billable == true ? (
+                        <Text style={styles.textMain}>Paid</Text>
+                      ) : (
+                        <Text style={styles.textMain}>UnPaid</Text>
+                      )}
+                      {data.description != "" ? (
+                        <Text style={styles.textMain}>{data.description}</Text>
+                      ) : (
+                        <Text style={styles.textMain}>Without description</Text>
+                      )}
                     </View>
-                  );
-                }
-              })}
-            </ScrollView>
-          </View>
+                  </View>
+                );
+              }
+            })}
+        </ScrollView>
+        {!hide ? (
           <TouchableOpacity
             activeOpacity={0.5}
             onPress={() =>
@@ -212,18 +331,26 @@ const PositionList = () => {
               }}
             />
           </TouchableOpacity>
-          <Modalize ref={modalizeRef} adjustToContentHeight={true}>
-            <RenderContent />
-          </Modalize>
-        </View>
-      )}
-    </SafeAreaView>
-  );
+        ) : (
+          <View></View>
+        )}
+        <Modalize ref={modalizeRef} adjustToContentHeight={true}>
+          <RenderContent />
+        </Modalize>
+      </SafeAreaView>
+    );
+  } else
+    return (
+      <View style={{ alignItems: "center", justifyContent: "center" }}>
+        <Text style={styles.textMain}>Loading</Text>
+      </View>
+    );
 };
 
 const leftandright = Dimensions.get("screen").width * 0.02;
 
 const styles = StyleSheet.create({
+  textMain: { fontFamily: "SourceSansPro-regular", fontSize: 14 },
   TouchableOpacityStyle: {
     position: "absolute",
     width: 56,
@@ -258,9 +385,9 @@ const styles = StyleSheet.create({
   },
   subMenuIconSet: { marginLeft: 5, marginRight: 5 },
   subMenuText: {
-    paddingTop: 3,
     paddingLeft: 10,
     fontSize: 16,
+    fontFamily: "SourceSansPro-regular",
   },
   timeElement: {
     backgroundColor: colors.primaryColors.white,
@@ -286,9 +413,18 @@ const styles = StyleSheet.create({
     shadowColor: colors.primaryColors.primary200,
     shadowOpacity: 0.3,
   },
-  wrapperJobList: {
-    padding: leftandright + 5,
-    height: hp("78%"),
+  element: {
+    backgroundColor: "white",
+    padding: 15,
+    paddingRight: 55,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+  },
+  spaces: { flexDirection: "row", justifyContent: "space-between" },
+  currentlyRun: {
+    padding: 15,
   },
 });
 

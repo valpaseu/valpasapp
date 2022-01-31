@@ -81,7 +81,11 @@ function App() {
   }, []);
 
   if (!fontsLoaded) {
-    return <AppLoading onError={console.warn} />;
+    return (
+      <>
+        <AppLoading onError={console.warn} />
+      </>
+    );
   } else {
     return (
       <>

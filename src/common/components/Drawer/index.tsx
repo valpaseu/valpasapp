@@ -55,6 +55,7 @@ const Drawer = () => {
         overlayColor: "transparent",
         drawerStyle: styles.drawer,
         sceneContainerStyle: { backgroundColor: color.drawer.background },
+        
       }}
       drawerContent={({ navigation, state }) => {
         return <SideBar navigation={navigation} state={state} />;
